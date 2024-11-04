@@ -1,0 +1,7 @@
+<Project>
+  <Import Project="nano.TuyaLink.targets"  Condition="'$(NanoFrameworkProjectSystemPath)' != ''"/>
+  <PropertyGroup Condition="'$(NanoFrameworkProjectSystemPath)' != ''">
+    <DefineConstants>$(DefineConstants);NanoCLR</DefineConstants>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+</Project>

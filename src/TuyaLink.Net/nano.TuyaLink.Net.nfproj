@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <NanoFrameworkProjectSystemPath>$(MSBuildExtensionsPath)\nanoFramework\v1.0\</NanoFrameworkProjectSystemPath>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>57923539-3efc-4f5c-a87f-f054cee3389a</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>TuyaLink</RootNamespace>
+    <AssemblyName>TuyaLink.Net</AssemblyName>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Nullable>Enable</Nullable>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
+  <ItemGroup>
+    <Compile Include="Communication\Actions\ActionData.cs" />
+    <Compile Include="Communication\Actions\ActionExecuteRequest.cs" />
+    <Compile Include="Communication\Actions\ActionExecuteResponse.cs" />
+    <Compile Include="Communication\Events\TriggerEventRequest.cs" />
+    <Compile Include="Communication\Firmware\FirmwareProgressReportRequest.cs" />
+    <Compile Include="Communication\Firmware\FirmwareReportRequest.cs" />
+    <Compile Include="Communication\Firmware\FirmwareIssueRequest.cs" />
+    <Compile Include="Communication\Firmware\GetFirmwareVersionRequest.cs" />
+    <Compile Include="Communication\Firmware\GetFirmwareVersionResponse.cs" />
+    <Compile Include="Firmware\ArrayExtensions.cs" />
+    <Compile Include="Functions\Events\BatchEventDataHashtable.cs" />
+    <Compile Include="Functions\Events\EventData.cs" />
+    <Compile Include="Functions\Events\TriggerEventDataHashtable.cs" />
+    <Compile Include="GetFirmwareVersionResponseHandler.cs" />
+    <Compile Include="Json\Converters\BatchEventDataHashtableConverter.cs" />
+    <Compile Include="Json\Converters\BizTypeConverter.cs" />
+    <Compile Include="Json\Converters\DataCenterConverter.cs" />
+    <Compile Include="Firmware\FirmwareIssueData.cs" />
+    <Compile Include="Communication\Firmware\FirmwareUpdateData.cs" />
+    <Compile Include="Communication\Firmware\ReportUpdateProgressRequest.cs" />
+    <Compile Include="Communication\FunctionMessage.cs" />
+    <Compile Include="Communication\FunctionRequest.cs" />
+    <Compile Include="Communication\FunctionResponse.cs" />
+    <Compile Include="Communication\History\HistoryReportRequest.cs" />
+    <Compile Include="Communication\IReportableFunction.cs" />
+    <Compile Include="Communication\ICommunicationHandler.cs" />
+    <Compile Include="Communication\Properties\GetPropertiesRequest.cs" />
+    <Compile Include="Communication\Properties\GetPropertiesResponse.cs" />
+    <Compile Include="Communication\DevieRequestHandler.cs" />
+    <Compile Include="Communication\TuyaCommunicationException.cs" />
+    <Compile Include="DataCenter.cs" />
+    <Compile Include="DeviceFault.cs" />
+    <Compile Include="DeviceSettings.cs" />
+    <Compile Include="DeviceInfo.cs" />
+    <Compile Include="Firmware\BizType.cs" />
+    <Compile Include="Firmware\FirmwareLoader.cs" />
+    <Compile Include="Firmware\FirmwareLoadException.cs" />
+    <Compile Include="Firmware\FirmwareManager.cs" />
+    <Compile Include="Firmware\FirmwareReportData.cs" />
+    <Compile Include="Firmware\FirmwareUdpateError.cs" />
+    <Compile Include="Firmware\FirmwareUpdateException.cs" />
+    <Compile Include="Firmware\FirmwareUpdateProgressDelegate.cs" />
+    <Compile Include="Firmware\HMACHelper.cs" />
+    <Compile Include="Firmware\MetadataUtils.cs" />
+    <Compile Include="Firmware\UpgradeType.cs" />
+    <Compile Include="FunctionResult.cs" />
+    <Compile Include="Json\Converters\DataTypeConverter.cs" />
+    <Compile Include="Json\Converters\DesiredPropertiesMapConverter.cs" />
+    <Compile Include="Json\Converters\FirmwareUpdateErrorConverter.cs" />
+    <Compile Include="Json\Converters\GenericHashtableConverter.cs" />
+    <Compile Include="Json\Converters\PropertyHashtableConverter.cs" />
+    <Compile Include="Json\Converters\StatusCodeConverter.cs" />
+    <Compile Include="Json\Converters\TriggerEventDataHashtableConverter.cs" />
+    <Compile Include="Json\Converters\UpdateChannelConverter.cs" />
+    <Compile Include="Json\GenericHashtableAttribute.cs" />
+    <Compile Include="Json\JsonObjecExtensions.cs" />
+    <Compile Include="Json\JsonUtils.cs" />
+    <Compile Include="Model\DeviceModel.cs" />
+    <Compile Include="Communication\Model\GetDeviceModelResponse.cs" />
+    <Compile Include="Functions\Actions\ActionExecuteResult.cs" />
+    <Compile Include="Functions\FunctionResultCodes.cs" />
+    <Compile Include="Functions\FunctionRuntimeException.cs" />
+    <Compile Include="Json\Converters\AccessModeConverter.cs" />
+    <Compile Include="Json\Converters\DeviceModelDataFormatConverter.cs" />
+    <Compile Include="Communication\Model\GetDeviceModelRequest.cs" />
+    <Compile Include="Communication\Properties\PropertySetRequest.cs" />
+    <Compile Include="Communication\BatchReportRequest.cs" />
+    <Compile Include="Communication\Properties\ReportPropertyRequest.cs" />
+    <Compile Include="Communication\ResponseHandler.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Mqtt\Handlers\ActionExecuteRequestHandler.cs" />
+    <Compile Include="Mqtt\Handlers\DefaultRequestHandler.cs" />
+    <Compile Include="Mqtt\Handlers\FirmwareIssueRequestHandler.cs" />
+    <Compile Include="Mqtt\Handlers\GetDeviceModelHandler.cs" />
+    <Compile Include="Communication\CloudRequestHandler.cs" />
+    <Compile Include="Mqtt\Handlers\GetFirmwareVersionRequestHandler.cs" />
+    <Compile Include="Mqtt\Handlers\PropertyGetRequestHandler.cs" />
+    <Compile Include="Mqtt\Handlers\MqttCloudRequestHandler.cs" />
+    <Compile Include="Mqtt\MqttTopicHandler.cs" />
+    <Compile Include="Mqtt\Handlers\PropertySetRequestHandler.cs" />
+    <Compile Include="Mqtt\Handlers\MqttDeviceRequestHandler.cs" />
+    <Compile Include="Mqtt\Topics\ActionExecuteTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\BatchReportTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\EventTriggerTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\GetFirmwareVersionTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\ReportFirmwareProgressTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\FirmwareReportTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\GetDeviceModelTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\HistoryReportTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\PropertyGetTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\PropertySetTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\ReportPropertyTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\DeviceRequestTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\CloudRequestTopicHandler.cs" />
+    <Compile Include="System\Activator.cs" />
+    <Compile Include="TuyaDataType.cs" />
+    <Compile Include="Functions\Actions\DelegateDeviceAction.cs" />
+    <Compile Include="Functions\Actions\DeviceAction.cs" />
+    <Compile Include="Functions\AccessMode.cs" />
+    <Compile Include="Functions\DelegateProperty.cs" />
+    <Compile Include="Functions\DeviceFunction.cs" />
+    <Compile Include="Functions\Events\DeviceEvent.cs" />
+    <Compile Include="Functions\FunctionType.cs" />
+    <Compile Include="Functions\IAknolageableFunction.cs" />
+    <Compile Include="Functions\Properties\DelegateDeviceProperty.cs" />
+    <Compile Include="Functions\Properties\DeviceProperty.cs" />
+    <Compile Include="Functions\Properties\FloatProperty.cs" />
+    <Compile Include="Functions\Properties\PropertyUpdatedEventArg.cs" />
+    <Compile Include="Functions\Properties\ValueProperty.cs" />
+    <Compile Include="Json\IJsonNamingConvention.cs" />
+    <Compile Include="Json\JsonNamingConventions.cs" />
+    <Compile Include="Json\JsonSerializer.cs" />
+    <Compile Include="Json\NameConventionResolver.cs" />
+    <Compile Include="Json\TypeUtils.cs" />
+    <Compile Include="Mqtt\GuidExtensions.cs" />
+    <Compile Include="Mqtt\MqttCommunicationProtocol.cs" />
+    <Compile Include="Mqtt\TuyaMqttConnectionException.cs" />
+    <Compile Include="Mqtt\TuyaMqttException.cs" />
+    <Compile Include="Mqtt\TuyaMqttSign.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TuyaDeteTime.cs" />
+    <Compile Include="TuyaDevice.cs" />
+    <Compile Include="TuyaLinkException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>..\..\packages\nanoFramework.CoreLibrary.1.15.5\lib\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.Json">
+      <HintPath>..\..\packages\nanoFramework.Json.2.2.152\lib\nanoFramework.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.Logging">
+      <HintPath>..\..\packages\nanoFramework.Logging.1.1.113\lib\nanoFramework.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.M2Mqtt">
+      <HintPath>..\..\packages\nanoFramework.M2Mqtt.5.1.146\lib\nanoFramework.M2Mqtt.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.M2Mqtt.Core">
+      <HintPath>..\..\packages\nanoFramework.M2Mqtt.5.1.146\lib\nanoFramework.M2Mqtt.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.Runtime.Events">
+      <HintPath>..\..\packages\nanoFramework.Runtime.Events.1.11.18\lib\nanoFramework.Runtime.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.Runtime.Native">
+      <HintPath>..\..\packages\nanoFramework.Runtime.Native.1.7.1\lib\nanoFramework.Runtime.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.System.Collections">
+      <HintPath>..\..\packages\nanoFramework.System.Collections.1.5.45\lib\nanoFramework.System.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.System.Runtime">
+      <HintPath>..\..\packages\nanoFramework.System.Runtime.1.0.27\lib\nanoFramework.System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.System.Security.Cryptography">
+      <HintPath>..\..\packages\nanoFramework.System.Security.Cryptography.1.0.14\lib\nanoFramework.System.Security.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.System.Text">
+      <HintPath>..\..\packages\nanoFramework.System.Text.1.2.54\lib\nanoFramework.System.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem">
+      <HintPath>..\..\packages\nanoFramework.System.IO.FileSystem.1.1.54\lib\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Streams">
+      <HintPath>..\..\packages\nanoFramework.System.IO.Streams.1.1.59\lib\System.IO.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Math">
+      <HintPath>..\..\packages\nanoFramework.System.Math.1.5.43\lib\System.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net">
+      <HintPath>..\..\packages\nanoFramework.System.Net.1.11.1\lib\System.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\packages\nanoFramework.System.Net.Http.Client.1.5.150\lib\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>..\..\packages\nanoFramework.System.Threading.1.1.32\lib\System.Threading.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nano.Collections\nano.Collections.nfproj" />
+    <ProjectReference Include="..\nano.SmartEnum\nano.SmartEnum.nfproj" />
+    <ProjectReference Include="..\nano.String\nano.String.nfproj" />
+    <ProjectReference Include="..\nano.TuyaLink.Firmware.Abstractions\nano.TuyaLink.Firmware.Abstractions.nfproj" />
+    <ProjectReference Include="..\runtime\nano.System.Compression.Zip\nano.System.Compression.Zip.nfproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="OTA\" />
+  </ItemGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
+  <ProjectExtensions>
+    <ProjectCapabilities>
+      <ProjectConfigurationsDeclaredAsItems />
+    </ProjectCapabilities>
+  </ProjectExtensions>
+</Project>

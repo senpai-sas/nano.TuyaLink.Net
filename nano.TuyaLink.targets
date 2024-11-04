@@ -1,0 +1,8 @@
+<Project>
+
+  <ItemGroup>
+    <None Include="$(NF_GenerateStubsDirectory)\$(NF_GenerateStubsRootName)\**\*.*" Condition="'$(NFMDP_GENERATE_STUBS)' == 'True'">
+      <Link>native\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+  </ItemGroup>
+</Project>

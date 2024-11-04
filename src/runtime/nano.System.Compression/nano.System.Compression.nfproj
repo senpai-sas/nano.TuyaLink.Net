@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <NanoFrameworkProjectSystemPath>$(MSBuildExtensionsPath)\nanoFramework\v1.0\</NanoFrameworkProjectSystemPath>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>1bc12e62-30fd-4b00-a392-8d35c684e2bb</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>nano.System</RootNamespace>
+    <AssemblyName>nano.System.Compression</AssemblyName>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
+  <ItemGroup>
+    <Compile Include="Checksum\Adler32.cs" />
+    <Compile Include="Checksum\Crc32.cs" />
+    <Compile Include="Checksum\IChecksum.cs" />
+    <Compile Include="Compression\Deflater.cs" />
+    <Compile Include="Compression\DeflaterConstants.cs" />
+    <Compile Include="Compression\DeflaterEngine.cs" />
+    <Compile Include="Compression\DeflaterHuffman.cs" />
+    <Compile Include="Compression\DeflaterPending.cs" />
+    <Compile Include="Compression\Inflater.cs" />
+    <Compile Include="Compression\InflaterDynHeader.cs" />
+    <Compile Include="Compression\InflaterHuffmanTree.cs" />
+    <Compile Include="Compression\PendingBuffer.cs" />
+    <Compile Include="Compression\Streams\DeflaterOutputStream.cs" />
+    <Compile Include="Compression\Streams\InflaterInputStream.cs" />
+    <Compile Include="Compression\Streams\OutputWindow.cs" />
+    <Compile Include="Compression\Streams\StreamManipulator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>..\..\..\packages\nanoFramework.CoreLibrary.1.15.5\lib\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.System.Text">
+      <HintPath>..\..\..\packages\nanoFramework.System.Text.1.2.54\lib\nanoFramework.System.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Streams">
+      <HintPath>..\..\..\packages\nanoFramework.System.IO.Streams.1.1.59\lib\System.IO.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Math">
+      <HintPath>..\..\..\packages\nanoFramework.System.Math.1.5.43\lib\System.Math.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
+  <ProjectExtensions>
+    <ProjectCapabilities>
+      <ProjectConfigurationsDeclaredAsItems />
+    </ProjectCapabilities>
+  </ProjectExtensions>
+</Project>
