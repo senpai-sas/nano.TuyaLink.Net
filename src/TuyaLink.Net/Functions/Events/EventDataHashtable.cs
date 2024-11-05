@@ -2,17 +2,17 @@
 
 namespace TuyaLink.Functions.Events
 {
-    internal class BatchEventDataHashtable :GenericHashtable
+    public class EventDataHashtable : GenericHashtable
     {
-        public BatchEventDataHashtable() : base()
+        public EventDataHashtable() : base()
         {
         }
 
-        public BatchEventDataHashtable(int capacity) : base(capacity)
+        public EventDataHashtable(int capacity) : base(capacity)
         {
         }
 
-        public BatchEventDataHashtable(int capacity, float loadFactor) : base(capacity, loadFactor)
+        public EventDataHashtable(int capacity, float loadFactor) : base(capacity, loadFactor)
         {
         }
 

@@ -16,7 +16,7 @@ namespace TuyaLink.Mqtt.Topics
         protected override string SubscribableTopicTemplate => GetFirmwareVersionRequestTopic;
         protected override string PublishableTopicTemplate => GetFirmwareVersionResponseTopic;
 
-        protected override DevieRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
+        protected override DeviceRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
         {
             return new GetFirmwareVersionRequestHandler(Communication, responseHandler);
         }

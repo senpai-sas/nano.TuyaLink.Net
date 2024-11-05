@@ -62,7 +62,6 @@ namespace TestsExecutor
             {
                 var attribs = method.GetCustomAttributes(true);
                 attribs = Helper.RemoveTestMethodIfDataRowExists(attribs);
-
                 for (int i = 0; i < attribs.Length; i++)
                 {
                     var attrib = attribs[i];

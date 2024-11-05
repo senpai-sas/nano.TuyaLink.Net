@@ -22,7 +22,7 @@ namespace TuyaLink.Mqtt.Topics
             }
             _handlersStore.Remove(response.MessageId);
 
-            var responseHandler = (DevieRequestHandler)handler;
+            var responseHandler = (DeviceRequestHandler)handler;
             responseHandler.HandleMessage(response);
         }
 
@@ -39,6 +39,6 @@ namespace TuyaLink.Mqtt.Topics
             return new ResponseHandler(messageId, acknowledgment);
         }
 
-        protected abstract DevieRequestHandler CreateRequestHandler(ResponseHandler responseHandler);
+        protected abstract DeviceRequestHandler CreateRequestHandler(ResponseHandler responseHandler);
     }
 }

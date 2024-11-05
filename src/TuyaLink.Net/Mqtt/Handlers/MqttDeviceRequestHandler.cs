@@ -4,7 +4,7 @@ using TuyaLink.Communication;
 namespace TuyaLink.Mqtt.Handlers
 {
     internal abstract class MqttDeviceRequestHandler(MqttCommunicationProtocol communication, ResponseHandler responseHandler)
-        : DevieRequestHandler(responseHandler)
+        : DeviceRequestHandler(responseHandler)
     {
         protected MqttCommunicationProtocol Communication { get; } = communication;
 

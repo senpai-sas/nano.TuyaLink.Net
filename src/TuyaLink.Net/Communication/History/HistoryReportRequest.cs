@@ -2,19 +2,41 @@
 using System.Collections;
 
 using TuyaLink.Communication.Properties;
+using TuyaLink.Functions.Events;
 
 namespace TuyaLink.Communication.History
 {
-    internal class HistoryReportRequest(HistoryReportData data) : FunctionRequest
+    internal class HistoryReportRequest : FunctionRequest
     {
-        public HistoryReportData Data { get; } = data;
+        internal HistoryReportRequest()
+        {
+
+        }
+
+        public HistoryReportRequest(HistoryReportData data)
+        {
+            Data = data;
+        }
+      
+        public HistoryReportData Data { get; internal set; }
     }
 
-    public class HistoryReportData(Hashtable[] properties, Hashtable[] events)
+    public class HistoryReportData
     {
 
-        public Hashtable[] Properties { get; } = properties;
-        public Hashtable[] Events { get; } = events;
+        public PropertyHashtable[] Properties { get; internal set; }
+        public EventDataHashtable[] Events { get; internal set; }
+
+        public HistoryReportData()
+        {
+            
+        }
+
+        public HistoryReportData(PropertyHashtable[] properties, EventDataHashtable[] events)
+        {
+            Properties = properties;
+            Events = events;
+        }
     }
 
     [Serializable]

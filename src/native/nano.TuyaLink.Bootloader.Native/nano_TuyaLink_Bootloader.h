@@ -21,20 +21,6 @@ struct Library_nano_TuyaLink_Bootloader_nano_TuyaLink_Bootloader_TuyaBootloader
     //--//
 };
 
-struct Library_nano_TuyaLink_Bootloader_System_Runtime_CompilerServices_NullableAttribute
-{
-    static const int FIELD__NullableFlags = 1;
-
-    //--//
-};
-
-struct Library_nano_TuyaLink_Bootloader_System_Runtime_CompilerServices_NullableContextAttribute
-{
-    static const int FIELD__Flag = 1;
-
-    //--//
-};
-
 struct Library_nano_TuyaLink_Bootloader_System_Runtime_CompilerServices_RefSafetyRulesAttribute
 {
     static const int FIELD__Version = 1;

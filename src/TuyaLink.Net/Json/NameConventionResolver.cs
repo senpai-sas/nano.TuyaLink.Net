@@ -1,22 +1,28 @@
 ﻿using System;
-using nanoFramework.Json.Resolvers;
+using System.Reflection;
 
 using nanoFramework.Json;
+using nanoFramework.Json.Resolvers;
 
 
 namespace TuyaLink.Json
 {
-    public class NameConventionResolver(IJsonNamingConvention? jsonNamingConvention = null) : IMemberResolver
+    public class NameConventionResolver : IMemberResolver
     {
-        private readonly IJsonNamingConvention _jsonNamingConvention = jsonNamingConvention ?? JsonNamingConventions.Default;
+        private readonly IJsonNamingConvention _jsonNamingConvention;
+        private static readonly MemberSet _skipMemberSet = new(true);
+
+        public NameConventionResolver(IJsonNamingConvention jsonNamingConvention = null)
+        {
+            _jsonNamingConvention = jsonNamingConvention ?? JsonNamingConventions.Default;
+        }
 
         public MemberSet Get(string memberName, Type objectType, JsonSerializerOptions options)
         {
 
             memberName = _jsonNamingConvention.DeserializeName(memberName);
 
-            var fields = objectType.GetFields();
-            var memberFieldInfo = objectType.GetField(memberName);
+            FieldInfo memberFieldInfo = objectType.GetField(memberName);
 
             // Value will be set via field
             if (memberFieldInfo != null)
@@ -24,34 +30,36 @@ namespace TuyaLink.Json
                 return new MemberSet((instance, value) => memberFieldInfo.SetValue(instance, value), memberFieldInfo.FieldType);
             }
 
-            var memberPropGetMethod = objectType.GetMethod("get_" + memberName);
+            MethodInfo? memberPropGetMethod = objectType.GetMethod(
+                "get_" + memberName
+            );
             if (memberPropGetMethod is null)
             {
                 return HandleNullPropertyMember(memberName, objectType, options);
             }
+            var setMemberName = "set_" + memberName;
+            MethodInfo? memberPropSetMethod = objectType.GetMethod(
+                setMemberName, 
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+            );
 
-            var memberPropSetMethod = objectType.GetMethod("set_" + memberName);
             if (memberPropSetMethod is null)
             {
                 return HandleNullPropertyMember(memberName, objectType, options);
             }
 
-            return new MemberSet((instance, value) => memberPropSetMethod.Invoke(instance, new[] { value }), memberPropGetMethod.ReturnType);
+            return new MemberSet((instance, value) => memberPropSetMethod.Invoke(instance, [value]), memberPropGetMethod.ReturnType);
         }
 
         private MemberSet HandleNullPropertyMember(string memberName, Type objectType, JsonSerializerOptions options)
         {
-            return HandlePropertyNotFound(options);
-        }
-
-        private static MemberSet HandlePropertyNotFound(JsonSerializerOptions options)
-        {
             if (options.ThrowExceptionWhenPropertyNotFound)
             {
-                throw new DeserializationException();
+                throw new DeserializationException($"Member {memberName} of type {objectType} has not a valid property set");
             }
 
-            return new MemberSet(true);
+            return _skipMemberSet;
         }
+       
     }
 }

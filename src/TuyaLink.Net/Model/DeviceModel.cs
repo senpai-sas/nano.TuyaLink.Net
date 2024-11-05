@@ -67,7 +67,7 @@ namespace TuyaLink.Model
 
     public class EventModel : FunctionModel
     {
-        public ParameterModel[] OuputParams { get; set; }
+        public ParameterModel[] OutputParams { get; set; }
     }
 
     public class ParameterModel
@@ -78,7 +78,7 @@ namespace TuyaLink.Model
 
     public class ActionModel : FunctionModel
     {
-        public ParameterModel[] OuputParams { get; set; }
+        public ParameterModel[] OutputParams { get; set; }
 
         public ParameterModel[] InputParams { get; set; }
     }

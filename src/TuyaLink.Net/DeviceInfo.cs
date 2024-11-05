@@ -1,4 +1,6 @@
 ﻿
+using TuyaLink.Firmware;
+
 namespace TuyaLink
 {
     public class DeviceInfo(string productId, string deviceId, string deviceSecret)
@@ -26,10 +28,21 @@ namespace TuyaLink
         }
     }
 
-    public class FirmwareInfo(int channel, string version)
+    public class FirmwareInfo
     {
-        public int Channel { get; set; } = channel;
 
-        public string Version { get; set; } = version;
+        public UpdateChannel Channel { get; set; }
+
+        public string Version { get; set; }
+
+        public FirmwareInfo()
+        {
+            
+        }
+        public FirmwareInfo(UpdateChannel channel, string version)
+        {
+            Channel = channel;
+            Version = version;
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace TuyaLink.Json.Converters
 
             var proertiesHastable = jsonObject.GetMembers();
 
-            var dictionary = new DesiredPropertiesMap();
+            var dictionary = new DesiredPropertiesHashtable();
 
             foreach (DictionaryEntry entry in proertiesHastable)
             {

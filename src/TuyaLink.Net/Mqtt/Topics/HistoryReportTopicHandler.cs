@@ -12,7 +12,7 @@ namespace TuyaLink.Mqtt.Topics
         protected override string SubscribableTopicTemplate => HistoryReportTopicTemplate;
         protected override string PublishableTopicTemplate => HistoryReportResponseTopicTemplate;
 
-        protected override DevieRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
+        protected override DeviceRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
         {
             return new DefaultRequestHandler(Communication, responseHandler);
         }

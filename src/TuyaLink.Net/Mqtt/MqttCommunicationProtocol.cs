@@ -43,6 +43,7 @@ namespace TuyaLink.Mqtt
         private DeviceRequestTopicHandler _historyReportTopicHandler;
         private DeviceRequestTopicHandler _getFirmwareVersionTopicHandler;
         private ReportFirmwareProgressTopicHandler _reportFirewareProgressTopic;
+        private DeviceRequestTopicHandler _deleteDesiredPropertiesTopicHandler;
 
         internal DeviceInfo DeviceInfo { get; private set; }
 
@@ -102,6 +103,7 @@ namespace TuyaLink.Mqtt
             _reportPropertyTopicHandler = RegisterDeviceRequestTopicHandler(new ReportPropertyTopicHandler(this));
             _historyReportTopicHandler = RegisterDeviceRequestTopicHandler(new HistoryReportTopicHandler(this));
             _getFirmwareVersionTopicHandler = RegisterDeviceRequestTopicHandler(new GetFirmwareVersionTopicHandler(this));
+            _deleteDesiredPropertiesTopicHandler = RegisterDeviceRequestTopicHandler(new DeleteDesiredPropertiesTopicHandler(this));
             RegisterCloudTopicHandler(new ActionExecuteTopicHandler(this));
             RegisterCloudTopicHandler(new PropertySetTopicHandler(this));
             _reportFirewareProgressTopic = new ReportFirmwareProgressTopicHandler(this);
@@ -231,7 +233,7 @@ namespace TuyaLink.Mqtt
 
             PropertyHashtable propertiesData = new(properties.Length);
 
-            BatchEventDataHashtable events = new(properties.Length);
+            EventDataHashtable events = new(properties.Length);
 
             foreach (DeviceProperty property in properties)
             {
@@ -306,11 +308,11 @@ namespace TuyaLink.Mqtt
 
         public ResponseHandler HistoryReport(TriggerEventData[][] events, DeviceProperty[][] properties)
         {
-            Hashtable[] eventsData = new Hashtable[events.Length];
+            EventDataHashtable[] eventsData = new EventDataHashtable[events.Length];
             int index = 0;
             foreach (TriggerEventData[] eventBatch in events)
             {
-                Hashtable eventData = new(eventBatch.Length);
+                EventDataHashtable eventData = new(eventBatch.Length);
                 foreach (TriggerEventData triggerEvent in eventBatch)
                 {
                     eventData[triggerEvent.EventCode] = triggerEvent;
@@ -319,10 +321,10 @@ namespace TuyaLink.Mqtt
                 index++;
             }
             index = 0;
-            Hashtable[] propertiesData = new Hashtable[properties.Length];
+            PropertyHashtable[] propertiesData = new PropertyHashtable[properties.Length];
             foreach (DeviceProperty[] propertyBatch in properties)
             {
-                Hashtable propertyData = new(propertyBatch.Length);
+                PropertyHashtable propertyData = new(propertyBatch.Length);
                 foreach (DeviceProperty property in propertyBatch)
                 {
                     propertyData[property.Code] = new PropertyValue()
@@ -412,9 +414,33 @@ namespace TuyaLink.Mqtt
             return _device.ActionExecute(request.Data.ActionCode, request.Data.InputParams);
         }
 
-        internal void UpdateProperties(DesiredPropertiesMap properties)
+        internal void UpdateProperties(DesiredPropertiesHashtable properties)
         {
             _device.UpdateProperties(properties);
+
+            if (!_deviceSettings.AutoDeleteDesiredProperties)
+            {
+                return;
+            }
+
+            var deleteProperties = new DeleteDesiredPropertiesHashtable(properties.Count);
+
+
+            foreach (DictionaryEntry property in properties)
+            {
+                deleteProperties[property.Key] = new DeleteDesiredProperty()
+                {
+                    Version = ((DesiredProperty)property.Value).Version,
+                };
+            }
+            var request = new DeleteDesiredPropertyRequest()
+            {
+                Data = new()
+                {
+                    Properties = deleteProperties,
+                }
+            };
+            PublishRequest(_deleteDesiredPropertiesTopicHandler, request, true);
         }
 
         internal void UpdateModel(DeviceModel data)

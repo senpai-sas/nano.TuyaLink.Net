@@ -4,9 +4,8 @@ using System.Diagnostics;
 
 namespace TuyaLink.Communication
 {
-    internal abstract class DevieRequestHandler(ResponseHandler responseHandler)
+    internal abstract class DeviceRequestHandler(ResponseHandler responseHandler)
     {
-        public string MessageId { get; set; }
         public ResponseHandler ResponseHandler { get; } = responseHandler;
         public abstract void HandleMessage(FunctionMessage message);
 

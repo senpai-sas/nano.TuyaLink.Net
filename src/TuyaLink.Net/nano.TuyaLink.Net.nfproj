@@ -29,12 +29,16 @@
     <Compile Include="Communication\Firmware\FirmwareIssueRequest.cs" />
     <Compile Include="Communication\Firmware\GetFirmwareVersionRequest.cs" />
     <Compile Include="Communication\Firmware\GetFirmwareVersionResponse.cs" />
+    <Compile Include="Communication\Properties\DeleteDesiredPropertyRequest.cs" />
     <Compile Include="Firmware\ArrayExtensions.cs" />
-    <Compile Include="Functions\Events\BatchEventDataHashtable.cs" />
+    <Compile Include="Functions\Events\EventDataHashtable.cs" />
     <Compile Include="Functions\Events\EventData.cs" />
     <Compile Include="Functions\Events\TriggerEventDataHashtable.cs" />
     <Compile Include="GetFirmwareVersionResponseHandler.cs" />
-    <Compile Include="Json\Converters\BatchEventDataHashtableConverter.cs" />
+    <Compile Include="Json\CacheNameConventionResolver.cs" />
+    <Compile Include="Json\Converters\DeleteDesiredPropertiesHashtableConverter.cs" />
+    <Compile Include="Json\Converters\DesiredPropertiesHashtableConverter.cs" />
+    <Compile Include="Json\Converters\EventDataHashtableConverter.cs" />
     <Compile Include="Json\Converters\BizTypeConverter.cs" />
     <Compile Include="Json\Converters\DataCenterConverter.cs" />
     <Compile Include="Firmware\FirmwareIssueData.cs" />
@@ -48,7 +52,7 @@
     <Compile Include="Communication\ICommunicationHandler.cs" />
     <Compile Include="Communication\Properties\GetPropertiesRequest.cs" />
     <Compile Include="Communication\Properties\GetPropertiesResponse.cs" />
-    <Compile Include="Communication\DevieRequestHandler.cs" />
+    <Compile Include="Communication\DeviceRequestHandler.cs" />
     <Compile Include="Communication\TuyaCommunicationException.cs" />
     <Compile Include="DataCenter.cs" />
     <Compile Include="DeviceFault.cs" />
@@ -74,6 +78,7 @@
     <Compile Include="Json\Converters\StatusCodeConverter.cs" />
     <Compile Include="Json\Converters\TriggerEventDataHashtableConverter.cs" />
     <Compile Include="Json\Converters\UpdateChannelConverter.cs" />
+    <Compile Include="Json\DeserializationException.cs" />
     <Compile Include="Json\GenericHashtableAttribute.cs" />
     <Compile Include="Json\JsonObjecExtensions.cs" />
     <Compile Include="Json\JsonUtils.cs" />
@@ -103,6 +108,7 @@
     <Compile Include="Mqtt\Handlers\MqttDeviceRequestHandler.cs" />
     <Compile Include="Mqtt\Topics\ActionExecuteTopicHandler.cs" />
     <Compile Include="Mqtt\Topics\BatchReportTopicHandler.cs" />
+    <Compile Include="Mqtt\Topics\DeleteDesiredPropertiesTopicHandler.cs" />
     <Compile Include="Mqtt\Topics\EventTriggerTopicHandler.cs" />
     <Compile Include="Mqtt\Topics\GetFirmwareVersionTopicHandler.cs" />
     <Compile Include="Mqtt\Topics\ReportFirmwareProgressTopicHandler.cs" />

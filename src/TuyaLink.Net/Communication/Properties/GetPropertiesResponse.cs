@@ -10,18 +10,29 @@ namespace TuyaLink.Communication.Properties
 
     internal class GetPropertiesResponseData
     {
-        public DesiredPropertiesMap Properties { get; set; }
+        public DesiredPropertiesHashtable Properties { get; set; }
     }
 
-    public class DesiredPropertiesMap : Hashtable
+    public class DesiredPropertiesHashtable : GenericHashtable
     {
+        public DesiredPropertiesHashtable()
+        {
+        }
+
+        public DesiredPropertiesHashtable(int capacity) : base(capacity)
+        {
+        }
+
+        public DesiredPropertiesHashtable(int capacity, float loadFactor) : base(capacity, loadFactor)
+        {
+        }
+
         public DesiredProperty this[string key]
         {
             get => (DesiredProperty)base[key];
             set => base[key] = value;
         }
 
-       
         public override string ToString()
         {
             var sb = new StringBuilder();

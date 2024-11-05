@@ -6,15 +6,15 @@ using TuyaLink.Functions.Events;
 
 namespace TuyaLink.Json.Converters
 {
-    internal class BatchEventDataHashtableConverter : GenericHashtableConverter
+    internal class EventDataHashtableConverter : GenericHashtableConverter
     {
-        public BatchEventDataHashtableConverter(IJsonNamingConvention namingConvention) : base(namingConvention, typeof(BatchEventDataHashtable))
+        public EventDataHashtableConverter(IJsonNamingConvention namingConvention) : base(namingConvention, typeof(EventDataHashtable))
         {
         }
 
         protected override Hashtable CreateGenericHashtable(int count)
         {
-            return new BatchEventDataHashtable(count);
+            return new EventDataHashtable(count);
         }
 
         protected override object CreateValue(DictionaryEntry member)

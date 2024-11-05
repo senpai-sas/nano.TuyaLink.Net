@@ -11,6 +11,8 @@ namespace TuyaLink
 
         public bool ValdiateModel { get; set; }
 
+        public bool AutoDeleteDesiredProperties { get; set; }
+
         internal static DeviceSettings Default = new();
 
         public bool BindModel { get; set; }

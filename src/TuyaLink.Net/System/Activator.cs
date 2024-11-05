@@ -9,7 +9,7 @@
         /// Creates an instance of the type whose name is specified, using the named assembly.
         /// </summary>
         /// <param name="typename">The fully qualified name of the type to create an instance of.</param>
-        public static object CreateInstance(string typename)
+        public static object? CreateInstance(string typename)
         {
             Type type = Type.GetType(typename);
 
@@ -25,9 +25,9 @@
         /// Creates an instance of the specified type using that type's parameterless constructor.
         /// </summary>
         /// <param name="type">The type of object to create.</param>
-        public static object CreateInstance(Type type)
+        public static object? CreateInstance(Type type)
         {
-            return CreateInstance(type, new Type[] { }, new object[] { });
+            return CreateInstance(type, [], []);
         }
 
         /// <summary>
@@ -36,13 +36,22 @@
         /// <param name="type">The type of object to create.</param>
         /// <param name="args">An array of arguments that match in number, order, and type the parameters of the constructor to invoke. 
         /// If <paramref name="args"/> is an empty array or null, the constructor that takes no parameters (the parameterless constructor) is invoked.</param>
-        public static object CreateInstance(Type type, params object[] args)
+        public static object? CreateInstance(Type type, params object?[]? args)
         {
-            Type[] types = args != null ? new Type[args.Length] : new Type[] { };
+            if(args == null)
+            {
+                return CreateInstance(type, null, null);
+            }
+            Type[] types = new Type[args.Length];
 
             for (int index = types.Length - 1; index >= 0; index--)
             {
-                types[index] = args?[index]?.GetType();
+                var arg = args[index];
+                if(arg is null)
+                {
+                    throw new InvalidOperationException($"Argument at position {index} is null, please provide a not null argument or use the CreateInstance overload that accepts specific types");
+                }
+                types[index] = arg.GetType();
             }
 
             return CreateInstance(type, types, args);
@@ -57,7 +66,7 @@
         /// <param name="args">An array of arguments that match in number, order, and type the parameters of the constructor to invoke. 
         /// If <paramref name="args"/> is an empty array or null, the constructor that takes no parameters (the parameterless constructor) is invoked.</param>
         /// <exception cref="ArgumentNullException"><paramref name="type"/> can't be null.</exception>
-        public static object CreateInstance(Type type, Type[] types, params object[] args)
+        public static object? CreateInstance(Type type, Type[]? types, params object?[]? args)
         {
             if (type == null)
             {
@@ -66,15 +75,36 @@
 
             if (types == null)
             {
-                types = new Type[] { };
+                types = [];
+            }
+
+            foreach (var argType in types)
+            {
+                if (argType == null)
+                {
+                    throw new InvalidOperationException("Argument types cannot contain null values");
+                }
             }
 
             if (args == null)
             {
-                args = new object[] { };
+                args = [];
             }
-
-            return type.GetConstructor(types).Invoke(args);
+            try
+            {
+                var constructor = type.GetConstructor(types);
+                if (constructor == null)
+                {
+                    throw new InvalidOperationException($"Constructor not found for type {type}");
+                }
+                return constructor.Invoke(args);
+            }
+            catch (Exception)
+            {
+                var constructor = type.GetConstructors();
+                return null;
+            }
+           
         }
     }
 }

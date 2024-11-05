@@ -16,6 +16,6 @@ namespace TuyaLink.Communication
     {
         public PropertyHashtable Properties { get; set; }
 
-        public BatchEventDataHashtable Events { get; set; }
+        public EventDataHashtable Events { get; set; }
     }
 }

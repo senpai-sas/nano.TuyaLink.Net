@@ -6,7 +6,7 @@ namespace TuyaLink.Communication.Model
 {
     internal class GetDeviceModelRequest : FunctionRequest
     {
-        public GetDeviceModelData Data { get; } = new GetDeviceModelData();
+        public GetDeviceModelData Data { get; internal set; } = new GetDeviceModelData();
     }
 
     public class GetDeviceModelData

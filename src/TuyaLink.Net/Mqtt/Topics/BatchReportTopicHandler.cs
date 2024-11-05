@@ -14,7 +14,7 @@ namespace TuyaLink.Mqtt.Topics
 
         protected override string PublishableTopicTemplate => BatchReportTopicTemplate;
 
-        protected override DevieRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
+        protected override DeviceRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
         {
             return new DefaultRequestHandler(Communication, responseHandler);
         }

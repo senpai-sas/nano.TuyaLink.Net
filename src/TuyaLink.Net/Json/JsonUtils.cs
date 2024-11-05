@@ -28,14 +28,15 @@ namespace TuyaLink.Json
             ConvertersMapping.Add(typeof(DeviceModelDataFormat), new DeviceModelDataFormatConverter());
             ConvertersMapping.Add(typeof(AccessMode), new AccessModeConverter());
             ConvertersMapping.Add(typeof(TuyaDataType), new DataTypeConverter());
-            ConvertersMapping.Add(typeof(DesiredPropertiesMap), new DesiredPropertiesMapConverter());
+            ConvertersMapping.Add(typeof(DesiredPropertiesHashtable), new DesiredPropertiesHashtableConverter(JsonNamingConventions.Default));
+            ConvertersMapping.Add(typeof(DeleteDesiredPropertiesHashtable), new DeleteDesiredPropertiesHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(DataCenter), new DataCenterConverter());
             ConvertersMapping.Add(typeof(BizType), new BizTypeConverter());
             ConvertersMapping.Add(typeof(FirmwareUdpateError), new FirmwareUpdateErrorConverter());
             ConvertersMapping.Add(typeof(UpdateChannel), new UpdateChannelConverter());
             ConvertersMapping.Add(typeof(PropertyHashtable), new PropertyHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(TriggerEventDataHashtable), new TriggerEventDataHashtableConverter(JsonNamingConventions.Default));
-            ConvertersMapping.Add(typeof(BatchEventDataHashtable), new BatchEventDataHashtableConverter(JsonNamingConventions.Default));
+            ConvertersMapping.Add(typeof(EventDataHashtable), new EventDataHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(StatusCode), new StatusCodeConverter());
             JsonNamingConventions.CamelCase.Replacements.Add("MessageId", "msgId");
             JsonNamingConventions.CamelCase.Replacements.Add("msgId", "MessageId");

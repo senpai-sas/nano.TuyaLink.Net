@@ -17,7 +17,7 @@ namespace TuyaLink.Mqtt.Topics
 
         protected override string PublishableTopicTemplate => FirmwareReportTopicTemplate;
 
-        protected override DevieRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
+        protected override DeviceRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
         {
             return new FirmwareIssueRequestHandler(Communication, responseHandler);
         }

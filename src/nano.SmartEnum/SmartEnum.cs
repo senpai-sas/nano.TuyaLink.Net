@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-
+#nullable enable
 namespace nano.SmartEnum
 {
 

@@ -18,15 +18,12 @@ static const CLR_RT_MethodHandler method_lookup[] =
     NULL,
     Library_nano_TuyaLink_Bootloader_nano_TuyaLink_Bootloader_TuyaBootloader::EnterProprietaryBooter___STATIC__STRING,
     NULL,
-    NULL,
-    NULL,
-    NULL,
 };
 
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nano_TuyaLink_Bootloader_Native =
 {
     "nano.TuyaLink.Bootloader",
-    0xD015CCEF,
+    0x9DD43A00,
     method_lookup,
     { 1, 0, 0, 0 }
 };

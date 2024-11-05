@@ -169,7 +169,7 @@ namespace TuyaLink
             }
         }
 
-        internal void UpdateProperties(DesiredPropertiesMap properties)
+        internal void UpdateProperties(DesiredPropertiesHashtable properties)
         {
             foreach (DictionaryEntry entry in properties)
             {

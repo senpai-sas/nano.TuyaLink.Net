@@ -168,9 +168,9 @@ namespace TuyaLink.Functions
             Description = "The size of historical data exceeds the limit of 500."
         };
 
-        public static StatusCode FromValue(int value)
+        public static StatusCode? FromValue(int value)
         {
-            return (StatusCode)GetFromValue(value, typeof(StatusCode), _store);
+            return (StatusCode?)GetFromValue(value, typeof(StatusCode), _store);
         }
 
         public override string ToString()
