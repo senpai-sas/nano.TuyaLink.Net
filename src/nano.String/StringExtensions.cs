@@ -19,8 +19,21 @@ namespace System
             if (string.IsNullOrEmpty(inputString))
                 return inputString;
 
-            char firstChar = inputString[0].ToLower();
-            return inputString.Length == 1 ? firstChar.ToString() : firstChar + inputString.Substring(1);
+            char firstChar = inputString[0];
+
+            char firstLowerChar = firstChar.ToLower();
+
+            if (inputString.Length == 1)
+            {
+                return firstLowerChar.ToString();
+            }
+
+            if (firstLowerChar == firstChar)
+            {
+                return inputString;
+            }
+
+            return firstLowerChar + inputString.Substring(1);
         }
 
         /// <summary>
@@ -33,8 +46,21 @@ namespace System
             if (string.IsNullOrEmpty(inputString))
                 return inputString;
 
-            char firstChar = inputString[0].ToUpper();
-            return inputString.Length == 1 ? firstChar.ToString() : firstChar + inputString.Substring(1);
+            char firstChar = inputString[0];
+
+            char firstUpperChar = firstChar.ToUpper();
+
+            if (inputString.Length == 1)
+            {
+                return firstUpperChar.ToString();
+            }
+
+            if (firstUpperChar == firstChar)
+            {
+                return inputString;
+            }
+
+            return firstUpperChar + inputString.Substring(1);
         }
 
         /// <summary>

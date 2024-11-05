@@ -36,7 +36,7 @@ namespace TuyaLink.Mqtt.Handlers
 
             ActionExecuteResponse response = new()
             {
-                MessageId = request.MessageId,
+                MsgId = request.MsgId,
                 Code = result.Code,
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
                 Data = new OutputActionData()

@@ -8,7 +8,7 @@ namespace TuyaLink.Communication
 
         public override string ToString()
         {
-            return $"{{\"messageId\":\"{MessageId}\",\"time\":{Time},\"code\":{Code}}}";
+            return $"{{\"messageId\":\"{MsgId}\",\"time\":{Time},\"code\":{Code}}}";
         }
     }
 }

@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using nanoFramework.Json;
 using nanoFramework.Json.Resolvers;
 
 namespace TuyaLink.Json
 {
-    public class CacheNameConventionResolver(IJsonNamingConvention jsonNamingConvention = null) : IMemberResolver
+    public class CacheNameConventionResolver : IMemberResolver
     {
-        private readonly IJsonNamingConvention _jsonNamingConvention = jsonNamingConvention ?? JsonNamingConventions.Default;
-        private readonly Hashtable _cache = [];
+        private readonly IJsonNamingConvention _jsonNamingConvention;
+
+        private readonly Hashtable _typeCache;
 
         private static readonly MemberSet _skipMemberSet = new(true);
+
+        public CacheNameConventionResolver(IJsonNamingConvention? jsonNamingConvention = null, int typeCount = 10)
+        {
+            _jsonNamingConvention = jsonNamingConvention ?? JsonNamingConventions.Default;
+            _typeCache = new(typeCount);
+            GC.SuppressFinalize(_typeCache);
+        }
 
         private class CacheItem
         {
@@ -38,9 +47,9 @@ namespace TuyaLink.Json
         {
             // Create cache key with the original member name and type
             // before apply naming convention to improve performance
-            string cacheKey = objectType + "." + memberName;
+            int cacheKey = memberName.GetHashCode();
 
-            if (_cache.TryGetValue(cacheKey, out object? value))
+            if (TryGetMemberCache(objectType, out Hashtable cache) && cache.TryGetValue(cacheKey, out var value))
             {
                 CacheItem item = (CacheItem)value;
                 if (item.Found)
@@ -53,55 +62,69 @@ namespace TuyaLink.Json
 
             memberName = _jsonNamingConvention.DeserializeName(memberName);
 
-            FieldInfo memberFieldInfo = objectType.GetField(memberName);
-
-            // Value will be set via field
-            if (memberFieldInfo is not null)
-            {
-                MemberSet member = new((instance, value) => memberFieldInfo.SetValue(instance, value), memberFieldInfo.FieldType);
-                return AddToCache(cacheKey, member);
-            }
-
             MethodInfo? memberPropGetMethod = objectType.GetMethod(
                 "get_" + memberName
             );
 
-            if (memberPropGetMethod is null)
+            if (memberPropGetMethod is not null)
             {
-                return HandleNullPropertyMember(cacheKey, memberName, objectType, options, "get");
+                string setMemberName = "set_" + memberName;
+                MethodInfo? memberPropSetMethod = objectType.GetMethod(
+                    setMemberName,
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                );
+
+                if (memberPropSetMethod is null)
+                {
+                    return HandleNullPropertyMember(cacheKey, memberName, objectType, options, "set", cache);
+                }
+                var memberSet = new MemberSet((instance, value) => memberPropSetMethod.Invoke(instance, [value]), memberPropGetMethod.ReturnType);
+                cache.Add(cacheKey, new CacheItem(memberSet));
+                return memberSet;
             }
 
-            string setMemberName = "set_" + memberName;
-            MethodInfo? memberPropSetMethod = objectType.GetMethod(
-                setMemberName,
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
-            );
-
-            if (memberPropSetMethod is null)
+            FieldInfo memberFieldInfo = objectType.GetField(memberName);
+            // Value will be set via field
+            if (memberFieldInfo is not null)
             {
-                return HandleNullPropertyMember(cacheKey, memberName, objectType, options, "set");
+                var memberSet = new MemberSet((instance, value) => memberFieldInfo.SetValue(instance, value), memberFieldInfo.FieldType);
+                cache.Add(cacheKey, new CacheItem(memberSet));
+                return memberSet;
             }
+            return HandleNullPropertyMember(cacheKey, memberName, objectType, options, "set", cache);
 
-            return AddToCache(cacheKey, new MemberSet((instance, value) => memberPropSetMethod.Invoke(instance, [value]), memberPropGetMethod.ReturnType));
         }
 
-        private MemberSet HandleNullPropertyMember(string cacheKey, string memberName, Type objectType, JsonSerializerOptions options, string access)
+        private static MemberSet HandleNullPropertyMember(int cacheKey, string memberName, Type objectType, JsonSerializerOptions options, string access, Hashtable cache)
         {
             if (options.ThrowExceptionWhenPropertyNotFound)
             {
                 DeserializationException exception = new($"Member {memberName} of type {objectType} has not a valid property {access}");
-                _cache[cacheKey] = new CacheItem(exception);
+                cache.Add(cacheKey, new CacheItem(exception));
                 throw exception;
             }
-
             return _skipMemberSet;
         }
 
-
-        private MemberSet AddToCache(string key, MemberSet memberSet)
+        private bool TryGetMemberCache(Type objectType, out Hashtable memberCache)
         {
-            _cache[key] = new CacheItem(memberSet);
-            return memberSet;
+            if (_typeCache.TryGetValue(objectType, out object? value))
+            {
+                memberCache = (Hashtable)value;
+                return true;
+            }
+            memberCache = new Hashtable(15);
+            GC.SuppressFinalize(memberCache);
+            _typeCache.Add(objectType, memberCache);
+            return false;
+        }
+        ~CacheNameConventionResolver()
+        {
+            foreach (var cache in _typeCache.Values)
+            {
+                GC.ReRegisterForFinalize(cache);
+            }
+            GC.ReRegisterForFinalize(_typeCache);
         }
     }
 }

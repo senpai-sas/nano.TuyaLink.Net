@@ -33,7 +33,7 @@ namespace TuyaLink.Communication
 
         internal void Acknowledge(FunctionResponse report)
         {
-            if (report.MessageId != MessageId)
+            if (report.MsgId != MessageId)
             {
                 throw new ArgumentException("MessageId does not match");
             }

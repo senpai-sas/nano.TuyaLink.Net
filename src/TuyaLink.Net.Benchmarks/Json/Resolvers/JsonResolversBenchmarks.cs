@@ -5,29 +5,34 @@ using System;
 using nanoFramework.Benchmark;
 using nanoFramework.Benchmark.Attributes;
 using nanoFramework.Json;
-using nanoFramework.Json.Resolvers;
 
 using TuyaLink.Json;
 
 namespace TuyaLink.Net.Benchmarks.Json.Resolvers
 {
-    [IterationCount(5)]
+    [IterationCount(1)]
     public class JsonResolversBenchmarks
     {
 
         JsonSerializerOptions _defaultOptions;
+        JsonSerializerOptions _ingnoreCaseOptions;
         JsonSerializerOptions _cacheOptions;
         JsonSerializerOptions _nameOptions;
-        private string _testJson;
+        private string _camelCaseTestJson;
+        private string _defaultJson;
+        private Type _type;
 
- 
         [Setup]
         public void Setup()
         {
             _defaultOptions = new JsonSerializerOptions
             {
                 ThrowExceptionWhenPropertyNotFound = false,
-                PropertyNameCaseInsensitive = true
+            };
+            _ingnoreCaseOptions = new JsonSerializerOptions
+            {
+                ThrowExceptionWhenPropertyNotFound = false,
+                PropertyNameCaseInsensitive = true,
             };
             _cacheOptions = new JsonSerializerOptions
             {
@@ -39,9 +44,7 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
                 ThrowExceptionWhenPropertyNotFound = false,
                 Resolver = new NameConventionResolver(JsonNamingConventions.CamelCase)
             };
-
-
-            _testJson = JsonUtils.Serialize(new JsonTestClass()
+            var testObject = new JsonTestClass()
             {
                 TestProperty1 = "DummyText1",
                 TestProperty2 = "DummyText2",
@@ -72,27 +75,37 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
                 TestProperty27 = "DummyText27",
                 TestProperty28 = "DummyText28",
                 TestProperty29 = "DummyText29",
-            });
-            Console.WriteLine("JsonResolversBenchmarks json:" + _testJson);
+            };
+
+            _camelCaseTestJson = JsonUtils.Serialize(testObject);
+            _defaultJson = JsonConvert.SerializeObject(testObject);
+            _type = typeof(JsonTestClass);
+            CacheNamingConventionResolver_CamelCase_Deserialize();
         }
 
         [Baseline]
         [Benchmark]
-        public void DefaultResolver_Get_IgnoreCase()
+        public object DefaultResolver_Deserialize()
         {
-            var testObject = JsonConvert.DeserializeObject(_testJson, typeof(JsonTestClass), _defaultOptions);
+            return JsonConvert.DeserializeObject(_defaultJson, _type, _defaultOptions);
         }
 
         [Benchmark]
-        public void NamingConventionResolver_Get_CamelCase()
+        public object DefaultResolver_IgnoreCase_Deserialize()
         {
-            var testObject = JsonConvert.DeserializeObject(_testJson, typeof(JsonTestClass), _nameOptions);
+            return JsonConvert.DeserializeObject(_defaultJson, _type, _ingnoreCaseOptions);
         }
 
         [Benchmark]
-        public void CacheNamingConventionResolver_Get_CamelCase()
+        public object NamingConventionResolver_CamelCase_Deserialize()
         {
-            var testObject = JsonConvert.DeserializeObject(_testJson, typeof(JsonTestClass), _cacheOptions);
+            return JsonConvert.DeserializeObject(_camelCaseTestJson, _type, _nameOptions);
+        }
+
+        [Benchmark]
+        public object CacheNamingConventionResolver_CamelCase_Deserialize()
+        {
+            return JsonConvert.DeserializeObject(_camelCaseTestJson, _type, _cacheOptions);
         }
     }
 }

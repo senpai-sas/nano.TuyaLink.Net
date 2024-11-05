@@ -16,11 +16,11 @@ namespace TuyaLink.Mqtt.Topics
         public override void HandleMessage(byte[] message)
         {
             var response = DeserializeMessage(message);
-            if (!_handlersStore.TryGetValue(response.MessageId, out object handler))
+            if (!_handlersStore.TryGetValue(response.MsgId, out object handler))
             {
-                throw new TuyaMqttException($"No response handler found for message id {response.MessageId}");
+                throw new TuyaMqttException($"No response handler found for message id {response.MsgId}");
             }
-            _handlersStore.Remove(response.MessageId);
+            _handlersStore.Remove(response.MsgId);
 
             var responseHandler = (DeviceRequestHandler)handler;
             responseHandler.HandleMessage(response);
@@ -28,9 +28,9 @@ namespace TuyaLink.Mqtt.Topics
 
         public ResponseHandler RegisterMessage(FunctionMessage message, bool acknowlage)
         {
-            var responseHandler = CreateResponseHandler(message.MessageId, acknowlage);
+            var responseHandler = CreateResponseHandler(message.MsgId, acknowlage);
             var handler = CreateRequestHandler(responseHandler);
-            _handlersStore.Add(message.MessageId, handler);
+            _handlersStore.Add(message.MsgId, handler);
             return responseHandler;
         }
 

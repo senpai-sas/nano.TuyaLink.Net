@@ -133,7 +133,7 @@ namespace TuyaLink.Net.Json
         {
             JsonSerializerOptions options = new();
             IMemberResolver resolver = CreateResolver(type);
-            MemberSet memberSet = resolver.Get("InternalProperty", typeof(TestClass), options);
+            MemberSet memberSet = resolver.Get("InternalProperty", typeof(TestClass), options); 
 
             TestClass testInstance = new();
             memberSet.SetValue(testInstance, "TestValue");

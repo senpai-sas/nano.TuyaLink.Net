@@ -40,7 +40,7 @@ namespace TuyaLink.Mqtt.Handlers
             {
                 var response = new FunctionResponse()
                 {
-                    MessageId = request.MessageId,
+                    MsgId = request.MsgId,
                     Time = DateTime.UtcNow.ToUnixTimeSeconds(),
                     Code = resultCode
                 };

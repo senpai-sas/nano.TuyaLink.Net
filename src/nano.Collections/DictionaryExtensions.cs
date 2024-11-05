@@ -12,24 +12,25 @@ namespace System.Collections
         /// <returns>true if the dictionary contains an element with the specified key; otherwise, false.</returns>
         public static bool TryGetValue(this IDictionary dictionary, object key, out object value)
         {
-            if (dictionary == null)
+            if (dictionary is null || key is null)
+            {
+                value = null;
+                return false;
+            }
+            value = dictionary[key];
+            return value is not null;
+        }
+
+        public static bool TryGetValue(this Hashtable hashtable, object key, out object value)
+        {
+            if(hashtable is null || key is null)
             {
                 value = null;
                 return false;
             }
 
-            if (key == null)
-            {
-                value = null;
-                return false;
-            }
-            if (dictionary.Contains(key))
-            {
-                value = dictionary[key];
-                return true;
-            }
-            value = null;
-            return false;
+            value = hashtable[key];
+            return value is not null;
         }
     }
 }

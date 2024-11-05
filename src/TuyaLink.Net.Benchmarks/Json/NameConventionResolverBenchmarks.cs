@@ -1,4 +1,6 @@
-﻿using nanoFramework.Benchmark;
+﻿using System;
+
+using nanoFramework.Benchmark;
 using nanoFramework.Benchmark.Attributes;
 using nanoFramework.Json;
 using nanoFramework.Json.Resolvers;
@@ -10,58 +12,57 @@ namespace TuyaLink.Net.Benchmarks.Json
     [IterationCount(300)]
     public class NameConventionResolverBenchmarks
     {
-       
-        private JsonSerializerOptions _jsonOptions;
+
         private JsonSerializerOptions _notThrowJesonOptions;
+        private JsonSerializerOptions _ignoreCaseOptions;
         private CacheNameConventionResolver _cacheResolver;
-        private NameConventionResolver _resolver;
+        private NameConventionResolver _nameConvetionResolver;
+        private Type _type;
+        private IMemberResolver _defaultResolver;
 
         [Setup]
         public void Setup()
         {
-            _jsonOptions = new JsonSerializerOptions();
+
             _notThrowJesonOptions = new JsonSerializerOptions { ThrowExceptionWhenPropertyNotFound = false };
+            _ignoreCaseOptions = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true,
+                ThrowExceptionWhenPropertyNotFound = false
+            };
+            _defaultResolver = _notThrowJesonOptions.Resolver;
+
             _cacheResolver = new CacheNameConventionResolver(JsonNamingConventions.CamelCase);
-            _resolver = new NameConventionResolver(JsonNamingConventions.CamelCase);
+            _nameConvetionResolver = new NameConventionResolver(JsonNamingConventions.CamelCase);
+            _type = typeof(JsonTestClass);
+            //warpup cache 
+            _cacheResolver.Get("TestProperty", _type, _notThrowJesonOptions);
         }
 
         [Benchmark]
+        public object DefaultResolver()
+        {
+            return _defaultResolver.Get("TestProperty", _type, _notThrowJesonOptions);
+        }
+
         [Baseline]
-        public void NameConventionResolver_Get_ShouldResolveProperty()
+        [Benchmark]
+        public object DefaultResovler_IgnoreCase()
         {
-            MemberSet memberSet = _resolver.Get("TestProperty", typeof(JsonTestClass), _jsonOptions);
+            return _defaultResolver.Get("TestProperty", _type, _ignoreCaseOptions);
         }
 
         [Benchmark]
-        public void CacheNameConventionResolver_Get_ShouldResolveProperty()
+        public object NameConventionResolver_CamelCase()
         {
-            MemberSet memberSet = _cacheResolver.Get("TestProperty", typeof(JsonTestClass), _jsonOptions);
+            return _nameConvetionResolver.Get("TestProperty", _type, _notThrowJesonOptions);
         }
 
         [Benchmark]
-        public void NameConventionResolver_Get_PropertyNotFound()
+        public object CacheNameConventionResolver_CamelCase()
         {
-            try
-            {
-                MemberSet memberSet = _cacheResolver.Get("NotDefinedProperty", typeof(JsonTestClass), _jsonOptions);
-            }
-            catch (System.Exception ex)
-            {
-                
-            }
+            return _cacheResolver.Get("TestProperty", _type, _notThrowJesonOptions);
         }
 
-        [Benchmark]
-        public void CacheNameConventionResolver_Get_PropertyNotFound()
-        {
-            try
-            {
-                MemberSet memberSet = _cacheResolver.Get("NotDefinedProperty", typeof(JsonTestClass), _jsonOptions);
-            }
-            catch (System.Exception ex)
-            {
-
-            }
-        }
     }
 }

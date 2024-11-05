@@ -32,7 +32,7 @@ namespace TuyaLink.Json
         {
             ReportPropertyRequest request = new()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
                 Data = new PropertyHashtable()
                 {
@@ -50,7 +50,7 @@ namespace TuyaLink.Json
             };
             string json = JsonUtils.Serialize(request);
             ReportPropertyRequest result = (ReportPropertyRequest)JsonUtils.Deserialize(json, request.GetType());
-            Assert.AreEqual(request.MessageId, result.MessageId);
+            Assert.AreEqual(request.MsgId, result.MsgId);
             Assert.AreEqual(request.Time, result.Time);
             Assert.AreEqual(request.Data.Count, result.Data.Count);
             Assert.AreEqual(request.Data["Color"].Value, result.Data["Color"].Value);
@@ -68,7 +68,7 @@ namespace TuyaLink.Json
             var expectedCode = StatusCode.FromValue(code);
             Assert.IsNotNull(expectedCode);
             FunctionResponse result = (FunctionResponse)JsonUtils.Deserialize(json, typeof(FunctionResponse));
-            Assert.AreEqual(msgId, result.MessageId);
+            Assert.AreEqual(msgId, result.MsgId);
             Assert.AreEqual(time, result.Time);
             Assert.AreEqual(expectedCode, result.Code);
         }
@@ -78,7 +78,7 @@ namespace TuyaLink.Json
         {
             string json = @"{""msgId"":""45lkj3551234***"",""time"":1626197189638,""data"":{""color"":""green"",""brightness"":50}}";
             PropertySetRequest result = (PropertySetRequest)JsonUtils.Deserialize(json, typeof(PropertySetRequest));
-            Assert.AreEqual("45lkj3551234***", result.MessageId);
+            Assert.AreEqual("45lkj3551234***", result.MsgId);
             Assert.AreEqual(1626197189638, result.Time);
             Assert.AreEqual(2, result.Data.Count);
             Assert.AreEqual("green", result.Data["color"]);
@@ -90,7 +90,7 @@ namespace TuyaLink.Json
         {
             string json = @"{""msgId"":""45lkj3551234***"",""time"":1626197189638,""data"":{""actionCode"":""testAction"",""inputParams"":{""inputParam1"":""value1"",""inputParam2"":""value2"",""inputParam3"":1}}}";
             ActionExecuteRequest result = (ActionExecuteRequest)JsonUtils.Deserialize(json, typeof(ActionExecuteRequest));
-            Assert.AreEqual("45lkj3551234***", result.MessageId);
+            Assert.AreEqual("45lkj3551234***", result.MsgId);
             Assert.AreEqual(1626197189638, result.Time);
             Assert.AreEqual("testAction", result.Data.ActionCode);
             Assert.AreEqual(3, result.Data.InputParams.Count);
@@ -105,7 +105,7 @@ namespace TuyaLink.Json
             string json = @"{""msgId"":""45lkj3551234***"",""time"":1626197189640,""code"":0,""data"":{""actionCode"":""testAction"",""outputParams"":{""outputParam1"":""value1"",""outputParam2"":""value2""}}}";
             ActionExecuteResponse response = new()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189640,
                 Code = StatusCode.InvalidParameter,
                 Data = new OutputActionData()
@@ -121,7 +121,7 @@ namespace TuyaLink.Json
             string resultJson = JsonUtils.Serialize(response);
             Assert.IsTrue(json.Contains(@"""msgId"":""45lkj3551234***"""));
             ActionExecuteResponse result = (ActionExecuteResponse)JsonUtils.Deserialize(resultJson, response.GetType());
-            Assert.AreEqual(response.MessageId, result.MessageId);
+            Assert.AreEqual(response.MsgId, result.MsgId);
             Assert.AreEqual(response.Time, result.Time);
             Assert.AreEqual(response.Code, result.Code);
             Assert.AreEqual(response.Data.ActionCode, result.Data.ActionCode);
@@ -135,7 +135,7 @@ namespace TuyaLink.Json
         {
             TriggerEventRequest request = new()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
                 Data = new TriggerEventData()
                 {
@@ -164,7 +164,7 @@ namespace TuyaLink.Json
         {
             BatchReportRequest request = new()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
                 Data = new BatchReportRequestData()
                 {
@@ -202,7 +202,7 @@ namespace TuyaLink.Json
             string resultJson = JsonUtils.Serialize(request);
             Console.WriteLine(resultJson);
             BatchReportRequest result = (BatchReportRequest)JsonUtils.Deserialize(resultJson, request.GetType());
-            Assert.AreEqual(request.MessageId, result.MessageId);
+            Assert.AreEqual(request.MsgId, result.MsgId);
             Assert.AreEqual(request.Time, result.Time);
             Assert.AreEqual(request.Data.Properties.Count, result.Data.Properties.Count);
             Assert.AreEqual(request.Data.Properties["Color"].Value, result.Data.Properties["Color"].Value);
@@ -269,13 +269,13 @@ namespace TuyaLink.Json
             );
             HistoryReportRequest request = new(data)
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
             };
             string resultJson = JsonUtils.Serialize(request);
-            Assert.IsTrue(resultJson.Contains($"\"msgId\":\"{request.MessageId}\""));
+            Assert.IsTrue(resultJson.Contains($"\"msgId\":\"{request.MsgId}\""));
             HistoryReportRequest historyReportRequest = (HistoryReportRequest)JsonUtils.Deserialize(resultJson, request.GetType());
-            Assert.AreEqual(request.MessageId, historyReportRequest.MessageId);
+            Assert.AreEqual(request.MsgId, historyReportRequest.MsgId);
             Assert.AreEqual(request.Time, historyReportRequest.Time);
             Assert.AreEqual(request.Data.Properties.Length, historyReportRequest.Data.Properties.Length);
             Assert.AreEqual(request.Data.Properties[0].Count, historyReportRequest.Data.Properties[0].Count);
@@ -307,7 +307,7 @@ namespace TuyaLink.Json
         {
             var request = new GetDeviceModelRequest()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Data =
                 {
                     Format = DeviceModelDataFormat.Simple,
@@ -318,7 +318,7 @@ namespace TuyaLink.Json
             string resultJson = JsonUtils.Serialize(request);
 
             var result = (GetDeviceModelRequest)JsonUtils.Deserialize(resultJson, typeof(GetDeviceModelRequest));
-            Assert.AreEqual(request.MessageId, result.MessageId);
+            Assert.AreEqual(request.MsgId, result.MsgId);
             Assert.AreEqual(request.Time, result.Time);
             Assert.AreEqual(request.Data.Format, result.Data.Format);
         }
@@ -386,7 +386,7 @@ namespace TuyaLink.Json
 	}
 }";
             var result = (GetDeviceModelResponse)JsonUtils.Deserialize(json, typeof(GetDeviceModelResponse));
-            Assert.AreEqual("45lkj3551234***", result.MessageId);
+            Assert.AreEqual("45lkj3551234***", result.MsgId);
             Assert.AreEqual(1626197189640, result.Time);
             Assert.AreEqual(0, result.Code.EnumValue);
             Assert.AreEqual("0000001***", result.Data.ModelId);
@@ -425,7 +425,7 @@ namespace TuyaLink.Json
         {
             var request = new GetPropertiesRequest()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
                 Data = new GetPropertiesRequestData()
                 {
@@ -435,7 +435,7 @@ namespace TuyaLink.Json
 
             string resultJson = JsonUtils.Serialize(request);
             var result = (GetPropertiesRequest)JsonUtils.Deserialize(resultJson, request.GetType());
-            Assert.AreEqual(request.MessageId, result.MessageId);
+            Assert.AreEqual(request.MsgId, result.MsgId);
             Assert.AreEqual(request.Time, result.Time);
             Assert.AreEqual(request.Data.Properties.Length, result.Data.Properties.Length);
             Assert.AreEqual(request.Data.Properties[0], result.Data.Properties[0]);
@@ -463,7 +463,7 @@ namespace TuyaLink.Json
    }
 }";
             var result = (GetPropertiesResponse)JsonUtils.Deserialize(json, typeof(GetPropertiesResponse));
-            Assert.AreEqual("45lkj3551234***", result.MessageId);
+            Assert.AreEqual("45lkj3551234***", result.MsgId);
             Assert.AreEqual(1626197189640, result.Time);
             Assert.AreEqual(StatusCode.FromValue(0), result.Code);
             Assert.AreEqual(2, result.Data.Properties.Count);
@@ -478,7 +478,7 @@ namespace TuyaLink.Json
         {
             var requets = new DeleteDesiredPropertyRequest()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
                 Data = new DeleteDesiredPropertyData()
                 {
@@ -498,7 +498,7 @@ namespace TuyaLink.Json
 
             string resultJson = JsonUtils.Serialize(requets);
             var result = (DeleteDesiredPropertyRequest)JsonUtils.Deserialize(resultJson, requets.GetType());
-            Assert.AreEqual(requets.MessageId, result.MessageId);
+            Assert.AreEqual(requets.MsgId, result.MsgId);
             Assert.AreEqual(requets.Time, result.Time);
             Assert.AreEqual(requets.Data.Properties.Count, result.Data.Properties.Count);
             Assert.AreEqual(requets.Data.Properties["color"].Version, result.Data.Properties["color"].Version);
@@ -510,7 +510,7 @@ namespace TuyaLink.Json
         {
             var request = new FirmwareReportRequest()
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
                 Data = new FirmwareReportData()
                 {
@@ -526,7 +526,7 @@ namespace TuyaLink.Json
 
             string resultJson = JsonUtils.Serialize(request);
             var result = (FirmwareReportRequest)JsonUtils.Deserialize(resultJson, request.GetType());
-            Assert.AreEqual(request.MessageId, result.MessageId);
+            Assert.AreEqual(request.MsgId, result.MsgId);
             Assert.AreEqual(request.Time, result.Time);
             Assert.AreEqual(request.Data.BizType, result.Data.BizType);
             Assert.AreEqual(request.Data.FirmwareKey, result.Data.FirmwareKey);
@@ -561,7 +561,7 @@ namespace TuyaLink.Json
 ";
             var result = (FirmwareIssueRequest)JsonUtils.Deserialize(json, typeof(FirmwareIssueRequest));
 
-            Assert.AreEqual("45lkj3551234***", result.MessageId);
+            Assert.AreEqual("45lkj3551234***", result.MsgId);
             Assert.AreEqual(1626197189638, result.Time);
             Assert.AreEqual("bee8d56c2868302ec4d094d652325***", result.Data.CtId);
             Assert.AreEqual(UpdateChannel.Main, result.Data.Channel);
@@ -596,7 +596,7 @@ namespace TuyaLink.Json
     }
 }";
             var result = (GetFirmwareVersionResponse)JsonUtils.Deserialize(json, typeof(GetFirmwareVersionResponse));
-            Assert.AreEqual("45lkj3551234***", result.MessageId);
+            Assert.AreEqual("45lkj3551234***", result.MsgId);
             Assert.AreEqual(1626197189638, result.Time);
             Assert.AreEqual("http://airtake-public-data-1254153901.cos.tuyacn.com/smart/firmware/upgrade/202006/1592465280-tuya_rtl8196e_gw_tar_UG_1.3***.bin", result.Data.Url);
 
@@ -618,12 +618,12 @@ namespace TuyaLink.Json
             };
             var request = new FirmwareProgressReportRequest(data)
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
             };
             var json = JsonUtils.Serialize(request);
             var result = (FirmwareProgressReportRequest)JsonUtils.Deserialize(json, request.GetType());
-            Assert.AreEqual(request.MessageId, result.MessageId);
+            Assert.AreEqual(request.MsgId, result.MsgId);
             Assert.AreEqual(request.Time, result.Time);
             Assert.AreEqual(request.Data.Progress, result.Data.Progress);
             Assert.AreEqual(request.Data.Channel, result.Data.Channel);
@@ -641,12 +641,12 @@ namespace TuyaLink.Json
             };
             var request = new FirmwareProgressReportRequest(data)
             {
-                MessageId = "45lkj3551234***",
+                MsgId = "45lkj3551234***",
                 Time = 1626197189638,
             };
             var json = JsonUtils.Serialize(request);
             var result = (FirmwareProgressReportRequest)JsonUtils.Deserialize(json, request.GetType());
-            Assert.AreEqual(request.MessageId, result.MessageId);
+            Assert.AreEqual(request.MsgId, result.MsgId);
             Assert.AreEqual(request.Time, result.Time);
             Assert.AreEqual(request.Data.Progress, result.Data.Progress);
             Assert.AreEqual(request.Data.Channel, result.Data.Channel);

@@ -21,6 +21,7 @@
     <Compile Include="Json\JsonTestClass.cs" />
     <Compile Include="Json\NameConventionResolverBenchmarks.cs" />
     <Compile Include="Json\Conventions\CamelCaseNamingConventionBenchmarks.cs" />
+    <Compile Include="Json\Resolvers\CompositeObjectBenchmarks.cs" />
     <Compile Include="Json\Resolvers\JsonResolversBenchmarks.cs" />
     <Compile Include="Json\Resolvers\JsonTestClass.cs" />
     <Compile Include="Program.cs" />

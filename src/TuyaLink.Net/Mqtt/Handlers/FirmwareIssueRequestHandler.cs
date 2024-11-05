@@ -25,7 +25,7 @@ namespace TuyaLink.Mqtt.Handlers
         public override void Published(ulong messageId)
         {
             base.Published(messageId);
-            AcknowledgeResponse(new FunctionResponse() { MessageId = ResponseHandler.MessageId, Time = DateTime.UtcNow.ToUnixTimeSeconds() });
+            AcknowledgeResponse(new FunctionResponse() { MsgId = ResponseHandler.MessageId, Time = DateTime.UtcNow.ToUnixTimeSeconds() });
         }
     }
 }

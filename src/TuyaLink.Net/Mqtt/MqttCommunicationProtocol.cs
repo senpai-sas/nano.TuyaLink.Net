@@ -202,7 +202,7 @@ namespace TuyaLink.Mqtt
 
             ReportPropertyRequest request = new()
             {
-                MessageId = messageId,
+                MsgId = messageId,
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
                 Sys = new SystemParameters()
                 {
@@ -251,7 +251,7 @@ namespace TuyaLink.Mqtt
 
             BatchReportRequest request = new()
             {
-                MessageId = messageId,
+                MsgId = messageId,
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
                 Sys =
                 {
@@ -278,7 +278,7 @@ namespace TuyaLink.Mqtt
             };
             TriggerEventRequest request = new()
             {
-                MessageId = messageId,
+                MsgId = messageId,
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
                 Data = eventData,
                 Sys =
@@ -295,7 +295,7 @@ namespace TuyaLink.Mqtt
             string messageId = GetMessageId();
             GetDeviceModelRequest request = new()
             {
-                MessageId = messageId,
+                MsgId = messageId,
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
                 Data =
                 {
@@ -339,7 +339,7 @@ namespace TuyaLink.Mqtt
             HistoryReportData data = new(propertiesData, eventsData);
             HistoryReportRequest historyReportRequest = new(data)
             {
-                MessageId = GetMessageId(),
+                MsgId = GetMessageId(),
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
             };
             return PublishRequest(_historyReportTopicHandler, historyReportRequest, true);
@@ -360,7 +360,7 @@ namespace TuyaLink.Mqtt
 
             GetPropertiesRequest request = new()
             {
-                MessageId = GetMessageId(),
+                MsgId = GetMessageId(),
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
                 Data =
                 {
@@ -391,7 +391,7 @@ namespace TuyaLink.Mqtt
         {
             GetFirmwareVersionRequest request = new()
             {
-                MessageId = Guid.NewGuid().ToString(),
+                MsgId = Guid.NewGuid().ToString(),
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
             };
             return (GetFirmwareVersionResponseHandler)PublishRequest(_getFirmwareVersionTopicHandler, request, true);
@@ -462,7 +462,7 @@ namespace TuyaLink.Mqtt
         {
             FirmwareProgressReportRequest request = new(progress)
             {
-                MessageId = GetMessageId(),
+                MsgId = GetMessageId(),
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
             };
 

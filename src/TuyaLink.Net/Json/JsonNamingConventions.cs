@@ -14,16 +14,16 @@ namespace TuyaLink.Json
         {
             public Hashtable Replacements { get; } = [];
 
-            protected bool TryRepalce(string key, out string replacedKey)
-            {
-                if (Replacements.TryGetValue(key, out object value) && value is string replace)
-                {
-                    replacedKey = replace;
-                    return true;
-                }
-                replacedKey = null;
-                return false;
-            }
+            //protected bool TryRepalce(string key, out string replacedKey)
+            //{
+            //    if (Replacements.TryGetValue(key, out object value) && value is string replace)
+            //    {
+            //        replacedKey = replace;
+            //        return true;
+            //    }
+            //    replacedKey = null;
+            //    return false;
+            //}
 
             public abstract string DeserializeName(string key);
             public abstract string SerializeName(object key);
@@ -33,25 +33,25 @@ namespace TuyaLink.Json
         {
             public override string DeserializeName(string key)
             {
-                return TryRepalce(key, out string replacedKey) ? replacedKey : key;
+                return /*TryRepalce(key, out string replacedKey) ? replacedKey : */key;
             }
 
-            public override string SerializeName(object key) => TryRepalce(key?.ToString(), out string replacedKey) ? replacedKey : key?.ToString();
+            public override string SerializeName(object key) =>/* TryRepalce(key?.ToString(), out string replacedKey) ? replacedKey :*/ key?.ToString();
         }
 
         private class CamelCaseNamingConvention : JsonNamingConvention, IJsonNamingConvention
         {
             public override string DeserializeName(string key)
             {
-                return TryRepalce(key, out string replacedKey) ? replacedKey : key.ConvertFirstLetterToUppercase();
+                return /*TryRepalce(key, out string replacedKey) ? replacedKey :*/ key.ConvertFirstLetterToUppercase();
             }
 
             public override string SerializeName(object key)
             {
-                if (TryRepalce(key.ToString(), out string replacedKey))
-                {
-                    return replacedKey;
-                }
+                //if (TryRepalce(key.ToString(), out string replacedKey))
+                //{
+                //    return replacedKey;
+                //}
 
                 if (key is string s)
                 {
@@ -64,8 +64,8 @@ namespace TuyaLink.Json
 
 
 
-        public static IJsonNamingConvention Default { get; } = new DefaultNamingConvention();
+        public static readonly IJsonNamingConvention Default = new DefaultNamingConvention();
 
-        public static IJsonNamingConvention CamelCase { get; } = new CamelCaseNamingConvention();
+        public static readonly IJsonNamingConvention CamelCase = new CamelCaseNamingConvention();
     }
 }
