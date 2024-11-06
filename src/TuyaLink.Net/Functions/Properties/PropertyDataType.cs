@@ -107,23 +107,5 @@ namespace TuyaLink.Functions.Properties
         {
             return (PropertyDataType)GetFromValue(value, typeof(PropertyDataType), _store);
         }
-
-        //private class ValueDataType : TuyaDataType
-        //{
-        //    public ValueDataType() : base("Value", "value", typeof(object)) { }
-
-        //    public override bool ValidateModel(TypeSpecifications specifications, object value)
-        //    {
-
-        //        if (!base.ValidateModel(specifications, value))
-        //        {
-        //            return false;
-        //        }
-
-        //        double doubleValue = (double)value;
-
-        //        specifications.
-        //    }
-        //}
     }
 }
