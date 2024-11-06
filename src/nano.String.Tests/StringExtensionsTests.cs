@@ -12,15 +12,16 @@ namespace nano.String.Tests
         {
             var input = "TestString";
             var expected = "testString";
-            var result = input.ConvertFirstLetterToLowercase();
+            var result = input.ToCamelCase();
             Assert.AreEqual(expected, result);
+            Assert.AreEqual("TestString", input);
         }
 
         [TestMethod]
         public void ConvertFirstLetterToLowercase_EmptyString_ReturnsEmpty()
         {
             var input = "";
-            var result = input.ConvertFirstLetterToLowercase();
+            var result = input.ToCamelCase();
             Assert.AreEqual(input, result);
         }
 
@@ -29,15 +30,16 @@ namespace nano.String.Tests
         {
             var input = "testString";
             var expected = "TestString";
-            var result = input.ConvertFirstLetterToUppercase();
+            var result = input.ToTitleCase();
             Assert.AreEqual(expected, result);
+            Assert.AreEqual("testString", input);
         }
 
         [TestMethod]
         public void ConvertFirstLetterToUppercase_EmptyString_ReturnsEmpty()
         {
             var input = "";
-            var result = input.ConvertFirstLetterToUppercase();
+            var result = input.ToTitleCase();
             Assert.AreEqual(input, result);
         }
 

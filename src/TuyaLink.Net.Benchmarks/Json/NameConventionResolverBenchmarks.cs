@@ -36,7 +36,7 @@ namespace TuyaLink.Net.Benchmarks.Json
             _nameConvetionResolver = new NameConventionResolver(JsonNamingConventions.CamelCase);
             _type = typeof(JsonTestClass);
             //warpup cache 
-            _cacheResolver.Get("TestProperty", _type, _notThrowJesonOptions);
+            _cacheResolver.Get("testProperty", _type, _notThrowJesonOptions);
         }
 
         [Benchmark]
@@ -49,19 +49,19 @@ namespace TuyaLink.Net.Benchmarks.Json
         [Benchmark]
         public object DefaultResovler_IgnoreCase()
         {
-            return _defaultResolver.Get("TestProperty", _type, _ignoreCaseOptions);
+            return _defaultResolver.Get("testProperty", _type, _ignoreCaseOptions);
         }
 
         [Benchmark]
         public object NameConventionResolver_CamelCase()
         {
-            return _nameConvetionResolver.Get("TestProperty", _type, _notThrowJesonOptions);
+            return _nameConvetionResolver.Get("testProperty", _type, _notThrowJesonOptions);
         }
 
         [Benchmark]
         public object CacheNameConventionResolver_CamelCase()
         {
-            return _cacheResolver.Get("TestProperty", _type, _notThrowJesonOptions);
+            return _cacheResolver.Get("testProperty", _type, _notThrowJesonOptions);
         }
 
     }

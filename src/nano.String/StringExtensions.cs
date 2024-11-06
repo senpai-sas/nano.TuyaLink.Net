@@ -14,26 +14,26 @@ namespace System
         /// </summary>
         /// <param name="inputString">The input string.</param>
         /// <returns>The input string with the first letter converted to lowercase.</returns>
-        public static string ConvertFirstLetterToLowercase(this string inputString)
+        public static string ToCamelCase(this string inputString)
         {
             if (string.IsNullOrEmpty(inputString))
                 return inputString;
 
-            char firstChar = inputString[0];
+            var array = inputString.ToCharArray();
+
+            char firstChar = array[0];
 
             char firstLowerChar = firstChar.ToLower();
-
-            if (inputString.Length == 1)
-            {
-                return firstLowerChar.ToString();
-            }
 
             if (firstLowerChar == firstChar)
             {
                 return inputString;
             }
 
-            return firstLowerChar + inputString.Substring(1);
+            array[0] = firstLowerChar;
+
+            return new string(array);
+
         }
 
         /// <summary>
@@ -41,26 +41,24 @@ namespace System
         /// </summary>
         /// <param name="inputString">The input string.</param>
         /// <returns>The input string with the first letter converted to uppercase.</returns>
-        public static string ConvertFirstLetterToUppercase(this string inputString)
+        public static string ToTitleCase(this string inputString)
         {
             if (string.IsNullOrEmpty(inputString))
                 return inputString;
 
-            char firstChar = inputString[0];
+            var array = inputString.ToCharArray();
+
+            char firstChar = array[0];
 
             char firstUpperChar = firstChar.ToUpper();
-
-            if (inputString.Length == 1)
-            {
-                return firstUpperChar.ToString();
-            }
 
             if (firstUpperChar == firstChar)
             {
                 return inputString;
             }
+            array[0] = firstUpperChar;
 
-            return firstUpperChar + inputString.Substring(1);
+            return new string(array);
         }
 
         /// <summary>
@@ -105,6 +103,16 @@ namespace System
             }
 
             return result.ToString();
+        }
+
+        public static bool IsLower(this char value)
+        {
+            return 'a' <= value && value <= 'z';
+        }
+
+        public static bool IsUpper(this char value)
+        {
+            return 'A' <= value && value <= 'Z';
         }
     }
 }

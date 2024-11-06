@@ -10,7 +10,7 @@ using TuyaLink.Json;
 
 namespace TuyaLink.Net.Benchmarks.Json.Resolvers
 {
-    [IterationCount(5)]
+    [IterationCount(20)]
     public class CompositeObjectBenchmarks
     {
         private string _camelCasejson;
@@ -21,8 +21,12 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
         private JsonSerializerOptions _nameOptions;
         private Type _type;
 
-        private class CompositeObject
+        internal class CompositeObject
         {
+            public CompositeObject()
+            {
+
+            }
             public JsonTestClass Test { set; get; }
 
             public int Test1 { get; set; }
@@ -31,14 +35,16 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
 
             public string Test3 { get; set; }
 
-            public JsonTestClass Test4 { get; set; }
-
             public SubObject1 SubObject1 { get; set; }
 
             public SubObject2 SubObject2 { get; set; }
+
+            public SubObject3 SubObject3 { get; set; }
+
+            public SubObject4 SubObject4 { get; set; }
         }
 
-        private class SubObject1
+        public class SubObject1
         {
             public int Test1 { get; set; }
 
@@ -50,6 +56,20 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
         }
 
         public class SubObject2
+        {
+            public double Test1 { get; set; }
+
+            public string Test2 { get; set; }
+        }
+
+        public class SubObject3
+        {
+            public double Test1 { get; set; }
+
+            public string Test2 { get; set; }
+        }
+
+        public class SubObject4
         {
             public double Test1 { get; set; }
 
@@ -96,36 +116,6 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
                 Test1 = 123,
                 Test2 = "TestString",
                 Test3 = "AnotherTestString",
-                Test4 = new JsonTestClass
-                {
-                    TestProperty1 = "Value3",
-                    TestProperty2 = "Value4",
-                    TestProperty3 = "Value5",
-                    TestProperty4 = "Value6",
-                    TestProperty5 = "Value7",
-                    TestProperty6 = "Value8",
-                    TestProperty7 = "Value9",
-                    TestProperty8 = "Value10",
-                    TestProperty9 = "Value11",
-                    TestProperty10 = "Value12",
-                    TestProperty11 = "Value13",
-                    TestProperty12 = "Value14",
-                    TestProperty13 = "Value15",
-                    TestProperty14 = "Value16",
-                    TestProperty15 = "Value17",
-                    TestProperty16 = "Value18",
-                    TestProperty17 = "Value19",
-                    TestProperty18 = "Value20",
-                    TestProperty19 = "Value21",
-                    TestProperty20 = "Value22",
-                    TestProperty21 = "Value23",
-                    TestProperty22 = "Value24",
-                    TestProperty23 = "Value25",
-                    TestProperty24 = "Value26",
-                    TestProperty25 = "Value27",
-                    TestProperty26 = "Value28",
-                    TestProperty27 = "Value29"
-                },
                 SubObject1 = new SubObject1
                 {
                     Test1 = 456,
@@ -138,6 +128,16 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
                     }
                 },
                 SubObject2 = new SubObject2
+                {
+                    Test1 = 789.012,
+                    Test2 = "AnotherSubTestString"
+                },
+                SubObject3 = new SubObject3
+                {
+                    Test1 = 789.012,
+                    Test2 = "AnotherSubTestString"
+                },
+                SubObject4 = new SubObject4
                 {
                     Test1 = 789.012,
                     Test2 = "AnotherSubTestString"
@@ -158,7 +158,7 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
             _cacheOptions = new JsonSerializerOptions
             {
                 ThrowExceptionWhenPropertyNotFound = false,
-                Resolver = new CacheNameConventionResolver(JsonNamingConventions.CamelCase)
+                Resolver = new CacheNameConventionResolver(JsonNamingConventions.CamelCase, 20)
             };
             _nameOptions = new JsonSerializerOptions
             {
@@ -169,9 +169,12 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
 
             //warmup cache 
             CacheResolver_CamelCase();
+            Console.WriteLine(_camelCasejson);
+            Console.WriteLine(_defaultJson);
         }
 
         [Benchmark]
+        [Baseline]
         public object DefaultResolver()
         {
             return JsonConvert.DeserializeObject(_defaultJson, _type, _defaultOptions);
@@ -181,8 +184,8 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
         /// Deserialize a json string with camel case naming convention, this is the baseline becasue the propose is to deserialize non conventional property names
         /// </summary>
         /// <returns></returns>
-        [Baseline]
-        [Benchmark]
+        //[Baseline]
+        //[Benchmark]
         public object DefaultResolver_IgnoreCase()
         {
             return JsonConvert.DeserializeObject(_camelCasejson, _type, _ignoreCaseOptions);

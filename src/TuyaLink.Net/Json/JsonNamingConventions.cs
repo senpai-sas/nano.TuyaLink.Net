@@ -43,7 +43,7 @@ namespace TuyaLink.Json
         {
             public override string DeserializeName(string key)
             {
-                return /*TryRepalce(key, out string replacedKey) ? replacedKey :*/ key.ConvertFirstLetterToUppercase();
+                return /*TryRepalce(key, out string replacedKey) ? replacedKey :*/ key.ToTitleCase();
             }
 
             public override string SerializeName(object key)
@@ -55,10 +55,10 @@ namespace TuyaLink.Json
 
                 if (key is string s)
                 {
-                    return s.ConvertFirstLetterToLowercase();
+                    return s.ToCamelCase();
                 }
 
-                return key?.ToString()?.ConvertFirstLetterToLowercase();
+                return key?.ToString()?.ToCamelCase();
             }
         }
 

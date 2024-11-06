@@ -31,22 +31,22 @@ namespace TuyaLink.Net.Benchmarks.Json.Conventions
 
         [Benchmark]
         [Baseline]
-        public void DefaultResolver_Get_IgnoreCase()
+        public object DefaultResolver_Get_IgnoreCase()
         {
-            MemberSet memberSet = _ignoreCaseNotThrowOptions.Resolver.Get("testproperty", _type, _ignoreCaseNotThrowOptions);
+            return _ignoreCaseNotThrowOptions.Resolver.Get("testproperty", _type, _ignoreCaseNotThrowOptions);
         }
 
 
         [Benchmark]
-        public void NamingConventionResolver_Get_CamelCase()
+        public object NamingConventionResolver_Get_CamelCase()
         {
-            MemberSet memberSet = _namingConventionResolver.Get("testProperty", _type, _ignoreCaseNotThrowOptions);
+            return _namingConventionResolver.Get("testProperty", _type, _ignoreCaseNotThrowOptions);
         }
 
         [Benchmark]
-        public void CacheNamingConventionResolver_Get_CamelCase()
+        public object CacheNamingConventionResolver_Get_CamelCase()
         {
-            MemberSet memberSet = _cacheNamingConventionResolver.Get("testProperty", _type, _ignoreCaseNotThrowOptions);
+            return _cacheNamingConventionResolver.Get("testProperty", _type, _ignoreCaseNotThrowOptions);
         }
     }
 }

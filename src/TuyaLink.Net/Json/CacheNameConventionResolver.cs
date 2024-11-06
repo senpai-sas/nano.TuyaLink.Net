@@ -47,7 +47,9 @@ namespace TuyaLink.Json
         {
             // Create cache key with the original member name and type
             // before apply naming convention to improve performance
-            int cacheKey = memberName.GetHashCode();
+            object cacheKey = memberName;
+
+            //var fields = objectType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (TryGetMemberCache(objectType, out Hashtable cache) && cache.TryGetValue(cacheKey, out var value))
             {
@@ -95,7 +97,7 @@ namespace TuyaLink.Json
 
         }
 
-        private static MemberSet HandleNullPropertyMember(int cacheKey, string memberName, Type objectType, JsonSerializerOptions options, string access, Hashtable cache)
+        private static MemberSet HandleNullPropertyMember(object cacheKey, string memberName, Type objectType, JsonSerializerOptions options, string access, Hashtable cache)
         {
             if (options.ThrowExceptionWhenPropertyNotFound)
             {
@@ -113,18 +115,9 @@ namespace TuyaLink.Json
                 memberCache = (Hashtable)value;
                 return true;
             }
-            memberCache = new Hashtable(15);
-            GC.SuppressFinalize(memberCache);
+            memberCache = new Hashtable(40);
             _typeCache.Add(objectType, memberCache);
             return false;
-        }
-        ~CacheNameConventionResolver()
-        {
-            foreach (var cache in _typeCache.Values)
-            {
-                GC.ReRegisterForFinalize(cache);
-            }
-            GC.ReRegisterForFinalize(_typeCache);
         }
     }
 }

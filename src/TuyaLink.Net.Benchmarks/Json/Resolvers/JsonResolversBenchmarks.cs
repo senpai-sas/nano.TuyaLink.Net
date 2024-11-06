@@ -10,7 +10,7 @@ using TuyaLink.Json;
 
 namespace TuyaLink.Net.Benchmarks.Json.Resolvers
 {
-    [IterationCount(1)]
+    [IterationCount(20)]
     public class JsonResolversBenchmarks
     {
 
@@ -83,17 +83,17 @@ namespace TuyaLink.Net.Benchmarks.Json.Resolvers
             CacheNamingConventionResolver_CamelCase_Deserialize();
         }
 
-        [Baseline]
         [Benchmark]
+        [Baseline]
         public object DefaultResolver_Deserialize()
         {
             return JsonConvert.DeserializeObject(_defaultJson, _type, _defaultOptions);
         }
 
-        [Benchmark]
+        //[Benchmark]
         public object DefaultResolver_IgnoreCase_Deserialize()
         {
-            return JsonConvert.DeserializeObject(_defaultJson, _type, _ingnoreCaseOptions);
+            return JsonConvert.DeserializeObject(_camelCaseTestJson, _type, _ingnoreCaseOptions);
         }
 
         [Benchmark]
