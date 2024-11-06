@@ -85,7 +85,7 @@ namespace TuyaLink
             var deviceInfo = new DeviceInfo("deviceId", "deviceName", "secrect");
             var device = new TuyaDevice(deviceInfo, null, protocol);
             object lastValue = null;
-            var property = new DelegateDeviceProperty("propertyCode", device, (oldValue, value) => lastValue = value);
+            var property = new DelegateDeviceProperty("propertyCode", device, PropertyDataType.String, (oldValue, value) => lastValue = value);
 
             device.AddProperty(property);
 
@@ -157,7 +157,7 @@ namespace TuyaLink
             var deviceInfo = new DeviceInfo("deviceId", "deviceName", "secrect");
             var device = new TuyaDevice(deviceInfo, null, protocol);
             object lastValue = null;
-            var property = new DelegateDeviceProperty("propertyCode", device, (oldValue, value) => lastValue = value);
+            var property = new DelegateDeviceProperty("propertyCode", device, PropertyDataType.String, (oldValue, value) => lastValue = value);
 
             device.AddProperty(property);
 

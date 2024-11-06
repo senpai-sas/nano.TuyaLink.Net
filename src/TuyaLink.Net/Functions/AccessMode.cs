@@ -11,34 +11,34 @@ namespace TuyaLink.Functions
         /// <summary>
         /// The property can be readed from the could
         /// </summary>
-        public bool CanRead { get; private set; }
+        public bool CanSend { get; private set; }
 
         /// <summary>
         /// The property can be written to the cloud
         /// </summary>
-        public bool CanWrite { get; private set; }
+        public bool CanReport { get; private set; }
 
         private AccessMode(string name, string value) : base(name, value)
         {
 
         }
 
-        public static readonly AccessMode ReadWrite = new("ReadWrite", "rw")
+        public static readonly AccessMode SendAndReport = new("Send And Report", "rw")
         {
-            CanWrite = true,
-            CanRead = true,
+            CanReport = true,
+            CanSend = true,
         };
 
-        public static readonly AccessMode WriteOnly = new("WriteOnly", "wr")
+        public static readonly AccessMode ReportOnly = new("Report Only", "wr")
         {
-            CanRead = false,
-            CanWrite = true
+            CanSend = false,
+            CanReport = true
         };
 
-        public static readonly AccessMode ReadOnly = new("ReadOnly", "ro")
+        public static readonly AccessMode SendOnly = new("Send Only", "ro")
         {
-            CanRead = true,
-            CanWrite = false
+            CanSend = true,
+            CanReport = false
         };
 
         static AccessMode RegisterEnumValue(AccessMode accessMode)

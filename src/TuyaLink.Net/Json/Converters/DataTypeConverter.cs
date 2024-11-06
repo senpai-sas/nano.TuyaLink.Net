@@ -2,6 +2,7 @@
 using System;
 
 using nanoFramework.Json.Converters;
+using TuyaLink.Functions.Properties;
 
 namespace TuyaLink.Json.Converters
 {
@@ -9,11 +10,11 @@ namespace TuyaLink.Json.Converters
     {
         public string ToJson(object value)
         {
-            if (value is TuyaDataType dataType)
+            if (value is PropertyDataType dataType)
             {
                 return $"\"{dataType.EnumValue}\"";
             }
-            throw new InvalidOperationException($"Object is not a {typeof(TuyaDataType).FullName}");
+            throw new InvalidOperationException($"Object is not a {typeof(PropertyDataType).FullName}");
         }
 
         public object? ToType(object value)
@@ -22,7 +23,7 @@ namespace TuyaLink.Json.Converters
             {
                 return null;
             }
-            return TuyaDataType.FromValue(value.ToString());
+            return PropertyDataType.FromValue(value.ToString());
         }
     }
 }

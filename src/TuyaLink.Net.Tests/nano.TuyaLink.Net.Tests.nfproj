@@ -28,6 +28,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DataCenterTests.cs" />
+    <Compile Include="DeviceInfoTests.cs" />
+    <Compile Include="Functions\Properties\PropertyDataTypeTests.cs" />
     <Compile Include="Json\Converters\AccessModeConverterTests.cs" />
     <Compile Include="Json\Converters\BizTypeConverterTests.cs" />
     <Compile Include="Json\MessagesSerializationTests.cs" />

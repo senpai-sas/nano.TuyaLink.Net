@@ -2,27 +2,35 @@
 
 using TuyaLink.Communication;
 using TuyaLink.Functions;
-
-
+using TuyaLink.Functions.Properties;
 using TuyaLink.Model;
 
 namespace TuyaLink.Properties
 {
-    public abstract class DeviceProperty(string name, TuyaDevice device) : DeviceFunction(name, FunctionType.Property, device), IAcknowledgeable, IReportableFunction
+    public abstract class DeviceProperty(string name, TuyaDevice device, PropertyDataType type) : DeviceFunction(name, FunctionType.Property, device), IAcknowledgeable, IReportableFunction
     {
-        protected object Value { get; set; }
+        protected object? Value { get; set; }
 
         /// <inheritdoc/>
         public bool Acknowledge { get; set; } = false;
 
-        public new PropertyModel Model { get; private set; }
+        public new PropertyModel? Model { get; }
+
+        public PropertyDataType DataType { get; } = type;
 
         internal virtual void CloudUpdate(object value)
         {
+            CheckModel(() =>
+            {
+                if (!Model!.AccessMode.CanSend)
+                {
+                    throw new InvalidOperationException($"The property {Code} can't be reported to the cloud");
+                }
+            });
             Update(value);
         }
 
-        protected void Update(object value)
+        protected void Update(object? value)
         {
             CheckModel(() =>
             {
@@ -31,20 +39,20 @@ namespace TuyaLink.Properties
                     throw new FunctionRuntimeException(StatusCode.InvalidValueError, $"The property {Code} can't take {value} as value, expected value are {Model?.TypeSpec?.Type}");
                 }
             });
-          
+
             var oldValue = Value;
             Update(value, oldValue);
         }
 
-        protected void Update(object value, object oldValue)
+        protected void Update(object? value, object? oldValue)
         {
             Value = value;
             OnUpdate(value, oldValue);
         }
 
-        protected virtual void OnUpdate(object value, object oldValue) { }
+        protected virtual void OnUpdate(object? value, object? oldValue) { }
 
-        public virtual object GetValue()
+        public virtual object? GetValue()
         {
             return Value;
         }
@@ -53,7 +61,7 @@ namespace TuyaLink.Properties
         {
             CheckModel(() =>
             {
-                if (!Model.AccessMode.CanWrite)
+                if (!Model!.AccessMode.CanReport)
                 {
                     throw new InvalidOperationException($"The property {Code} can't be reported to the cloud");
                 }
@@ -62,10 +70,20 @@ namespace TuyaLink.Properties
             return Device.ReportProperty(this);
         }
 
-        protected virtual bool IsValidValue(object value) => Model.TypeSpec.Type.IsValidValue(value);
+
+        protected override void ValidateModel()
+        {
+            if (Model!.TypeSpec.Type != DataType)
+            {
+                throw new ArgumentException($"The model type must be a {DataType} type.", nameof(Model));
+            }
+
+        }
+
+        protected virtual bool IsValidValue(object? value) => value is null || Model!.TypeSpec.Type.IsValidValue(value);
+
         internal void BindModel(PropertyModel model)
         {
-            Model = model;
             base.BindModel(model);
             OnBindModel(model);
         }
@@ -74,6 +92,5 @@ namespace TuyaLink.Properties
         {
 
         }
-
     }
 }

@@ -35,6 +35,13 @@
     <Compile Include="Functions\Events\EventDataHashtable.cs" />
     <Compile Include="Functions\Events\EventData.cs" />
     <Compile Include="Functions\Events\TriggerEventDataHashtable.cs" />
+    <Compile Include="Functions\Properties\BooleanProperty.cs" />
+    <Compile Include="Functions\Properties\DateProperty.cs" />
+    <Compile Include="Functions\Properties\DoubleProperty.cs" />
+    <Compile Include="Functions\Properties\EnumProperty.cs" />
+    <Compile Include="Functions\Properties\FaultProperty.cs" />
+    <Compile Include="Functions\Properties\RawProperty.cs" />
+    <Compile Include="Functions\Properties\StringProperty.cs" />
     <Compile Include="GetFirmwareVersionResponseHandler.cs" />
     <Compile Include="Json\CacheNameConventionResolver.cs" />
     <Compile Include="Json\Converters\DeleteDesiredPropertiesHashtableConverter.cs" />
@@ -122,11 +129,10 @@
     <Compile Include="Mqtt\Topics\DeviceRequestTopicHandler.cs" />
     <Compile Include="Mqtt\Topics\CloudRequestTopicHandler.cs" />
     <Compile Include="System\Activator.cs" />
-    <Compile Include="TuyaDataType.cs" />
+    <Compile Include="Functions\Properties\PropertyDataType.cs" />
     <Compile Include="Functions\Actions\DelegateDeviceAction.cs" />
     <Compile Include="Functions\Actions\DeviceAction.cs" />
     <Compile Include="Functions\AccessMode.cs" />
-    <Compile Include="Functions\DelegateProperty.cs" />
     <Compile Include="Functions\DeviceFunction.cs" />
     <Compile Include="Functions\Events\DeviceEvent.cs" />
     <Compile Include="Functions\FunctionType.cs" />

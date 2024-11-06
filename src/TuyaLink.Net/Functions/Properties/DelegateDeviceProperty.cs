@@ -3,25 +3,20 @@
 namespace TuyaLink.Functions.Properties
 {
     public delegate void UpdatePropertyDelegate(object newValue, object oldValue);
-    public delegate object GetPropertyDelegate();
+
     public class DelegateDeviceProperty : DeviceProperty
     {
-        public GetPropertyDelegate Getter { get; private set; }
         public UpdatePropertyDelegate Setter { get; private set; }
 
-        public DelegateDeviceProperty(string name, TuyaDevice device, UpdatePropertyDelegate setter) : base(name, device)
+        public DelegateDeviceProperty(string code, TuyaDevice device, PropertyDataType dataType, UpdatePropertyDelegate setter, bool acknowledge = true) : base(code, device, dataType)
         {
-            Setter = setter;
+            Acknowledge = acknowledge;
+            Setter = setter ?? throw new System.ArgumentNullException(nameof(setter));
         }
 
         protected override void OnUpdate(object value, object oldValue)
         {
             Setter(value, oldValue);
-        }
-
-        public override object GetValue()
-        {
-            return base.GetValue();
         }
     }
 }

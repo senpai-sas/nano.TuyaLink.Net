@@ -1,4 +1,5 @@
 ﻿using TuyaLink.Functions;
+using TuyaLink.Functions.Properties;
 
 namespace TuyaLink.Model
 {
@@ -46,7 +47,7 @@ namespace TuyaLink.Model
 
     public class TypeSpecifications
     {
-        public TuyaDataType Type { get; set; }
+        public PropertyDataType Type { get; set; }
 
         public string[] Label { get; set; }
 

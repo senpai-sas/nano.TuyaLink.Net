@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Threading;
 
 using nanoFramework.Networking;
-
-using TuyaLink;
 using TuyaLink.Firmware;
 using TuyaLink.Functions;
+using TuyaLink.Functions.Properties;
 
 namespace TuyaLink
 {
@@ -18,7 +17,7 @@ namespace TuyaLink
 
             try
             {
-               FirmwareLoader.Run(new ESP32Device());
+                FirmwareLoader.Run(new ESP32Device());
             }
             catch (FirmwareLoadException)
             {
@@ -53,10 +52,10 @@ namespace TuyaLink
 
             var tuyaDevice = new TuyaDevice(info);
 
-            var property = new DelegateProperty("device_status", tuyaDevice, (newValue, oldValue) =>
+            var property = new DelegateDeviceProperty("device_status", tuyaDevice, PropertyDataType.String, (newValue, oldValue) =>
             {
                 Debug.WriteLine($"Property updated to {newValue} from {oldValue}");
-            }, true);
+            });
 
             tuyaDevice.AddProperty(property);
 

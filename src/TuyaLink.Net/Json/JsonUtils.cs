@@ -10,6 +10,7 @@ using TuyaLink.Communication.Properties;
 using TuyaLink.Firmware;
 using TuyaLink.Functions;
 using TuyaLink.Functions.Events;
+using TuyaLink.Functions.Properties;
 using TuyaLink.Json.Converters;
 
 namespace TuyaLink.Json
@@ -27,7 +28,7 @@ namespace TuyaLink.Json
             _initialized = true;
             ConvertersMapping.Add(typeof(DeviceModelDataFormat), new DeviceModelDataFormatConverter());
             ConvertersMapping.Add(typeof(AccessMode), new AccessModeConverter());
-            ConvertersMapping.Add(typeof(TuyaDataType), new DataTypeConverter());
+            ConvertersMapping.Add(typeof(PropertyDataType), new DataTypeConverter());
             ConvertersMapping.Add(typeof(DesiredPropertiesHashtable), new DesiredPropertiesHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(DeleteDesiredPropertiesHashtable), new DeleteDesiredPropertiesHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(DataCenter), new DataCenterConverter());

@@ -14,7 +14,7 @@ namespace TuyaLink
 
         public bool AutoDeleteDesiredProperties { get; set; }
 
-        public bool BindModel { get; set; }
+        public bool BindModel { get; set; } = true;
 
         public FirmwareManager? FirmwareManager { get; set; }
 
@@ -22,12 +22,13 @@ namespace TuyaLink
 
         public CommunicationSettings Communication { get; set; } = new CommunicationSettings();
 
-  
-        internal readonly static DeviceSettings Default = new ();
+
+        internal readonly static DeviceSettings Default = new();
 
         public DeviceSettings()
         {
             DataCenter = DataCenter.China;
+            BindModel = true;
         }
 
     }

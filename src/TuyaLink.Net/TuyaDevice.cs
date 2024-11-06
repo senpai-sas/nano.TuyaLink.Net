@@ -125,14 +125,14 @@ namespace TuyaLink
         {
             if (Settings.BindModel)
             {
-                BindModel();
+                BindModel(model);
             }
             Model = model;
         }
 
-        internal void BindModel()
+        internal void BindModel(DeviceModel model)
         {
-            foreach (ModelService service in Model.Services)
+            foreach (ModelService service in model.Services)
             {
                 foreach (var propertyModel in service.Properties)
                 {

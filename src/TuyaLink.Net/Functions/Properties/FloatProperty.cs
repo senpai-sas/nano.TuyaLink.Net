@@ -1,12 +1,20 @@
 ﻿using TuyaLink.Functions;
+using TuyaLink.Functions.Properties;
 
 namespace TuyaLink.Properties
 {
-    public class FloatProperty(string name, AccessMode transferType, TuyaDevice device) : DeviceProperty(name, device)
+    public class FloatProperty : DeviceProperty
     {
+
+
+        public FloatProperty(string name, TuyaDevice device) : base(name, device, PropertyDataType.Float)
+        {
+            Value = 0f;
+        }
+
         public new float Value
         {
-            get => (float)base.Value;
+            get => (float)(base.Value ?? 0);
             private set => Update(value);
         }
 
