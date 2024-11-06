@@ -31,6 +31,7 @@
     <Compile Include="Communication\Firmware\GetFirmwareVersionResponse.cs" />
     <Compile Include="Communication\Properties\DeleteDesiredPropertyRequest.cs" />
     <Compile Include="Firmware\ArrayExtensions.cs" />
+    <Compile Include="Functions\Actions\PerformActionEventArgs.cs" />
     <Compile Include="Functions\Events\EventDataHashtable.cs" />
     <Compile Include="Functions\Events\EventData.cs" />
     <Compile Include="Functions\Events\TriggerEventDataHashtable.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Firmware\UpgradeType.cs" />
     <Compile Include="FunctionResult.cs" />
     <Compile Include="Json\Converters\DataTypeConverter.cs" />
-    <Compile Include="Json\Converters\DesiredPropertiesMapConverter.cs" />
     <Compile Include="Json\Converters\FirmwareUpdateErrorConverter.cs" />
     <Compile Include="Json\Converters\GenericHashtableConverter.cs" />
     <Compile Include="Json\Converters\PropertyHashtableConverter.cs" />
@@ -95,6 +95,7 @@
     <Compile Include="Communication\Properties\ReportPropertyRequest.cs" />
     <Compile Include="Communication\ResponseHandler.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Model\ModelUpdatedEventArgs.cs" />
     <Compile Include="Mqtt\Handlers\ActionExecuteRequestHandler.cs" />
     <Compile Include="Mqtt\Handlers\DefaultRequestHandler.cs" />
     <Compile Include="Mqtt\Handlers\FirmwareIssueRequestHandler.cs" />
@@ -133,7 +134,7 @@
     <Compile Include="Functions\Properties\DelegateDeviceProperty.cs" />
     <Compile Include="Functions\Properties\DeviceProperty.cs" />
     <Compile Include="Functions\Properties\FloatProperty.cs" />
-    <Compile Include="Functions\Properties\PropertyUpdatedEventArg.cs" />
+    <Compile Include="Functions\Properties\PropertyUpdatedEventArgs.cs" />
     <Compile Include="Functions\Properties\ValueProperty.cs" />
     <Compile Include="Json\IJsonNamingConvention.cs" />
     <Compile Include="Json\JsonNamingConventions.cs" />

@@ -15,7 +15,6 @@ using TuyaLink.Model;
 using TuyaLink.Mqtt;
 using TuyaLink.Properties;
 
-using static TuyaLink.Functions.FunctionResultCodes;
 namespace TuyaLink
 {
     public class TuyaDevice
@@ -31,14 +30,19 @@ namespace TuyaLink
 
         public Hashtable Actions { get; private set; } = [];
 
-        protected DeviceModel Model { get; private set; }
+        protected DeviceModel? Model { get; private set; }
 
-        public TuyaDevice(DeviceInfo info, DeviceSettings? settings = null)
+        public TuyaDevice(DeviceInfo info, DeviceSettings? settings = null) : this(info, settings, null)
+        {
+
+        }
+
+        internal TuyaDevice(DeviceInfo info, DeviceSettings? settigns = null, ICommunicationHandler? communicationProtocol = null)
         {
             Info = info ?? throw new ArgumentNullException(nameof(info));
-            Settings = settings ?? DeviceSettings.Default;
+            Settings = settigns ?? DeviceSettings.Default;
             info.Validate();
-            _communicationProtocol = new MqttCommunicationProtocol(this, settings);
+            _communicationProtocol = communicationProtocol ?? new MqttCommunicationProtocol(this, Settings);
         }
 
         internal ActionExecuteResult ActionExecute(string actionCode, Hashtable inputParameters)

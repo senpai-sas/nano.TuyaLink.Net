@@ -178,13 +178,11 @@ namespace TuyaLink.Mqtt
         private void InternalConnect()
         {
             _tuyaMqttSign.Calculate(DeviceInfo.ProductId, DeviceInfo.DeviceId, DeviceInfo.DeviceSecret);
-            MqttReasonCode reason = _mqttClient.Connect(_tuyaMqttSign.ClientId, _tuyaMqttSign.Username, _tuyaMqttSign.Password);
-
+            MqttReasonCode reason = _mqttClient.Connect(_tuyaMqttSign.ClientId, _tuyaMqttSign.Username, _tuyaMqttSign.Password, true, (ushort)_deviceSettings.Communication.KeepAliveTime.TotalSeconds);
             if (reason != MqttReasonCode.Success)
             {
                 throw new TuyaMqttConnectionException("Failed to connect to the server", reason);
             }
-
             Debug.WriteLine("Connected");
 
             SubscribeHandlers();
@@ -468,5 +466,7 @@ namespace TuyaLink.Mqtt
 
             PublishResponse(_reportFirewareProgressTopic, request);
         }
+
+
     }
 }

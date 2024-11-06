@@ -19,21 +19,19 @@ namespace TuyaLink.Properties
 
         internal virtual void CloudUpdate(object value)
         {
-            CheckModel();
-            if (!Model.AccessMode.CanRead)
-            {
-                throw new InvalidOperationException($"The property {Code} can't be updated from the cloud");
-            }
             Update(value);
         }
 
         protected void Update(object value)
         {
-            CheckModel();
-            if (!IsValidValue(value))
+            CheckModel(() =>
             {
-                throw new ArgumentException($"The property {Code} can't take {value} as value");
-            }
+                if (!IsValidValue(value))
+                {
+                    throw new FunctionRuntimeException(StatusCode.InvalidValueError, $"The property {Code} can't take {value} as value, expected value are {Model?.TypeSpec?.Type}");
+                }
+            });
+          
             var oldValue = Value;
             Update(value, oldValue);
         }
@@ -53,11 +51,14 @@ namespace TuyaLink.Properties
 
         public ResponseHandler Report()
         {
-            CheckModel();
-            if (!Model.AccessMode.CanWrite)
+            CheckModel(() =>
             {
-                throw new InvalidOperationException($"The property {Code} can't be reported to the cloud");
-            }
+                if (!Model.AccessMode.CanWrite)
+                {
+                    throw new InvalidOperationException($"The property {Code} can't be reported to the cloud");
+                }
+            });
+
             return Device.ReportProperty(this);
         }
 
@@ -71,7 +72,8 @@ namespace TuyaLink.Properties
 
         protected virtual void OnBindModel(PropertyModel model)
         {
-           
+
         }
+
     }
 }

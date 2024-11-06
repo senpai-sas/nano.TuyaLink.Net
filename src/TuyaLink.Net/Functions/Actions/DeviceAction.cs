@@ -7,6 +7,7 @@ namespace TuyaLink.Functions.Actions
 {
     public abstract class DeviceAction : DeviceFunction
     {
+        private static readonly Hashtable _empty = [];
         public DeviceAction(string name, TuyaDevice device) : base(name, FunctionType.Action, device)
         {
             if (string.IsNullOrEmpty(name))
@@ -24,7 +25,7 @@ namespace TuyaLink.Functions.Actions
 
         protected virtual ActionExecuteResult OnExecute(Hashtable inputParams)
         {
-            return ActionExecuteResult.Success([]);
+            return ActionExecuteResult.Success(_empty);
         }
 
         internal void BindModel(ActionModel model)
@@ -38,11 +39,9 @@ namespace TuyaLink.Functions.Actions
 
         }
 
-        internal ActionExecuteResult Execute(IDictionary inputParams)
+        internal ActionExecuteResult Execute(Hashtable inputParams)
         {
-            return Execute(inputParams);
+            return OnExecute(inputParams);
         }
     }
-
-
 }

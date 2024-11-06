@@ -1,4 +1,6 @@
-﻿using TuyaLink.Model;
+﻿using System;
+
+using TuyaLink.Model;
 
 namespace TuyaLink.Functions
 {
@@ -17,12 +19,23 @@ namespace TuyaLink.Functions
             Model = model;
         }
 
-        internal void CheckModel()
+        internal virtual void CheckModel(Action? action = null)
         {
+            if (!Device.Settings.ValdiateModel)
+            {
+                return;
+            }
             if (Model == null)
             {
                 throw new TuyaLinkException($"The function {Code} has no model");
             }
+
+            if (Model.Code != Code)
+            {
+                throw new TuyaLinkException($"The function {Code} has a model with code {Model.Code}");
+            }
+
+            action?.Invoke();
         }
     }
 }

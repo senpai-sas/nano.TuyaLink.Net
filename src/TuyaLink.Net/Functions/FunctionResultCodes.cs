@@ -55,6 +55,7 @@ namespace TuyaLink.Functions
             IsSuccess = true
         };
 
+
         /// <summary>
         /// Unknown error as been occurred while processing the request.
         /// </summary>
@@ -70,6 +71,12 @@ namespace TuyaLink.Functions
         {
             Description = "The function was not found in the device.",
         };
+
+        public static readonly StatusCode InvalidValueError = new(-10002, nameof(InvalidValueError))
+        {
+            Description = "The value is invalid for the function."
+        };
+
 
         /// <summary>
         /// Service error.
