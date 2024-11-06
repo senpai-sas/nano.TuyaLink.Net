@@ -2,6 +2,7 @@
 using System.Collections;
 
 using nano.SmartEnum;
+
 using TuyaLink.Model;
 
 namespace TuyaLink.Functions.Properties
@@ -12,17 +13,21 @@ namespace TuyaLink.Functions.Properties
     /// <remarks>
     /// Initializes a new instance of the <see cref="PropertyDataType"/> class.
     /// </remarks>
-    /// <param name="name">The name of the data type.</param>
-    /// <param name="value">The value of the data type.</param>
-    /// <param name="clrType">The CLR type associated with the data type.</param>
-    public class PropertyDataType(string name, string value, Type clrType) : SmartEnum(name, value)
+    public class PropertyDataType : SmartEnum
     {
-        private static readonly Hashtable _store = [];
-
+        private static readonly Hashtable _store = new Hashtable(14);
+        /// <param name="name">The name of the data type.</param>
+        /// <param name="value">The value of the data type.</param>
+        /// <param name="clrType">The CLR type associated with the data type.</param>
+        public PropertyDataType(string name, string value, Type clrType) : base(name, value)
+        {
+            ClrType = clrType;
+            _store[value] = this;
+        }
         /// <summary>
         /// Gets the CLR type associated with the Tuya data type.
         /// </summary>
-        public Type ClrType { get; private set; } = clrType;
+        public Type ClrType { get; private set; }
 
         /// <summary>
         /// Represents a generic value type.
@@ -79,6 +84,8 @@ namespace TuyaLink.Functions.Properties
 
         public static readonly PropertyDataType Struct = new("Struct", "struct", typeof(Hashtable));
 
+
+
         public virtual bool ValidateModel(TypeSpecifications specifications, object value)
         {
             if (specifications.Type != this)
@@ -105,7 +112,12 @@ namespace TuyaLink.Functions.Properties
         /// <returns>The <see cref="PropertyDataType"/> instance.</returns>
         public static PropertyDataType FromValue(string value)
         {
-            return (PropertyDataType)GetFromValue(value, typeof(PropertyDataType), _store);
+            var result = GetFromValue(value, typeof(PropertyDataType), _store);
+            if (result == null)
+            {
+                throw new NotImplementedException($"The data type {value} is not implemented");
+            }
+            return (PropertyDataType)result;
         }
     }
 }
