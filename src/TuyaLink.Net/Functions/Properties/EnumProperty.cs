@@ -1,45 +1,44 @@
 ﻿using System;
 
+using nano.SmartEnum;
+
 using TuyaLink.Properties;
 
 namespace TuyaLink.Functions.Properties
 {
-    public class EnumProperty : DeviceProperty
+    public abstract class EnumProperty : DeviceProperty
     {
         public EnumProperty(string name, TuyaDevice device, Type smartEnumType) : base(name, device, PropertyDataType.Enum)
         {
-            Value = 0;
+            Value = GetDefaultValue();
         }
 
-        public new int Value
+        protected abstract PropertySmartEnum GetDefaultValue();
+
+        protected override object ParseCloudValue(object value)
         {
-            get => (int)(base.Value ?? 0);
+            return ParseEnumValue(value);
+        }
+
+        protected abstract SmartEnum ParseEnumValue(object value);
+
+        protected override object? ParseLocalValue()
+        {
+            return Value.EnumValue;
+        }
+
+        public new PropertySmartEnum Value
+        {
+            get => (PropertySmartEnum)(base.Value ?? 0);
             private set => Update(value);
         }
+    }
 
-        public static implicit operator int(EnumProperty property)
+    public abstract class PropertySmartEnum : SmartEnum
+    {
+        protected PropertySmartEnum(string name, string value) : base(name, value)
         {
-            return property.Value;
-        }
 
-        public static int operator +(EnumProperty property, int value)
-        {
-            return value + property.Value;
-        }
-
-        public static int operator -(EnumProperty property, int value)
-        {
-            return value - property.Value;
-        }
-
-        public static int operator *(EnumProperty property, int value)
-        {
-            return value * property.Value;
-        }
-
-        public static int operator /(EnumProperty property, int value)
-        {
-            return value / property.Value;
         }
     }
 }

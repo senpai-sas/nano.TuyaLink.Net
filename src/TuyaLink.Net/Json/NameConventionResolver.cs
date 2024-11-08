@@ -10,15 +10,10 @@ namespace TuyaLink.Json
     /// <summary>
     /// Resolves members based on a naming convention.
     /// </summary>
-    public class NameConventionResolver : IMemberResolver
+    public class NameConventionResolver(IJsonNamingConvention? jsonNamingConvention = null) : IMemberResolver
     {
-        private readonly IJsonNamingConvention _jsonNamingConvention;
+        private readonly IJsonNamingConvention _jsonNamingConvention = jsonNamingConvention ?? JsonNamingConventions.Default;
         private static readonly MemberSet _skipMemberSet = new(true);
-
-        public NameConventionResolver(IJsonNamingConvention? jsonNamingConvention = null)
-        {
-            _jsonNamingConvention = jsonNamingConvention ?? JsonNamingConventions.Default;
-        }
 
         public MemberSet Get(string memberName, Type objectType, JsonSerializerOptions options)
         {

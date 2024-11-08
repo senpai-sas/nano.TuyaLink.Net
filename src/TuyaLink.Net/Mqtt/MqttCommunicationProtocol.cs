@@ -211,7 +211,7 @@ namespace TuyaLink.Mqtt
                     [property.Code] = new PropertyValue()
                     {
                         Time = DateTime.UtcNow.ToUnixTimeSeconds(),
-                        Value = property.GetValue(),
+                        Value = property.GetCloudValue(),
                     }
                 }
             };
@@ -238,7 +238,7 @@ namespace TuyaLink.Mqtt
                 propertiesData[property.Code] = new PropertyValue()
                 {
                     Time = DateTime.UtcNow.ToUnixTimeSeconds(),
-                    Value = property.GetValue(),
+                    Value = property.GetCloudValue(),
                 };
             }
 
@@ -328,7 +328,7 @@ namespace TuyaLink.Mqtt
                     propertyData[property.Code] = new PropertyValue()
                     {
                         Time = DateTime.UtcNow.ToUnixTimeSeconds(),
-                        Value = property.GetValue(),
+                        Value = property.GetCloudValue(),
                     };
                 }
                 propertiesData[index] = propertyData;

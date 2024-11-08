@@ -3,7 +3,6 @@ using System.Collections;
 #nullable enable
 namespace nano.SmartEnum
 {
-
     public abstract class SmartEnum : IComparable
     {
         public string Name { get; }
@@ -22,14 +21,14 @@ namespace nano.SmartEnum
 
         public override bool Equals(object obj)
         {
-            if(obj is not SmartEnum other)
+            if (obj is not SmartEnum other)
             {
                 return false;
             }
-            var typeMatches = GetType().Equals(obj.GetType());
-            var valueMatches = EnumValue.Equals(other.EnumValue);
+            bool typeMatches = GetType().Equals(obj.GetType());
+            bool valueMatches = EnumValue.Equals(other.EnumValue);
             return typeMatches && valueMatches;
-           
+
         }
 
         public override int GetHashCode()
@@ -47,6 +46,8 @@ namespace nano.SmartEnum
             return a.EnumValue != b.EnumValue;
         }
 
+        
+
         protected static object? GetFromValue(object value, Type enumType, Hashtable store)
         {
             if (value == null)
@@ -57,13 +58,14 @@ namespace nano.SmartEnum
             {
                 return result;
             }
-            var fields = enumType.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            System.Reflection.FieldInfo[] fields = enumType.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
             result = null;
-            foreach (var field in fields)
+            foreach (System.Reflection.FieldInfo? field in fields)
             {
                 if (field.FieldType == enumType || field.FieldType.IsSubclassOf(enumType))
                 {
-                    var instance = (SmartEnum)field.GetValue(null);
+                    SmartEnum instance = (SmartEnum)field.GetValue(null);
                     store[instance.EnumValue] = instance;
                     if (Equals(value, instance.EnumValue))
                     {

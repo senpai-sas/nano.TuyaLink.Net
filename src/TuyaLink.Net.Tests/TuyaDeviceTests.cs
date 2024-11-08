@@ -169,7 +169,7 @@ namespace TuyaLink
             var result = device.PropertySet(properties);
 
             Assert.AreEqual(StatusCode.Success, result);
-            Assert.AreEqual("newValue", property.GetValue());
+            Assert.AreEqual("newValue", property.GetCloudValue());
         }
 
     }

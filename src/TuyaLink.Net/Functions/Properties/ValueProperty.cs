@@ -1,4 +1,5 @@
 ﻿using System;
+
 using TuyaLink.Functions.Properties;
 using TuyaLink.Model;
 
@@ -12,6 +13,61 @@ namespace TuyaLink.Properties
         {
             get => (double)(base.Value ?? 0);
             private set => Update(value);
+        }
+
+        protected override object ParseCloudValue(object value)
+        {
+            if (value is double doubleValue)
+            {
+                return doubleValue;
+            }
+            if(value is float floatValue)
+            {
+                return (double)floatValue;
+            }
+            if (value is long longValue)
+            {
+                return (double)longValue;
+            }
+            if (value is int intValue)
+            {
+                return (double)intValue;
+            }
+            if(value is uint uintValue) {
+                return (double)uintValue;
+            }
+            if (value is ulong ulongValue) {
+                return (double)ulongValue;
+            }
+            if (value is byte byteValue) {
+                return (double)byteValue;
+            }
+            if (value is sbyte sbyteValue)
+            {
+                return (double)sbyteValue;
+            }
+            if (value is short shortValue)
+            {
+                return (double)shortValue;
+            }
+            if (value is ushort ushortValue)
+            {
+                return (double)ushortValue;
+            }
+
+            if (value is string stringValue)
+            {
+                if (Settings is not null)
+                {
+                    return Settings.ParseValue(stringValue);
+                }
+                if(double.TryParse(stringValue, out double result))
+                {
+                    return result;
+                }
+            }
+
+            throw new InvalidCastException($"The value {value} is not a valid {Code} ValueProperty");
         }
 
         public static implicit operator double(ValueProperty property)
@@ -49,7 +105,7 @@ namespace TuyaLink.Properties
 
         public void SetValue(string value)
         {
-            var parsedValue = Settings.ParseValue(value);
+            double parsedValue = Settings.ParseValue(value);
             SetValue(parsedValue);
         }
 

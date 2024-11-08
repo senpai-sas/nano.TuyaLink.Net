@@ -15,15 +15,25 @@ namespace TuyaLink.Functions.Properties
     /// </remarks>
     public class PropertyDataType : SmartEnum
     {
-        private static readonly Hashtable _store = new Hashtable(14);
+        private static readonly Hashtable _store = new(14);
         /// <param name="name">The name of the data type.</param>
         /// <param name="value">The value of the data type.</param>
-        /// <param name="clrType">The CLR type associated with the data type.</param>
-        public PropertyDataType(string name, string value, Type clrType) : base(name, value)
+        /// <param name="rawType">The CLR type associated with the data type.</param>
+        public PropertyDataType(string name, string value, Type rawType, Type? clrType = null) : base(name, value)
         {
-            ClrType = clrType;
+            RawType = rawType;
+            ClrType = clrType ?? rawType;
             _store[value] = this;
         }
+
+        /// <summary>
+        /// Gets the RAW type associated with the Tuya data type.
+        /// </summary>
+        /// <remarks>
+        /// This is the type used to represent the data in the Tuya API. (JSON)
+        /// </remarks>
+        public Type RawType { get; private set; }
+
         /// <summary>
         /// Gets the CLR type associated with the Tuya data type.
         /// </summary>
@@ -32,7 +42,7 @@ namespace TuyaLink.Functions.Properties
         /// <summary>
         /// Represents a generic value type.
         /// </summary>
-        public static readonly PropertyDataType Value = new("Value", "value", typeof(object));
+        public static readonly PropertyDataType Value = new("Value", "value", typeof(object), typeof(double));
 
         /// <summary>
         /// Represents a float type.
@@ -52,7 +62,7 @@ namespace TuyaLink.Functions.Properties
         /// <summary>
         /// Represents a date type.
         /// </summary>
-        public static readonly PropertyDataType Date = new("Date", "date", typeof(long));
+        public static readonly PropertyDataType Date = new("Date", "date", typeof(long), typeof(DateTime));
 
         /// <summary>
         /// Represents a boolean type.
@@ -62,7 +72,7 @@ namespace TuyaLink.Functions.Properties
         /// <summary>
         /// Represents an enum type.
         /// </summary>
-        public static readonly PropertyDataType Enum = new("Enum", "enum", typeof(SmartEnum));
+        public static readonly PropertyDataType Enum = new("Enum", "enum", typeof(string), typeof(SmartEnum));
 
         /// <summary>
         /// Represents a raw byte array type.
@@ -84,23 +94,31 @@ namespace TuyaLink.Functions.Properties
 
         public static readonly PropertyDataType Struct = new("Struct", "struct", typeof(Hashtable));
 
-
-
         public virtual bool ValidateModel(TypeSpecifications specifications, object value)
         {
             if (specifications.Type != this)
             {
                 return false;
             }
-            return IsValidValue(value);
+            return IsValidCloudValue(value);
         }
 
         /// <summary>
-        /// Determines whether the specified value is valid for the current data type.
+        /// Determines whether the specified Cloud value is valid for the current data type.
         /// </summary>
         /// <param name="value">The value to validate.</param>
         /// <returns><c>true</c> if the value is valid; otherwise, <c>false</c>.</returns>
-        public virtual bool IsValidValue(object value)
+        public virtual bool IsValidCloudValue(object value)
+        {
+            return RawType.IsInstanceOfType(value);
+        }
+
+        /// <summary>
+        /// Determines whether the specified Local value is valid for the current data type.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public virtual bool IsValidLocalValue(object? value)
         {
             return ClrType.IsInstanceOfType(value);
         }
@@ -112,7 +130,7 @@ namespace TuyaLink.Functions.Properties
         /// <returns>The <see cref="PropertyDataType"/> instance.</returns>
         public static PropertyDataType FromValue(string value)
         {
-            var result = GetFromValue(value, typeof(PropertyDataType), _store);
+            object? result = GetFromValue(value, typeof(PropertyDataType), _store);
             if (result == null)
             {
                 throw new NotImplementedException($"The data type {value} is not implemented");

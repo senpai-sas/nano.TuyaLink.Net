@@ -27,20 +27,19 @@ namespace TuyaLink.Properties
                     throw new InvalidOperationException($"The property {Code} can't be reported to the cloud");
                 }
             });
-            Update(value);
+
+            CheckCloudValue(value);
+            Update(ParseCloudValue(value));
         }
 
         protected void Update(object? value)
         {
-            CheckModel(() =>
+            if (!IsValidLocalValue(value))
             {
-                if (!IsValidValue(value))
-                {
-                    throw new FunctionRuntimeException(StatusCode.InvalidValueError, $"The property {Code} can't take {value} as value, expected value are {Model?.TypeSpec?.Type}");
-                }
-            });
+                throw new FunctionRuntimeException(StatusCode.InvalidValueError, $"The property {Code} can't take {value} as value, expected value are {DataType.ClrType}");
+            }
 
-            var oldValue = Value;
+            object? oldValue = Value;
             Update(value, oldValue);
         }
 
@@ -52,9 +51,9 @@ namespace TuyaLink.Properties
 
         protected virtual void OnUpdate(object? value, object? oldValue) { }
 
-        public virtual object? GetValue()
+        public virtual object? GetCloudValue()
         {
-            return Value;
+            return ParseLocalValue();
         }
 
         public ResponseHandler Report()
@@ -80,7 +79,15 @@ namespace TuyaLink.Properties
 
         }
 
-        protected virtual bool IsValidValue(object? value) => value is null || Model!.TypeSpec.Type.IsValidValue(value);
+        protected virtual bool IsValidCloudValue(object? value)
+        {
+            return value is null || DataType.IsValidCloudValue(value);
+        }
+
+        protected virtual bool IsValidLocalValue(object? value)
+        {
+            return value is null || DataType.IsValidLocalValue(value);
+        }
 
         internal void BindModel(PropertyModel model)
         {
@@ -91,6 +98,34 @@ namespace TuyaLink.Properties
         protected virtual void OnBindModel(PropertyModel model)
         {
 
+        }
+
+        /// <summary>
+        /// Parse the could value to the local value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual object ParseCloudValue(object value)
+        {
+            return value;
+        }
+
+        /// <summary>
+        /// Parse the local value to the cloud value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual object? ParseLocalValue()
+        {
+            return Value;
+        }
+
+        private void CheckCloudValue(object value)
+        {
+            if (!IsValidCloudValue(value))
+            {
+                throw new FunctionRuntimeException(StatusCode.InvalidValueError, $"The property {Code} can't take {value} as value, expected value are {DataType.RawType}");
+            }
         }
     }
 }

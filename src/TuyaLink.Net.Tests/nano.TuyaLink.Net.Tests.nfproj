@@ -34,7 +34,6 @@
     <Compile Include="Json\Converters\BizTypeConverterTests.cs" />
     <Compile Include="Json\MessagesSerializationTests.cs" />
     <Compile Include="Json\NameConventionResolverSpecs.cs" />
-    <Compile Include="TuyaDataTypeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TuyaDeviceTests.cs" />
   </ItemGroup>

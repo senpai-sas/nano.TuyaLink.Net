@@ -53,6 +53,7 @@ namespace TuyaLink.Functions
             action?.Invoke();
         }
 
+
         protected virtual void ValidateModel()
         {
 
