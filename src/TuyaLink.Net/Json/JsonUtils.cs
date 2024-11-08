@@ -39,8 +39,6 @@ namespace TuyaLink.Json
             ConvertersMapping.Add(typeof(TriggerEventDataHashtable), new TriggerEventDataHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(EventDataHashtable), new EventDataHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(StatusCode), new StatusCodeConverter());
-            JsonNamingConventions.CamelCase.Replacements.Add("MessageId", "msgId");
-            JsonNamingConventions.CamelCase.Replacements.Add("msgId", "MessageId");
         }
 
         public static object Deserialize(Stream stream, Type type)

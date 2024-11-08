@@ -7,12 +7,15 @@ using nanoFramework.Json.Resolvers;
 
 namespace TuyaLink.Json
 {
+    /// <summary>
+    /// Resolves members based on a naming convention.
+    /// </summary>
     public class NameConventionResolver : IMemberResolver
     {
         private readonly IJsonNamingConvention _jsonNamingConvention;
         private static readonly MemberSet _skipMemberSet = new(true);
 
-        public NameConventionResolver(IJsonNamingConvention jsonNamingConvention = null)
+        public NameConventionResolver(IJsonNamingConvention? jsonNamingConvention = null)
         {
             _jsonNamingConvention = jsonNamingConvention ?? JsonNamingConventions.Default;
         }

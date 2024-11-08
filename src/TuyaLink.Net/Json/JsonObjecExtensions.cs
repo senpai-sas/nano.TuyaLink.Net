@@ -11,7 +11,7 @@ namespace TuyaLink.Json
 
         private static FieldInfo GetMemberFiled()
         {
-            return _memberField ??= typeof(JsonObject).GetField("_members", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return _memberField ??= typeof(JsonObject).GetField("_members", BindingFlags.NonPublic | BindingFlags.Instance);
         }
         internal static Hashtable GetMembers(this JsonObject jsonObject)
         {

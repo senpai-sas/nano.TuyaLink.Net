@@ -4,68 +4,95 @@ using System.Collections;
 
 namespace TuyaLink.Json
 {
-    public class JsonNamingConventions
+    /// <summary>
+    /// Provides various JSON naming conventions for serialization and deserialization.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// var defaultConvention = JsonNamingConventions.Default;
+    /// var camelCaseConvention = JsonNamingConventions.CamelCase;
+    /// </code>
+    /// </example>
+    public static class JsonNamingConventions
     {
-        private JsonNamingConventions()
+        private class DefaultNamingConvention : IJsonNamingConvention
         {
-        }
-
-        private abstract class JsonNamingConvention : IJsonNamingConvention
-        {
-            public Hashtable Replacements { get; } = [];
-
-            //protected bool TryRepalce(string key, out string replacedKey)
-            //{
-            //    if (Replacements.TryGetValue(key, out object value) && value is string replace)
-            //    {
-            //        replacedKey = replace;
-            //        return true;
-            //    }
-            //    replacedKey = null;
-            //    return false;
-            //}
-
-            public abstract string DeserializeName(string key);
-            public abstract string SerializeName(object key);
-        }
-
-        private class DefaultNamingConvention : JsonNamingConvention, IJsonNamingConvention
-        {
-            public override string DeserializeName(string key)
+            /// <summary>
+            /// Returns the key as is for deserialization.
+            /// </summary>
+            /// <param name="key">The key to deserialize.</param>
+            /// <returns>The deserialized key.</returns>
+            /// <example>
+            /// <code>
+            /// var deserializedKey = defaultConvention.DeserializeName("MyKey");
+            /// </code>
+            /// </example>
+            public string DeserializeName(string key)
             {
-                return /*TryRepalce(key, out string replacedKey) ? replacedKey : */key;
+                return key;
             }
 
-            public override string SerializeName(object key) =>/* TryRepalce(key?.ToString(), out string replacedKey) ? replacedKey :*/ key?.ToString();
+            /// <summary>
+            /// Returns the key as is for serialization.
+            /// </summary>
+            /// <param name="key">The key to serialize.</param>
+            /// <returns>The serialized key.</returns>
+            /// <example>
+            /// <code>
+            /// var serializedKey = defaultConvention.SerializeName("MyKey");
+            /// </code>
+            /// </example>
+            public string SerializeName(object key) => key?.ToString();
         }
 
-        private class CamelCaseNamingConvention : JsonNamingConvention, IJsonNamingConvention
+        private class CamelCaseNamingConvention : IJsonNamingConvention
         {
-            public override string DeserializeName(string key)
+            /// <inheritdoc />
+            /// <summary>
+            /// Converts the key to title case for deserialization.
+            /// </summary>
+            /// <param name="key">The key to deserialize.</param>
+            /// <returns>The deserialized key in title case.</returns>
+            /// <example>
+            /// <code>
+            /// var deserializedKey = camelCaseConvention.DeserializeName("myKey");
+            /// </code>
+            /// </example>
+            public string DeserializeName(string key)
             {
-                return /*TryRepalce(key, out string replacedKey) ? replacedKey :*/ key.ToTitleCase();
+                return key.ToTitleCase();
             }
 
-            public override string SerializeName(object key)
+            /// <inheritdoc />
+            /// <summary>
+            /// Converts the key to camel case for serialization.
+            /// </summary>
+            /// <param name="key">The key to serialize.</param>
+            /// <returns>The serialized key in camel case.</returns>
+            /// <example>
+            /// <code>
+            /// var serializedKey = camelCaseConvention.SerializeName("MyKey");
+            /// </code>
+            /// </example>
+            public string SerializeName(object key)
             {
-                //if (TryRepalce(key.ToString(), out string replacedKey))
-                //{
-                //    return replacedKey;
-                //}
-
                 if (key is string s)
                 {
                     return s.ToCamelCase();
                 }
 
-                return key?.ToString()?.ToCamelCase();
+                return key?.ToString() ?? string.Empty;
             }
         }
 
-
-
+        /// <summary>
+        /// The default naming convention.
+        /// </summary>
         public static readonly IJsonNamingConvention Default = new DefaultNamingConvention();
 
+        /// <summary>
+        /// The camel case naming convention.
+        /// </summary>
         public static readonly IJsonNamingConvention CamelCase = new CamelCaseNamingConvention();
     }
 }
