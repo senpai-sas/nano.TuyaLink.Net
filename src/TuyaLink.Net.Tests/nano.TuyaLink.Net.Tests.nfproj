@@ -29,6 +29,9 @@
   <ItemGroup>
     <Compile Include="DataCenterTests.cs" />
     <Compile Include="DeviceInfoTests.cs" />
+    <Compile Include="FakeCommunicationHandler.cs" />
+    <Compile Include="FakeDevice.cs" />
+    <Compile Include="Functions\DeviceFunctionTests.cs" />
     <Compile Include="Functions\Properties\PropertyDataTypeTests.cs" />
     <Compile Include="Json\Converters\AccessModeConverterTests.cs" />
     <Compile Include="Json\Converters\BizTypeConverterTests.cs" />

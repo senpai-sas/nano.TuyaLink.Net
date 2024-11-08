@@ -23,8 +23,9 @@ namespace TuyaLink.Model
     }
 
 
-    public class FunctionModel
+    public abstract class FunctionModel
     {
+        public FunctionType FunctionType { get; protected set; }
         public string AbilityId { get; set; }
 
         public string Code { get; set; }
@@ -41,6 +42,10 @@ namespace TuyaLink.Model
 
     public class PropertyModel : FunctionModel
     {
+        public PropertyModel()
+        {
+            FunctionType = FunctionType.Property;
+        }
         public AccessMode AccessMode { get; set; }
         public TypeSpecifications TypeSpec { get; set; }
     }
@@ -68,6 +73,10 @@ namespace TuyaLink.Model
 
     public class EventModel : FunctionModel
     {
+        public EventModel()
+        {
+            FunctionType = FunctionType.Event;
+        }
         public ParameterModel[] OutputParams { get; set; }
     }
 
@@ -79,6 +88,10 @@ namespace TuyaLink.Model
 
     public class ActionModel : FunctionModel
     {
+        public ActionModel()
+        {
+            FunctionType = FunctionType.Action;
+        }
         public ParameterModel[] OutputParams { get; set; }
 
         public ParameterModel[] InputParams { get; set; }

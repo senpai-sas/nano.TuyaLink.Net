@@ -1,10 +1,13 @@
-﻿namespace TuyaLink.Functions
-{
-    public sealed class FunctionType(string name, int value)
-    {
-        public string Name { get; private set; } = name;
-        public int Value { get; private set; } = value;
+﻿using nano.SmartEnum;
 
+namespace TuyaLink.Functions
+{
+    public sealed class FunctionType : SmartEnum
+    {
+        private FunctionType(string name, int value) : base(name, value)
+        {
+
+        }
         /// <summary>
         /// The property type is used to define the continuous and queryable states of a device, which can represent one or several feature parameters. 
         /// A property can be read-write or read-only for data update and query. When a specific feature parameter is updated, the device can update the property accordingly. 
@@ -26,6 +29,7 @@
         /// For example, overheating alerts and fault alerts.
         /// </summary>
         public static readonly FunctionType Event = new("Event", 3);
+
 
     }
 }

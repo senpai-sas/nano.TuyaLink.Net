@@ -20,15 +20,19 @@ namespace TuyaLink
 
         public DataCenter DataCenter { get; set; }
 
-        public CommunicationSettings Communication { get; set; } = new CommunicationSettings();
+        public CommunicationSettings Communication { get; set; }
 
-
-        internal readonly static DeviceSettings Default = new();
-
+        public static readonly DeviceSettings Default;
+        static DeviceSettings()
+        {
+            Default = new DeviceSettings();
+            GC.SuppressFinalize(Default);
+        }
         public DeviceSettings()
         {
             DataCenter = DataCenter.China;
             BindModel = true;
+            Communication = new CommunicationSettings();
         }
 
     }

@@ -20,6 +20,7 @@ namespace TuyaLink
     public class TuyaDevice
     {
         public DeviceInfo Info { get; }
+
         public DeviceSettings Settings { get; }
 
         private readonly ICommunicationHandler _communicationProtocol;
@@ -51,7 +52,7 @@ namespace TuyaLink
             {
                 return ActionExecuteResult.Failure(StatusCode.FunctionNotFound);
             }
-            var action = (DeviceAction)value;
+            DeviceAction action = (DeviceAction)value;
             return action.Execute(inputParameters);
         }
 
@@ -85,7 +86,7 @@ namespace TuyaLink
         public void Connect(int millisecondsTimeout = Timeout.Infinite)
         {
             _communicationProtocol.Connect(Info);
-            var handler = _communicationProtocol.GetDeviceModel();
+            ResponseHandler handler = _communicationProtocol.GetDeviceModel();
             handler.WaitForAcknowledgeReport();
         }
 
@@ -116,7 +117,7 @@ namespace TuyaLink
 
         protected DeviceAction RegisterAction(string name, ActionExecuteDelegate executeDelegate)
         {
-            var action = new DelegateDeviceAction(name, this, executeDelegate);
+            DelegateDeviceAction action = new(name, this, executeDelegate);
             AddAction(action);
             return action;
         }
@@ -134,7 +135,7 @@ namespace TuyaLink
         {
             foreach (ModelService service in model.Services)
             {
-                foreach (var propertyModel in service.Properties)
+                foreach (PropertyModel propertyModel in service.Properties)
                 {
                     if (!Properties.TryGetValue(propertyModel.Code, out object value))
                     {
@@ -142,24 +143,24 @@ namespace TuyaLink
                             throw new TuyaLinkException($"Property {propertyModel} not implemented in device {Info.DeviceId}");
                     }
 
-                    var property = (DeviceProperty)value;
+                    DeviceProperty property = (DeviceProperty)value;
 
                     property.BindModel(propertyModel);
                 }
 
-                foreach (var eventModel in service.Events)
+                foreach (EventModel eventModel in service.Events)
                 {
                     if (!Events.TryGetValue(eventModel.Code, out object value))
                     {
                         if (Settings.ValdiateModel)
                             throw new TuyaLinkException($"Event {eventModel} not implemented in device {Info.DeviceId}");
                     }
-                    var deviceEvent = (DeviceEvent)value;
+                    DeviceEvent deviceEvent = (DeviceEvent)value;
                     deviceEvent.BindModel(eventModel);
 
                 }
 
-                foreach (var actionModel in service.Actions)
+                foreach (ActionModel actionModel in service.Actions)
                 {
                     if (!Actions.TryGetValue(actionModel.Code, out object value))
                     {
@@ -167,7 +168,7 @@ namespace TuyaLink
                             throw new TuyaLinkException($"Action {actionModel} not implemented in device {Info.DeviceId}");
                     }
 
-                    var deviceAction = (DeviceAction)value;
+                    DeviceAction deviceAction = (DeviceAction)value;
                     deviceAction.BindModel(actionModel);
                 }
             }
@@ -181,9 +182,9 @@ namespace TuyaLink
                 {
                     throw new TuyaLinkException($"Property {entry.Key} not found in device {Info.DeviceId}");
                 }
-                var desiredProperty = (DesiredProperty)entry.Value;
+                DesiredProperty desiredProperty = (DesiredProperty)entry.Value;
                 Debug.WriteLine($"Desired property {entry.Key} updated, version {desiredProperty.Version}");
-                var property = (DeviceProperty)value;
+                DeviceProperty property = (DeviceProperty)value;
                 property.CloudUpdate(desiredProperty.Value);
             }
         }

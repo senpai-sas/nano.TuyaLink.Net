@@ -18,56 +18,9 @@ namespace TuyaLink
     public class TuyaDeviceTests
     {
 
-        static ICommunicationHandler protocol = new FakeCommunicationHandler();
+        static ICommunicationHandler protocol = FakeCommunicationHandler.Default;
 
-        internal class FakeCommunicationHandler : ICommunicationHandler
-        {
-            public ResponseHandler BatchReport(DeviceProperty[] properties, TriggerEventData[] triggerEventData)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Connect(DeviceInfo deviceInfo)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Disconnect()
-            {
-                throw new NotImplementedException();
-            }
-
-            public ResponseHandler GetDeviceModel()
-            {
-                throw new NotImplementedException();
-            }
-
-            public GetFirmwareVersionResponseHandler GetFirmwareVersion()
-            {
-                throw new NotImplementedException();
-            }
-
-            public ResponseHandler GetProperties(DeviceProperty[] properties)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ResponseHandler HistoryReport(TriggerEventData[][] events, DeviceProperty[][] properties)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ResponseHandler ReportProperty(DeviceProperty property)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ResponseHandler TriggerEvent(DeviceEvent deviceEvent, Hashtable parameters, DateTime time)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        
         [TestMethod]
         public void TestDeviceInitialization()
         {
