@@ -2,7 +2,7 @@
 
 namespace TuyaLink.Functions.Properties
 {
-    public delegate void UpdatePropertyDelegate(object newValue, object oldValue);
+    public delegate void UpdatePropertyDelegate(object? newValue, object? oldValue);
 
     public class DelegateDeviceProperty : DeviceProperty
     {
@@ -14,7 +14,7 @@ namespace TuyaLink.Functions.Properties
             Setter = setter ?? throw new System.ArgumentNullException(nameof(setter));
         }
 
-        protected override void OnUpdate(object value, object oldValue)
+        protected override void OnUpdate(object? value, object? oldValue)
         {
             Setter(value, oldValue);
         }

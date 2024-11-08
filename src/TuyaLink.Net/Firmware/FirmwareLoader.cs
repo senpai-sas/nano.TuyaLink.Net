@@ -15,6 +15,7 @@ namespace TuyaLink.Firmware
         public static IAssemblyEntryPoint[] Runners { get; private set; }
 
         internal static ManualResetEvent _updateWaitHandler = new(false);
+
         private static ITargetDevice _targetDevice;
 
         internal static void SignalUpdate()

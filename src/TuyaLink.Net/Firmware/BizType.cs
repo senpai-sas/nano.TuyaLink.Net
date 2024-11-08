@@ -10,6 +10,7 @@ namespace TuyaLink.Firmware
 
         private BizType(string name, string value) : base(name, value)
         {
+            _store[value] = this;
         }
 
         public static readonly BizType Initial = new(nameof(Initial), "INIT");
