@@ -74,5 +74,36 @@ namespace nano.String.Tests
             var result = input.Replace(oldString, newString);
             Assert.AreEqual(input, result);
         }
+        [TestMethod]
+        public void IsLower_ReturnsTrueForLowercase()
+        {
+            char input = 'a';
+            var result = input.IsLower();
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsLower_ReturnsFalseForUppercase()
+        {
+            char input = 'A';
+            var result = input.IsLower();
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void IsUpper_ReturnsTrueForUppercase()
+        {
+            char input = 'A';
+            var result = input.IsUpper();
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsUpper_ReturnsFalseForLowercase()
+        {
+            char input = 'a';
+            var result = input.IsUpper();
+            Assert.IsFalse(result);
+        }
     }
 }

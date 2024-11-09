@@ -13,6 +13,16 @@ namespace System.Collections
 
         public static string Join(this object[] array, string separator)
         {
+            if (array is null)
+            {
+                return string.Empty;
+            }
+
+            if (separator is null)
+            {
+                throw new ArgumentNullException(nameof(separator));
+            }
+
             StringBuilder stringBuilder = new();
             for (int i = 0; i < array.Length; i++)
             {

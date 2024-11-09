@@ -3,6 +3,8 @@
 using nano.Asserts;
 
 using nanoFramework.TestFramework;
+
+using System;
 using System.Collections;
 namespace nano.Collections.Tests
 {
@@ -95,6 +97,44 @@ namespace nano.Collections.Tests
             sbyte[] array = { 1, 2, 3, 4 };
             array.Reverse();
             ArrayAssert.AreEqual(array, new sbyte[] { 4, 3, 2, 1 });
+        }
+        [TestMethod]
+        public void Join_ObjectArray_ShouldJoinWithSeparator()
+        {
+            object[] array = { 1, "two", 3.0, '4' };
+            string result = array.Join(", ");
+            Assert.AreEqual("1, two, 3, 4", result);
+        }
+
+        [TestMethod]
+        public void Join_EmptyArray_ShouldReturnEmptyString()
+        {
+            object[] array = { };
+            string result = array.Join(", ");
+            Assert.AreEqual(string.Empty, result);
+        }
+
+        [TestMethod]
+        public void Join_SingleElementArray_ShouldReturnElementAsString()
+        {
+            object[] array = { 1 };
+            string result = array.Join(", ");
+            Assert.AreEqual("1", result);
+        }
+
+        [TestMethod]
+        public void Join_NullSperator_ShouldThrowArgumentNullException()
+        {
+            object[] array = { 1 };
+            Assert.ThrowsException(typeof(ArgumentNullException), () => array.Join(null));
+        }
+
+        [TestMethod]
+        public void Join_NullArray_ShouldReturnEmptyString()
+        {
+            object[] array = null;
+            string result = array.Join(", ");
+            Assert.AreEqual(string.Empty, result);
         }
     }
 }

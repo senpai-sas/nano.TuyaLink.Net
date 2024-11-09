@@ -66,7 +66,7 @@ namespace TuyaLink.Functions.Actions
 
             action.BindModel(model);
 
-            Hashtable inputParams = new();
+            Hashtable inputParams = [];
             Assert.ThrowsException(typeof(FunctionRuntimeException), () => action.Execute(inputParams));
         }
 
