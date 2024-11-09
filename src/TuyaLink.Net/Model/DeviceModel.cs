@@ -54,9 +54,9 @@ namespace TuyaLink.Model
     {
         public PropertyDataType Type { get; set; }
 
-        public string[] Label { get; set; }
+        public string[] Label { get; set; } = [];
 
-        public string[] Range { get; set; }
+        public string[] Range { get; set; } = [];
 
         public double Min { get; set; }
 
@@ -64,11 +64,13 @@ namespace TuyaLink.Model
 
         public float Step { get; set; }
 
-        public string Unit { get; set; }
+        public string Unit { get; set; } = string.Empty;
 
         public float Scale { get; set; }
 
         public int Maxlen { get; set; } = -1;
+
+        public bool IsInBoundary(double value) => value >= Min && value <= Max;
     }
 
     public class EventModel : FunctionModel
@@ -83,6 +85,7 @@ namespace TuyaLink.Model
     public class ParameterModel
     {
         public string Code { get; set; }
+
         public TypeSpecifications TypeSpec { get; set; }
     }
 

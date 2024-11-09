@@ -55,6 +55,7 @@ namespace TuyaLink.Functions
         {
             TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValdiateModel = true });
             TestDeviceFunction function = new("TestCode", FunctionType.Event, device);
+
             EventModel model = new() { Code = "DifferentCode" };
 
             Assert.ThrowsException(typeof(TuyaLinkException), () => function.BindModel(model));

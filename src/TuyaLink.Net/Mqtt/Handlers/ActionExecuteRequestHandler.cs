@@ -42,7 +42,7 @@ namespace TuyaLink.Mqtt.Handlers
                 Data = new OutputActionData()
                 {
                     ActionCode = request.Data.ActionCode,
-                    OutputParams = ((ActionExecuteResult)null).OutputParameters
+                    OutputParams = result.OutputParameters
                 }
             };
 
@@ -55,6 +55,5 @@ namespace TuyaLink.Mqtt.Handlers
                 Debug.WriteLine($"Error while publishing action execute response {response}:\n\t{ex}\n\t{ex.StackTrace}");
             }
         }
-
     }
 }

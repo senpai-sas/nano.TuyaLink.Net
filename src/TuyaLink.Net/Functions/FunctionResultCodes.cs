@@ -77,6 +77,11 @@ namespace TuyaLink.Functions
             Description = "The value is invalid for the function."
         };
 
+        public static readonly StatusCode FunctionOutputParameterMismatch = new(-10002, nameof(InvalidValueError))
+        {
+            Description = "The output parameter of the function does't match with the model"
+        };
+
 
         /// <summary>
         /// Service error.

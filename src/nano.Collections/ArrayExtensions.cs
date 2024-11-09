@@ -1,8 +1,29 @@
 ﻿
+using System.Text;
+
 namespace System.Collections
 {
     public static class ArrayExtensions
     {
+
+        public static bool Contains(this object[] array, object value)
+        {
+            return Array.IndexOf(array, value) != -1;
+        }
+
+        public static string Join(this object[] array, string separator)
+        {
+            StringBuilder stringBuilder = new();
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (i > 0)
+                {
+                    stringBuilder.Append(separator);
+                }
+                stringBuilder.Append(array[i]);
+            }
+            return stringBuilder.ToString();
+        }
         public static void Reverse(this object[] array)
         {
             int length = array.Length;
@@ -19,7 +40,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                int tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -30,7 +51,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                byte tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -41,7 +62,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                long tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -52,7 +73,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                short tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -63,7 +84,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                double tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -74,7 +95,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                float tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -85,7 +106,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                uint tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -96,7 +117,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                ulong tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -107,7 +128,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                ushort tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }
@@ -118,7 +139,7 @@ namespace System.Collections
             int length = array.Length;
             for (int i = 0; i < length / 2; i++)
             {
-                var tmp = array[i];
+                sbyte tmp = array[i];
                 array[i] = array[length - i - 1];
                 array[length - i - 1] = tmp;
             }

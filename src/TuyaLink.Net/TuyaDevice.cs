@@ -115,9 +115,9 @@ namespace TuyaLink
             return _communicationProtocol.GetProperties(properties);
         }
 
-        protected DeviceAction RegisterAction(string name, ActionExecuteDelegate executeDelegate)
+        protected DeviceAction RegisterAction(string code, ActionExecuteDelegate executeDelegate)
         {
-            DelegateDeviceAction action = new(name, this, executeDelegate);
+            DelegateDeviceAction action = new(code, this, executeDelegate);
             AddAction(action);
             return action;
         }
@@ -201,7 +201,6 @@ namespace TuyaLink
 
         public GetFirmwareVersionResponseHandler GetLastFirmwareVersion()
         {
-
             return _communicationProtocol.GetFirmwareVersion();
         }
     }

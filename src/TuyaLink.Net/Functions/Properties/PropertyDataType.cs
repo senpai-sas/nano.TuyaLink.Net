@@ -42,7 +42,7 @@ namespace TuyaLink.Functions.Properties
         /// <summary>
         /// Represents a generic value type.
         /// </summary>
-        public static readonly PropertyDataType Value = new("Value", "value", typeof(object), typeof(double));
+        public static readonly PropertyDataType Value = new ValueDataType();
 
         /// <summary>
         /// Represents a float type.
@@ -57,7 +57,7 @@ namespace TuyaLink.Functions.Properties
         /// <summary>
         /// Represents a string type.
         /// </summary>
-        public static readonly PropertyDataType String = new("String", "string", typeof(string));
+        public static readonly PropertyDataType String = new StringDataType();
 
         /// <summary>
         /// Represents a date type.
@@ -72,7 +72,7 @@ namespace TuyaLink.Functions.Properties
         /// <summary>
         /// Represents an enum type.
         /// </summary>
-        public static readonly PropertyDataType Enum = new("Enum", "enum", typeof(string), typeof(SmartEnum));
+        public static readonly PropertyDataType Enum = new EnumDataType();
 
         /// <summary>
         /// Represents a raw byte array type.
@@ -82,7 +82,7 @@ namespace TuyaLink.Functions.Properties
         /// <summary>
         /// Represents a device fault type.
         /// </summary>
-        public static readonly PropertyDataType Fault = new("Fault", "fault", typeof(string));
+        public static readonly PropertyDataType Fault = new FaultDataType();
 
         public static readonly PropertyDataType ValueArray = new("ValueArray", "value_array", typeof(object[]));
 
@@ -136,6 +136,114 @@ namespace TuyaLink.Functions.Properties
                 throw new NotImplementedException($"The data type {value} is not implemented");
             }
             return (PropertyDataType)result;
+        }
+
+        public virtual void CheckCouldValue(TypeSpecifications specs, object value)
+        {
+            if (specs.Type != this)
+            {
+                throw new ArgumentException($"The model type must be a {this} type.", nameof(specs));
+            }
+
+            if (!IsValidCloudValue(value))
+            {
+                throw new ArgumentException($"The value {value} is not a valid {this} value.", nameof(value));
+            }
+        }
+
+        private class ValueDataType : PropertyDataType
+        {
+            public ValueDataType() : base("Value", "value", typeof(object), typeof(double))
+            {
+            }
+
+            public override void CheckCouldValue(TypeSpecifications specs, object value)
+            {
+                base.CheckCouldValue(specs, value);
+                if (value is null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+
+                double cloudValue = (double)value;
+
+                if (!specs.IsInBoundary(cloudValue))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), $"The value {value} is out of range. Max {specs.Max}, Min {specs.Min}");
+                }
+            }
+        }
+
+        private class EnumDataType : PropertyDataType
+        {
+            public EnumDataType() : base("Enum", "enum", typeof(string), typeof(SmartEnum))
+            {
+            }
+
+            public override void CheckCouldValue(TypeSpecifications specs, object value)
+            {
+                base.CheckCouldValue(specs, value);
+                if (value is null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+                PropertySmartEnum? smartEnum = value as PropertySmartEnum;
+                if (smartEnum is null)
+                {
+                    throw new ArgumentException($"The value {value} is not a valid {this} value.", nameof(value));
+                }
+
+                if (!specs.Label.Contains(smartEnum.EnumValue))
+                {
+                    throw new ArgumentException($"The value {value} is not a valid {this} value, allowed values are {specs.Label.Join(",")}.", nameof(value));
+                }
+            }
+        }
+
+        private class StringDataType : PropertyDataType
+        {
+            public StringDataType() : base("String", "string", typeof(string))
+            {
+            }
+
+            public override void CheckCouldValue(TypeSpecifications specs, object value)
+            {
+                base.CheckCouldValue(specs, value);
+                if (value is null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+
+                string stringValue = (string)value;
+
+                if (specs.Maxlen != -1 && stringValue.Length > specs.Maxlen)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), $"The value {value} is out of range. Max length {specs.Maxlen}");
+                }
+            }
+        }
+
+        private class FaultDataType : PropertyDataType
+        {
+            public FaultDataType() : base("Fault", "fault", typeof(string))
+            {
+            }
+
+            public override void CheckCouldValue(TypeSpecifications specs, object value)
+            {
+                base.CheckCouldValue(specs, value);
+                if (value is null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+
+                string stringValue = (string)value;
+
+                if (specs.Range.Contains(stringValue))
+                {
+                    throw new ArgumentException($"The value {value} is not a valid {this} value, allowed values are {specs.Range.Join(",")}.", nameof(value));
+                }
+            }
         }
     }
 }
