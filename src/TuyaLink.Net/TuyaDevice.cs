@@ -41,7 +41,7 @@ namespace TuyaLink
         internal TuyaDevice(DeviceInfo info, DeviceSettings? settigns = null, ICommunicationHandler? communicationProtocol = null)
         {
             Info = info ?? throw new ArgumentNullException(nameof(info));
-            Settings = settigns ?? DeviceSettings.Default;
+            Settings = settigns ?? DeviceSettings.Default ?? throw new ArgumentException(nameof(settigns));
             info.Validate();
             _communicationProtocol = communicationProtocol ?? new MqttCommunicationProtocol(this, Settings);
         }

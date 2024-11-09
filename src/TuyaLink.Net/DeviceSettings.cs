@@ -8,6 +8,8 @@ namespace TuyaLink
 {
     public class DeviceSettings
     {
+        private static DeviceSettings _default;
+
         public X509Certificate2? ClientCertificate { get; set; }
 
         public bool ValdiateModel { get; set; }
@@ -22,12 +24,8 @@ namespace TuyaLink
 
         public CommunicationSettings Communication { get; set; }
 
-        public static readonly DeviceSettings Default;
-        static DeviceSettings()
-        {
-            Default = new DeviceSettings();
-            GC.SuppressFinalize(Default);
-        }
+        public static DeviceSettings Default => _default ??= new DeviceSettings();
+
         public DeviceSettings()
         {
             DataCenter = DataCenter.China;

@@ -69,7 +69,7 @@ namespace TuyaLink.Json
             Assert.IsNotNull(expectedCode);
             FunctionResponse result = (FunctionResponse)JsonUtils.Deserialize(json, typeof(FunctionResponse));
             Assert.AreEqual(msgId, result.MsgId);
-            Assert.AreEqual(time, result.Time);
+            Assert.AreEqual(time, result.Time.ToUnixTimeMilliseconds());
             Assert.AreEqual(expectedCode, result.Code);
         }
 
@@ -79,7 +79,7 @@ namespace TuyaLink.Json
             string json = @"{""msgId"":""45lkj3551234***"",""time"":1626197189638,""data"":{""color"":""green"",""brightness"":50}}";
             PropertySetRequest result = (PropertySetRequest)JsonUtils.Deserialize(json, typeof(PropertySetRequest));
             Assert.AreEqual("45lkj3551234***", result.MsgId);
-            Assert.AreEqual(1626197189638, result.Time);
+            Assert.AreEqual(1626197189638, result.Time.ToUnixTimeMilliseconds());
             Assert.AreEqual(2, result.Data.Count);
             Assert.AreEqual("green", result.Data["color"]);
             Assert.AreEqual(50, result.Data["brightness"]);
@@ -91,7 +91,7 @@ namespace TuyaLink.Json
             string json = @"{""msgId"":""45lkj3551234***"",""time"":1626197189638,""data"":{""actionCode"":""testAction"",""inputParams"":{""inputParam1"":""value1"",""inputParam2"":""value2"",""inputParam3"":1}}}";
             ActionExecuteRequest result = (ActionExecuteRequest)JsonUtils.Deserialize(json, typeof(ActionExecuteRequest));
             Assert.AreEqual("45lkj3551234***", result.MsgId);
-            Assert.AreEqual(1626197189638, result.Time);
+            Assert.AreEqual(1626197189638, result.Time.ToUnixTimeMilliseconds());
             Assert.AreEqual("testAction", result.Data.ActionCode);
             Assert.AreEqual(3, result.Data.InputParams.Count);
             Assert.AreEqual("value1", result.Data.InputParams["inputParam1"]);
@@ -387,7 +387,7 @@ namespace TuyaLink.Json
 }";
             var result = (GetDeviceModelResponse)JsonUtils.Deserialize(json, typeof(GetDeviceModelResponse));
             Assert.AreEqual("45lkj3551234***", result.MsgId);
-            Assert.AreEqual(1626197189640, result.Time);
+            Assert.AreEqual(1626197189640, result.Time.ToUnixTimeMilliseconds());
             Assert.AreEqual(0, result.Code.EnumValue);
             Assert.AreEqual("0000001***", result.Data.ModelId);
             Assert.AreEqual(1, result.Data.Services.Length);
@@ -464,7 +464,7 @@ namespace TuyaLink.Json
 }";
             var result = (GetPropertiesResponse)JsonUtils.Deserialize(json, typeof(GetPropertiesResponse));
             Assert.AreEqual("45lkj3551234***", result.MsgId);
-            Assert.AreEqual(1626197189640, result.Time);
+            Assert.AreEqual(1626197189640, result.Time.ToUnixTimeMilliseconds());
             Assert.AreEqual(StatusCode.FromValue(0), result.Code);
             Assert.AreEqual(2, result.Data.Properties.Count);
             Assert.AreEqual("1", result.Data.Properties["color"].Version);
@@ -562,7 +562,7 @@ namespace TuyaLink.Json
             var result = (FirmwareIssueRequest)JsonUtils.Deserialize(json, typeof(FirmwareIssueRequest));
 
             Assert.AreEqual("45lkj3551234***", result.MsgId);
-            Assert.AreEqual(1626197189638, result.Time);
+            Assert.AreEqual(1626197189638, result.Time.ToUnixTimeMilliseconds());
             Assert.AreEqual("bee8d56c2868302ec4d094d652325***", result.Data.CtId);
             Assert.AreEqual(UpdateChannel.Main, result.Data.Channel);
             Assert.AreEqual("1.3.13", result.Data.Version);
@@ -597,7 +597,7 @@ namespace TuyaLink.Json
 }";
             var result = (GetFirmwareVersionResponse)JsonUtils.Deserialize(json, typeof(GetFirmwareVersionResponse));
             Assert.AreEqual("45lkj3551234***", result.MsgId);
-            Assert.AreEqual(1626197189638, result.Time);
+            Assert.AreEqual(1626197189638, result.Time.ToUnixTimeMilliseconds());
             Assert.AreEqual("http://airtake-public-data-1254153901.cos.tuyacn.com/smart/firmware/upgrade/202006/1592465280-tuya_rtl8196e_gw_tar_UG_1.3***.bin", result.Data.Url);
 
             Assert.AreEqual("https://images.tuyacn.com/smart/firmware/upgrade/202006/1592465280-tuya_rtl8196e_gw_tar_UG_1.3***.bin", result.Data.CdnUrl);

@@ -4,10 +4,15 @@
     {
         public static readonly DeviceInfo DefaultInfo = new("TestProduct", "TestDevice", "secret");
 
-        public static readonly FakeDevice Default = new(DefaultInfo);
+        private static FakeDevice _default;
 
-        public FakeDevice(DeviceInfo info = null, DeviceSettings settings = null) : base(info ?? DefaultInfo, settings, FakeCommunicationHandler.Default)
+        public static FakeDevice Default => _default ??= new(DefaultInfo, DeviceSettings.Default, FakeCommunicationHandler.Default);
+
+        public FakeDevice(DeviceInfo info = null, DeviceSettings settings = null, FakeCommunicationHandler fakeCommunication = null) : base(info ?? DefaultInfo, settings ?? DeviceSettings.Default, fakeCommunication ?? FakeCommunicationHandler.Default)
         {
+            FakeCommunication = fakeCommunication ?? FakeCommunicationHandler.Default;
         }
+
+        public FakeCommunicationHandler FakeCommunication { get; private set; }
     }
 }

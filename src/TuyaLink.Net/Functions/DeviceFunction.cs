@@ -66,6 +66,17 @@ namespace TuyaLink.Functions
         /// <exception cref="TuyaLinkException">Thrown when the model is invalid.</exception>
         protected virtual void CheckModel(Action? action = null)
         {
+
+            if(Device is null)
+            {
+                throw new ArgumentNullException(nameof(Device));
+            }
+
+            if(Device.Settings is null)
+            {
+                throw new ArgumentNullException(nameof(Device.Settings));
+            }
+
             if (!Device.Settings.ValdiateModel)
             {
                 return;

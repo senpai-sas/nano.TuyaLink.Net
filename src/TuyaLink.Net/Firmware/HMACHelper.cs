@@ -1,6 +1,7 @@
 ﻿
 
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace TuyaLink.Firmware
@@ -9,11 +10,11 @@ namespace TuyaLink.Firmware
     {
         internal static void CheckIntegrity(string key, string expected, Stream stream)
         {
-            var bytes = new byte[stream.Length];
+            byte[] bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);
-            var hash = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(key));
-            var hashBytes = hash.ComputeHash(bytes);
-            var hashString = hashBytes.ToExeString();
+            HMACSHA256 hash = new(Encoding.UTF8.GetBytes(key));
+            byte[] hashBytes = hash.ComputeHash(bytes);
+            string hashString = hashBytes.ToExeString();
             if (hashString != expected)
             {
                 throw new FirmwareUpdateException(FirmwareUdpateError.UpdateVersion, "HMAC mismatch");

@@ -39,6 +39,7 @@ namespace TuyaLink.Json
             ConvertersMapping.Add(typeof(TriggerEventDataHashtable), new TriggerEventDataHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(EventDataHashtable), new EventDataHashtableConverter(JsonNamingConventions.Default));
             ConvertersMapping.Add(typeof(StatusCode), new StatusCodeConverter());
+            ConvertersMapping.Add(typeof(TuyaDateTime), new TuyaDateTimeConverter());
         }
 
         public static object Deserialize(Stream stream, Type type)

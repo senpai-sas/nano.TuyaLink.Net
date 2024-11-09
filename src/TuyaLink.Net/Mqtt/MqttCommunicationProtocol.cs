@@ -220,6 +220,8 @@ namespace TuyaLink.Mqtt
             return PublishRequest(_reportPropertyTopicHandler, request, property.Acknowledge);
         }
 
+     
+
         public ResponseHandler BatchReport(DeviceProperty[] properties, TriggerEventData[] triggerEventData)
         {
             if (properties.Length == 0 && triggerEventData.Length == 0)
@@ -402,11 +404,6 @@ namespace TuyaLink.Mqtt
             _mqttClient.Publish(topic.PublishableTopic, Encoding.UTF8.GetBytes(content), null, null, topic.PublishableQoSLevel, false);
         }
 
-        private static string GetMessageId()
-        {
-            return Guid.NewGuid().To32String();
-        }
-
         internal ActionExecuteResult ActionExecute(ActionExecuteRequest request)
         {
             return _device.ActionExecute(request.Data.ActionCode, request.Data.InputParams);
@@ -466,7 +463,9 @@ namespace TuyaLink.Mqtt
 
             PublishResponse(_reportFirewareProgressTopic, request);
         }
-
-
+        private static string GetMessageId()
+        {
+            return FunctionMessage.GetNextMessageId();
+        }
     }
 }

@@ -32,6 +32,7 @@
     <Compile Include="FakeCommunicationHandler.cs" />
     <Compile Include="FakeDevice.cs" />
     <Compile Include="Functions\DeviceFunctionTests.cs" />
+    <Compile Include="Functions\Properties\DevicePropertyTests.cs" />
     <Compile Include="Functions\Properties\PropertyDataTypeTests.cs" />
     <Compile Include="Json\Converters\AccessModeConverterTests.cs" />
     <Compile Include="Json\Converters\BizTypeConverterTests.cs" />

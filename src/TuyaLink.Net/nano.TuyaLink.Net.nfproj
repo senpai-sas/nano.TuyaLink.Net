@@ -85,6 +85,7 @@
     <Compile Include="Json\Converters\PropertyHashtableConverter.cs" />
     <Compile Include="Json\Converters\StatusCodeConverter.cs" />
     <Compile Include="Json\Converters\TriggerEventDataHashtableConverter.cs" />
+    <Compile Include="Json\Converters\TuyaDateTimeConverter.cs" />
     <Compile Include="Json\Converters\UpdateChannelConverter.cs" />
     <Compile Include="Json\DeserializationException.cs" />
     <Compile Include="Json\GenericHashtableAttribute.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="Json\JsonSerializer.cs" />
     <Compile Include="Json\NameConventionResolver.cs" />
     <Compile Include="Json\TypeUtils.cs" />
-    <Compile Include="Mqtt\GuidExtensions.cs" />
+    <Compile Include="Communication\GuidExtensions.cs" />
     <Compile Include="Mqtt\MqttCommunicationProtocol.cs" />
     <Compile Include="Mqtt\TuyaMqttConnectionException.cs" />
     <Compile Include="Mqtt\TuyaMqttException.cs" />

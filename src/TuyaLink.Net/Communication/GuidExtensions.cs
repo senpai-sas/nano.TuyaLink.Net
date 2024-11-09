@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace TuyaLink.Mqtt
+namespace TuyaLink.Communication
 {
     public static class GuidExtensions
     {
