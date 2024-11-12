@@ -60,10 +60,7 @@ namespace TuyaLink
         {
             int lengt = time.ToString().Length;
 
-            if (lengt < 10)
-            {
-                throw new ArgumentOutOfRangeException(nameof(time), "Leng of time too short");
-            }
+         
             if (lengt == 10)
             {
                 return new TuyaDateTime(DateTime.FromUnixTimeSeconds(time));

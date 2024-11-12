@@ -33,6 +33,7 @@
     <Compile Include="FakeDevice.cs" />
     <Compile Include="Functions\Actions\DeviceActionTests.cs" />
     <Compile Include="Functions\DeviceFunctionTests.cs" />
+    <Compile Include="Functions\Events\DeviceEventTests.cs" />
     <Compile Include="Functions\Properties\DevicePropertyTests.cs" />
     <Compile Include="Functions\Properties\PropertyDataTypeTests.cs" />
     <Compile Include="Json\Converters\AccessModeConverterTests.cs" />

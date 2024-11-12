@@ -82,6 +82,21 @@ namespace TuyaLink.Functions
             Description = "The output parameter of the function does't match with the model"
         };
 
+        public static readonly StatusCode ModelNotBinded = new(-10003, nameof(ModelNotBinded))
+        {
+            Description = "The model is not binded to the function."
+        };
+
+        public static readonly StatusCode FunctionCodeMismatch = new(-10004, nameof(FunctionCodeMismatch))
+        {
+            Description = "The function code does not match with the model."
+        };
+
+        public static readonly StatusCode FunctionTypeMismatch = new(-10005, nameof(FunctionTypeMismatch))
+        {
+            Description = "The function type does not match with the model."
+        };
+
 
         /// <summary>
         /// Service error.

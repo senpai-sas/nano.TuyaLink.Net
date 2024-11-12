@@ -11,6 +11,7 @@ using TuyaLink.Events;
 using TuyaLink.Firmware;
 using TuyaLink.Functions;
 using TuyaLink.Functions.Actions;
+using TuyaLink.Functions.Events;
 using TuyaLink.Model;
 using TuyaLink.Mqtt;
 using TuyaLink.Properties;
@@ -120,6 +121,13 @@ namespace TuyaLink
             DelegateDeviceAction action = new(code, this, executeDelegate);
             AddAction(action);
             return action;
+        }
+
+        protected DeviceEvent RegisterEvent(string code, DeviceEventDelegate triggerDelegate)
+        {
+            DelegateDeviceEvent deviceEvent = new(code, triggerDelegate, this, true);
+            AddEvent(deviceEvent);
+            return deviceEvent;
         }
 
         internal void UpdateModel(DeviceModel model)

@@ -33,6 +33,7 @@
     <Compile Include="Communication\Properties\DeleteDesiredPropertyRequest.cs" />
     <Compile Include="Firmware\ArrayExtensions.cs" />
     <Compile Include="Functions\Actions\PerformActionEventArgs.cs" />
+    <Compile Include="Functions\Events\DelegateDeviceEvent.cs" />
     <Compile Include="Functions\Events\EventDataHashtable.cs" />
     <Compile Include="Functions\Events\EventData.cs" />
     <Compile Include="Functions\Events\TriggerEventDataHashtable.cs" />

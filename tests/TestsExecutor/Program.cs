@@ -12,6 +12,7 @@ namespace TestsExecutor
         /// </summary>
         public static void Main()
         {
+            nanoFramework.TestFramework.UnitTestLauncher.Main();
             Assembly test = Assembly.Load("NFUnitTest");
 
             Type[] allTypes = test.GetTypes();

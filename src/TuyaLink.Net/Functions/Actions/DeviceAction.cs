@@ -116,7 +116,7 @@ namespace TuyaLink.Functions.Actions
 
                 try
                 {
-                    model.TypeSpec.Type.CheckCouldValue(model.TypeSpec, value);
+                    model.TypeSpec.CheckCouldValue(value);
                 }
                 catch (ArgumentException ex)
                 {

@@ -16,5 +16,6 @@
         }
 
         public FakeCommunicationHandler FakeCommunication { get; private set; }
+
     }
 }

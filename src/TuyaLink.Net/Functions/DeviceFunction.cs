@@ -67,12 +67,12 @@ namespace TuyaLink.Functions
         protected virtual void CheckModel(Action? action = null)
         {
 
-            if(Device is null)
+            if (Device is null)
             {
                 throw new ArgumentNullException(nameof(Device));
             }
 
-            if(Device.Settings is null)
+            if (Device.Settings is null)
             {
                 throw new ArgumentNullException(nameof(Device.Settings));
             }
@@ -83,17 +83,17 @@ namespace TuyaLink.Functions
             }
             if (Model == null)
             {
-                throw new TuyaLinkException($"The function {Code} has no model");
+                throw new FunctionRuntimeException(StatusCode.ModelNotBinded, $"The function {Code} has no model");
             }
 
             if (Model.Code != Code)
             {
-                throw new TuyaLinkException($"Function code {Code} does't match with model code {Model.Code}");
+                throw new FunctionRuntimeException(StatusCode.FunctionCodeMismatch, $"Function code {Code} does't match with model code {Model.Code}");
             }
 
             if (Model.FunctionType != Type)
             {
-                throw new TuyaLinkException($"Function type {Type} does't match with model type {Model.FunctionType}");
+                throw new FunctionRuntimeException(StatusCode.FunctionTypeMismatch, $"Function {Code} type {Type} does't match with model type {Model.FunctionType}");
             }
 
             ValidateModel();

@@ -11,11 +11,15 @@ namespace TuyaLink
 {
 
     public delegate ResponseHandler FakeReportPropertyDelegate(DeviceProperty property);
+
+    public delegate ResponseHandler FakeTriggerEventDelegate(DeviceEvent deviceEvent, Hashtable parameters, DateTime time);
     internal class FakeCommunicationHandler : ICommunicationHandler
     {
         public static FakeCommunicationHandler Default => new();
 
         public FakeReportPropertyDelegate ReportPropertyDelegate { get; set; }
+
+        public FakeTriggerEventDelegate TriggerEventDelegate { get; set; }
 
         public ResponseHandler BatchReport(DeviceProperty[] properties, TriggerEventData[] triggerEventData)
         {
@@ -71,7 +75,18 @@ namespace TuyaLink
 
         public ResponseHandler TriggerEvent(DeviceEvent deviceEvent, Hashtable parameters, DateTime time)
         {
-            throw new NotImplementedException();
+            TriggerEventRequest request = new()
+            {
+                MsgId = FunctionMessage.GetNextMessageId(),
+                Data = new TriggerEventData
+                {
+                    EventCode = deviceEvent.Code,
+                    EventTime = time.ToUnixTimeSeconds(),
+                    OutputParams = parameters,
+                }
+            };
+
+            return TriggerEventDelegate?.Invoke(deviceEvent, parameters, time) ?? throw new NotImplementedException();
         }
     }
 

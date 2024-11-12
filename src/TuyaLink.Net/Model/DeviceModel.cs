@@ -1,4 +1,6 @@
-﻿using TuyaLink.Functions;
+﻿using System.Diagnostics;
+
+using TuyaLink.Functions;
 using TuyaLink.Functions.Properties;
 
 namespace TuyaLink.Model
@@ -71,6 +73,16 @@ namespace TuyaLink.Model
         public int Maxlen { get; set; } = -1;
 
         public bool IsInBoundary(double value) => value >= Min && value <= Max;
+
+        internal void CheckCouldValue(object value)
+        {
+            Type.CheckCouldValue(this, value);
+        }
+
+        public override string ToString()
+        {
+            return $"Type: {Type}, Label: {Label}, Range: {Range}, Min: {Min}, Max: {Max}, Step: {Step}, Unit: {Unit}, Scale: {Scale}, Maxlen: {Maxlen}";
+        }
     }
 
     public class EventModel : FunctionModel
@@ -82,11 +94,17 @@ namespace TuyaLink.Model
         public ParameterModel[] OutputParams { get; set; }
     }
 
+    [DebuggerDisplay("{Code}")]
     public class ParameterModel
     {
         public string Code { get; set; }
 
         public TypeSpecifications TypeSpec { get; set; }
+
+        public override string ToString()
+        {
+            return $"{{Code: {Code}, Specs: {{{TypeSpec}}}}}";
+        }
     }
 
     public class ActionModel : FunctionModel
