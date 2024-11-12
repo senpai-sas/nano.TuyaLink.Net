@@ -182,16 +182,19 @@ namespace TuyaLink.Functions.Properties
 
             public override void CheckCouldValue(TypeSpecifications specs, object value)
             {
-                base.CheckCouldValue(specs, value);
                 if (value is null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
+
                 PropertySmartEnum? smartEnum = value as PropertySmartEnum;
                 if (smartEnum is null)
                 {
                     throw new ArgumentException($"The value {value} is not a valid {this} value.", nameof(value));
                 }
+
+                base.CheckCouldValue(specs, smartEnum.EnumValue);
 
                 if (!specs.Label.Contains(smartEnum.EnumValue))
                 {
@@ -231,15 +234,17 @@ namespace TuyaLink.Functions.Properties
 
             public override void CheckCouldValue(TypeSpecifications specs, object value)
             {
-                base.CheckCouldValue(specs, value);
                 if (value is null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
 
+                base.CheckCouldValue(specs, value);
+               
+
                 string stringValue = (string)value;
 
-                if (specs.Range.Contains(stringValue))
+                if (!specs.Range.Contains(stringValue))
                 {
                     throw new ArgumentException($"The value {value} is not a valid {this} value, allowed values are {specs.Range.Join(",")}.", nameof(value));
                 }

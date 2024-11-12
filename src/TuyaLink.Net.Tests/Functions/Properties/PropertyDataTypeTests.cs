@@ -10,6 +10,13 @@ namespace TuyaLink.Functions.Properties
     [TestClass]
     public class PropertyDataTypeTests
     {
+        private class TestEnum : PropertySmartEnum
+        {
+            public TestEnum(string value) : base(value, value)
+            {
+
+            }
+        }
         [TestMethod]
         public void TestFromValue_ValidValue_ReturnsCorrectType()
         {
@@ -80,16 +87,59 @@ namespace TuyaLink.Functions.Properties
         }
 
         [TestMethod]
-        public void FromValue_ShouldReturnCorrectTuyaDataType()
+        public void TestCheckCouldValue_ValueDataType_ValidValue()
         {
-            Assert.AreEqual(PropertyDataType.FromValue("float"), PropertyDataType.Float);
-            Assert.AreEqual(PropertyDataType.FromValue("double"), PropertyDataType.Double);
-            Assert.AreEqual(PropertyDataType.FromValue("string"), PropertyDataType.String);
-            Assert.AreEqual(PropertyDataType.FromValue("date"), PropertyDataType.Date);
-            Assert.AreEqual(PropertyDataType.FromValue("bool"), PropertyDataType.Boolean);
-            Assert.AreEqual(PropertyDataType.FromValue("enum"), PropertyDataType.Enum);
-            Assert.AreEqual(PropertyDataType.FromValue("raw"), PropertyDataType.Raw);
-            Assert.AreEqual(PropertyDataType.FromValue("fault"), PropertyDataType.Fault);
+            TypeSpecifications specs = new() { Type = PropertyDataType.Value, Min = 0, Max = 100 };
+            PropertyDataType.Value.CheckCouldValue(specs, 50.0);
+        }
+
+        [TestMethod]
+        public void TestCheckCouldValue_ValueDataType_InvalidValue()
+        {
+            TypeSpecifications specs = new() { Type = PropertyDataType.Value, Min = 0, Max = 100 };
+            Assert.ThrowsException(typeof(ArgumentOutOfRangeException), () => PropertyDataType.Value.CheckCouldValue(specs, 150.0));
+        }
+
+        [TestMethod]
+        public void TestCheckCouldValue_EnumDataType_ValidValue()
+        {
+            TypeSpecifications specs = new() { Type = PropertyDataType.Enum, Label = new[] { "1", "2", "3" } };
+            PropertyDataType.Enum.CheckCouldValue(specs, new TestEnum("1"));
+        }
+
+        [TestMethod]
+        public void TestCheckCouldValue_EnumDataType_InvalidValue()
+        {
+            TypeSpecifications specs = new() { Type = PropertyDataType.Enum, Label = new[] { "1", "2", "3" } };
+            Assert.ThrowsException(typeof(ArgumentException), () => PropertyDataType.Enum.CheckCouldValue(specs, new TestEnum("4")));
+        }
+
+        [TestMethod]
+        public void TestCheckCouldValue_StringDataType_ValidValue()
+        {
+            TypeSpecifications specs = new() { Type = PropertyDataType.String, Maxlen = 10 };
+            PropertyDataType.String.CheckCouldValue(specs, "test");
+        }
+
+        [TestMethod]
+        public void TestCheckCouldValue_StringDataType_InvalidValue()
+        {
+            TypeSpecifications specs = new() { Type = PropertyDataType.String, Maxlen = 3 };
+            Assert.ThrowsException(typeof(ArgumentOutOfRangeException), () => PropertyDataType.String.CheckCouldValue(specs, "test"));
+        }
+
+        [TestMethod]
+        public void TestCheckCouldValue_FaultDataType_ValidValue()
+        {
+            TypeSpecifications specs = new() { Type = PropertyDataType.Fault, Range = new[] { "fault1", "fault2" } };
+            PropertyDataType.Fault.CheckCouldValue(specs, "fault1");
+        }
+
+        [TestMethod]
+        public void TestCheckCouldValue_FaultDataType_InvalidValue()
+        {
+            TypeSpecifications specs = new() { Type = PropertyDataType.Fault, Range = new[] { "fault1", "fault2" } };
+            Assert.ThrowsException(typeof(ArgumentException), () => PropertyDataType.Fault.CheckCouldValue(specs, "fault3"));
         }
         [TestMethod]
         public void TestIsValidLocalValue_ValidValue_ReturnsTrue()
