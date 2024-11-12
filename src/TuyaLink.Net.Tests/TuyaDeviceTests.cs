@@ -11,6 +11,7 @@ using TuyaLink.Functions.Properties;
 using TuyaLink.Actions;
 using TuyaLink.Communication;
 using TuyaLink.Communication.Events;
+using TuyaLink.Functions.Events;
 
 namespace TuyaLink
 {
@@ -124,8 +125,17 @@ namespace TuyaLink
             Assert.AreEqual(StatusCode.Success, result);
             Assert.AreEqual("newValue", property.GetCloudValue());
         }
+        [TestMethod]
+        public void TestRegisterEvent()
+        {
+            bool eventTriggered = false;
+            void triggerDelegate(Hashtable parameters, DateTime time) => eventTriggered = true;
+            var device = FakeDevice.Default;
+            var deviceEvent = device.RegisterEvent("eventCode", triggerDelegate);
 
+            Assert.IsTrue(device.Events.Contains("eventCode"));
+            Assert.AreEqual(deviceEvent, device.Events["eventCode"]);
+            Assert.IsFalse(eventTriggered);
+        }
     }
-
-  
 }

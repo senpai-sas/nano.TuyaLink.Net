@@ -54,14 +54,11 @@ namespace TuyaLink
             return FromUnixTime(time);
         }
 
-
-
         public static TuyaDateTime FromUnixTime(long time)
         {
             int lengt = time.ToString().Length;
-
          
-            if (lengt == 10)
+            if (lengt <= 10)
             {
                 return new TuyaDateTime(DateTime.FromUnixTimeSeconds(time));
             }

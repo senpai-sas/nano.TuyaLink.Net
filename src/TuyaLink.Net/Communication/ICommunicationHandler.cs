@@ -2,6 +2,7 @@
 using System.Collections;
 
 using TuyaLink.Communication.Events;
+using TuyaLink.Communication.Firmware;
 using TuyaLink.Events;
 using TuyaLink.Functions.Actions;
 using TuyaLink.Functions.Properties;

@@ -1,9 +1,7 @@
 ﻿using System;
-
 using TuyaLink.Communication;
-using TuyaLink.Communication.Firmware;
 
-namespace TuyaLink
+namespace TuyaLink.Communication.Firmware
 {
     public class GetFirmwareVersionResponseHandler : ResponseHandler
     {

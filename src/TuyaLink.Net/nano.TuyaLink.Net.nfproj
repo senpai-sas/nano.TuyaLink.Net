@@ -44,7 +44,7 @@
     <Compile Include="Functions\Properties\FaultProperty.cs" />
     <Compile Include="Functions\Properties\RawProperty.cs" />
     <Compile Include="Functions\Properties\StringProperty.cs" />
-    <Compile Include="GetFirmwareVersionResponseHandler.cs" />
+    <Compile Include="Communication\Firmware\GetFirmwareVersionResponseHandler.cs" />
     <Compile Include="Json\CacheNameConventionResolver.cs" />
     <Compile Include="Json\Converters\DeleteDesiredPropertiesHashtableConverter.cs" />
     <Compile Include="Json\Converters\DesiredPropertiesHashtableConverter.cs" />

@@ -1,4 +1,6 @@
-﻿namespace TuyaLink
+﻿using TuyaLink.Events;
+
+namespace TuyaLink
 {
     internal class FakeDevice : TuyaDevice
     {
@@ -16,6 +18,12 @@
         }
 
         public FakeCommunicationHandler FakeCommunication { get; private set; }
+
+
+        public new DeviceEvent RegisterEvent(string code, Functions.Events.DeviceEventDelegate triggerDelegate)
+        {
+            return base.RegisterEvent(code, triggerDelegate);
+        }
 
     }
 }
