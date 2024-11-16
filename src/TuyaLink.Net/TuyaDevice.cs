@@ -6,6 +6,7 @@ using System.Threading;
 using TuyaLink.Actions;
 using TuyaLink.Communication;
 using TuyaLink.Communication.Firmware;
+using TuyaLink.Communication.Mqtt;
 using TuyaLink.Communication.Properties;
 using TuyaLink.Events;
 using TuyaLink.Firmware;
@@ -13,7 +14,6 @@ using TuyaLink.Functions;
 using TuyaLink.Functions.Actions;
 using TuyaLink.Functions.Events;
 using TuyaLink.Model;
-using TuyaLink.Mqtt;
 using TuyaLink.Properties;
 
 namespace TuyaLink
@@ -82,33 +82,6 @@ namespace TuyaLink
         internal ResponseHandler TriggerEvent(DeviceEvent deviceEvent, Hashtable parameters, DateTime time)
         {
             return _communicationProtocol.TriggerEvent(deviceEvent, parameters, time);
-        }
-
-        public void Connect(int millisecondsTimeout = Timeout.Infinite)
-        {
-            _communicationProtocol.Connect(Info);
-            ResponseHandler handler = _communicationProtocol.GetDeviceModel();
-            handler.WaitForAcknowledgeReport();
-        }
-
-        public void Disconnect()
-        {
-            _communicationProtocol.Disconnect();
-        }
-
-        public void AddProperty(DeviceProperty property)
-        {
-            Properties.Add(property.Code, property);
-        }
-
-        public void AddEvent(DeviceEvent deviceEvent)
-        {
-            Events.Add(deviceEvent.Code, deviceEvent);
-        }
-
-        public void AddAction(DeviceAction deviceAction)
-        {
-            Actions.Add(deviceAction.Code, deviceAction);
         }
 
         public ResponseHandler GetProperties(params DeviceProperty[] properties)
@@ -205,6 +178,34 @@ namespace TuyaLink
                 return;
             }
             Settings.FirmwareManager.IssueFirmware(data, progressDelegate);
+        }
+
+
+        public void Connect(int millisecondsTimeout = Timeout.Infinite)
+        {
+            _communicationProtocol.Connect(Info);
+            ResponseHandler handler = _communicationProtocol.GetDeviceModel();
+            handler.WaitForAcknowledgeReport();
+        }
+
+        public void Disconnect()
+        {
+            _communicationProtocol.Disconnect();
+        }
+
+        public void AddProperty(DeviceProperty property)
+        {
+            Properties.Add(property.Code, property);
+        }
+
+        public void AddEvent(DeviceEvent deviceEvent)
+        {
+            Events.Add(deviceEvent.Code, deviceEvent);
+        }
+
+        public void AddAction(DeviceAction deviceAction)
+        {
+            Actions.Add(deviceAction.Code, deviceAction);
         }
 
         public GetFirmwareVersionResponseHandler GetLastFirmwareVersion()

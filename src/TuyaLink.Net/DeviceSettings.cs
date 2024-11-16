@@ -14,7 +14,7 @@ namespace TuyaLink
 
         public bool ValdiateModel { get; set; }
 
-        public bool AutoDeleteDesiredProperties { get; set; }
+        public bool AutoDeleteDesiredProperties { get; set; } = true;
 
         public bool BindModel { get; set; } = true;
 

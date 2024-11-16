@@ -137,5 +137,34 @@ namespace TuyaLink
             Assert.AreEqual(deviceEvent, device.Events["eventCode"]);
             Assert.IsFalse(eventTriggered);
         }
+        [TestMethod]
+        public void TestActionExecute_NonRegisterFunction()
+        {
+            var deviceInfo = new DeviceInfo("deviceId", "deviceName", "secrect");
+            var device = new TuyaDevice(deviceInfo, null, protocol);
+
+            var inputParameters = new Hashtable
+            {
+                { "key", "value" }
+            };
+            var result = device.ActionExecute("nonExistentActionCode", inputParameters);
+
+            Assert.AreEqual(StatusCode.FunctionNotFound, result.Code);
+        }
+        [TestMethod]
+        public void TestPropertySet_FunctionNotFound()
+        {
+            var deviceInfo = new DeviceInfo("deviceId", "deviceName", "secrect");
+            var device = new TuyaDevice(deviceInfo, null, protocol);
+
+            var properties = new Hashtable
+            {
+                { "nonExistentPropertyCode", "newValue" }
+            };
+
+            var result = device.PropertySet(properties);
+
+            Assert.AreEqual(StatusCode.FunctionNotFound, result);
+        }
     }
 }
