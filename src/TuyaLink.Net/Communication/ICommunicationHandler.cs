@@ -24,7 +24,7 @@ namespace TuyaLink.Communication
 
     public interface ICommunicationHandler
     {
-        public void Connect(DeviceInfo deviceInfo);
+        public void Connect();
 
         public void Disconnect();
 

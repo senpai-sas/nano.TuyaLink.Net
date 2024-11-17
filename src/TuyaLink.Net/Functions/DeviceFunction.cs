@@ -77,7 +77,7 @@ namespace TuyaLink.Functions
                 throw new ArgumentNullException(nameof(Device.Settings));
             }
 
-            if (!Device.Settings.ValdiateModel)
+            if (!Device.Settings.ValidateModel)
             {
                 return;
             }

@@ -147,9 +147,8 @@ namespace TuyaLink
             {
                 { "key", "value" }
             };
-            var result = device.ActionExecute("nonExistentActionCode", inputParameters);
+            Assert.ThrowsException(typeof (FunctionRuntimeException) , () =>  device.ActionExecute("nonExistentActionCode", inputParameters));
 
-            Assert.AreEqual(StatusCode.FunctionNotFound, result.Code);
         }
         [TestMethod]
         public void TestPropertySet_FunctionNotFound()

@@ -51,7 +51,7 @@ namespace TuyaLink
         {
             if (!Actions.TryGetValue(actionCode, out object value))
             {
-                return ActionExecuteResult.Failure(StatusCode.FunctionNotFound);
+                throw new FunctionRuntimeException(StatusCode.FunctionNotFound, $"Action with code {actionCode} is not registered in the device");
             }
             DeviceAction action = (DeviceAction)value;
             return action.Execute(inputParameters);
@@ -120,7 +120,7 @@ namespace TuyaLink
                 {
                     if (!Properties.TryGetValue(propertyModel.Code, out object value))
                     {
-                        if (Settings.ValdiateModel)
+                        if (Settings.ValidateModel)
                             throw new TuyaLinkException($"Property {propertyModel} not implemented in device {Info.DeviceId}");
                     }
 
@@ -133,7 +133,7 @@ namespace TuyaLink
                 {
                     if (!Events.TryGetValue(eventModel.Code, out object value))
                     {
-                        if (Settings.ValdiateModel)
+                        if (Settings.ValidateModel)
                             throw new TuyaLinkException($"Event {eventModel} not implemented in device {Info.DeviceId}");
                     }
                     DeviceEvent deviceEvent = (DeviceEvent)value;
@@ -145,7 +145,7 @@ namespace TuyaLink
                 {
                     if (!Actions.TryGetValue(actionModel.Code, out object value))
                     {
-                        if (Settings.ValdiateModel)
+                        if (Settings.ValidateModel)
                             throw new TuyaLinkException($"Action {actionModel} not implemented in device {Info.DeviceId}");
                     }
 
@@ -183,7 +183,7 @@ namespace TuyaLink
 
         public void Connect(int millisecondsTimeout = Timeout.Infinite)
         {
-            _communicationProtocol.Connect(Info);
+            _communicationProtocol.Connect();
             ResponseHandler handler = _communicationProtocol.GetDeviceModel();
             handler.WaitForAcknowledgeReport();
         }

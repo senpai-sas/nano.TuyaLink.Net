@@ -12,7 +12,7 @@ namespace TuyaLink
 
         public X509Certificate2? ClientCertificate { get; set; }
 
-        public bool ValdiateModel { get; set; }
+        public bool ValidateModel { get; set; }
 
         public bool AutoDeleteDesiredProperties { get; set; } = true;
 

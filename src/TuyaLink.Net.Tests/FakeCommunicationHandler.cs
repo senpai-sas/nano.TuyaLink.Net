@@ -27,7 +27,7 @@ namespace TuyaLink
             throw new NotImplementedException();
         }
 
-        public void Connect(DeviceInfo deviceInfo)
+        public void Connect()
         {
             throw new NotImplementedException();
         }

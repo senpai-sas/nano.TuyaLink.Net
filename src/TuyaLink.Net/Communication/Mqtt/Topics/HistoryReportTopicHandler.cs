@@ -8,8 +8,8 @@ namespace TuyaLink.Communication.Mqtt.Topics
         public const string HistoryReportTopicTemplate = "tylink/{0}/thing/data/history_report";
         public const string HistoryReportResponseTopicTemplate = "tylink/{0}/thing/data/history_report_response";
 
-        protected override string SubscribableTopicTemplate => HistoryReportTopicTemplate;
-        protected override string PublishableTopicTemplate => HistoryReportResponseTopicTemplate;
+        protected override string SubscribableTopicTemplate => HistoryReportResponseTopicTemplate;
+        protected override string PublishableTopicTemplate => HistoryReportTopicTemplate;
 
         protected override DeviceRequestHandler CreateRequestHandler(ResponseHandler responseHandler)
         {

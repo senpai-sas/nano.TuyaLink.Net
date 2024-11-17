@@ -32,7 +32,7 @@ namespace TuyaLink.Functions
         [TestMethod]
         public void BindModel_ShouldSetModelAndCheckModel()
         {
-            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValdiateModel = true });
+            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValidateModel = true });
             TestDeviceFunction function = new("TestCode", FunctionType.Property, device);
             PropertyModel model = new() { Code = "TestCode" };
 
@@ -44,7 +44,7 @@ namespace TuyaLink.Functions
         [TestMethod]
         public void CheckModel_ShouldThrowTuyaLinkException_WhenModelIsNull()
         {
-            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValdiateModel = true });
+            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValidateModel = true });
             TestDeviceFunction function = new("TestCode", FunctionType.Property, device);
 
             Assert.ThrowsException(typeof(TuyaLinkException), () => function.BindModel(null));
@@ -53,7 +53,7 @@ namespace TuyaLink.Functions
         [TestMethod]
         public void CheckModel_ShouldThrowTuyaLinkException_WhenModelCodeDoesNotMatch()
         {
-            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValdiateModel = true });
+            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValidateModel = true });
             TestDeviceFunction function = new("TestCode", FunctionType.Event, device);
 
             EventModel model = new() { Code = "DifferentCode" };
@@ -65,7 +65,7 @@ namespace TuyaLink.Functions
         [TestMethod]
         public void CheckModel_ShouldThrowTuyaLinkException_WhenModelFunctionTypeDoesNotMatch()
         {
-            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValdiateModel = true });
+            TuyaDevice device = new FakeDevice(FakeDevice.DefaultInfo, new DeviceSettings { ValidateModel = true });
             TestDeviceFunction function = new("TestCode", FunctionType.Event, device);
             FunctionModel model = new ActionModel() { Code = "TestCode" };
 

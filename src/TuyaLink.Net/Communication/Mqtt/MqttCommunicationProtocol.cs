@@ -4,11 +4,9 @@ using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-using nanoFramework.Json.Configuration;
 using nanoFramework.M2Mqtt;
 using nanoFramework.M2Mqtt.Messages;
 
-using TuyaLink.Communication;
 using TuyaLink.Communication.Actions;
 using TuyaLink.Communication.Events;
 using TuyaLink.Communication.Firmware;
@@ -43,26 +41,19 @@ namespace TuyaLink.Communication.Mqtt
         private DeviceRequestTopicHandler _reportPropertyTopicHandler;
         private DeviceRequestTopicHandler _historyReportTopicHandler;
         private DeviceRequestTopicHandler _getFirmwareVersionTopicHandler;
-        private ReportFirmwareProgressTopicHandler _reportFirewareProgressTopic;
+        private ReportFirmwareProgressTopicHandler _reportFirmwareProgressTopic;
         private DeviceRequestTopicHandler _deleteDesiredPropertiesTopicHandler;
 
-        internal DeviceInfo DeviceInfo { get; private set; }
+        internal DeviceInfo DeviceInfo => _device.Info;
 
         internal MqttCommunicationProtocol(TuyaDevice tuyaDevice, DeviceSettings deviceSettings, IMqttClient? mqttClient = null)
         {
             _deviceSettings = deviceSettings ?? throw new ArgumentNullException(nameof(deviceSettings));
             _mqttClient = mqttClient ?? CreateMqttClient(deviceSettings);
             _device = tuyaDevice ?? throw new ArgumentNullException(nameof(tuyaDevice));
-            _mqttClient.MqttMsgPublishReceived += MqttMsgPublishReceived;
-            _mqttClient.MqttMsgPublished += MqttMsgPublished;
-            _mqttClient.ConnectionClosed += ConnectionClosed;
-            _mqttClient.MqttMsgSubscribed += MqttMessageSubscribed;
-            _mqttClient.MqttMsgUnsubscribed += MqttMessageUnsubscribed;
 
-        }
 
-        internal MqttCommunicationProtocol(TuyaDevice tuyaDevice, DeviceSettings settings) : this(tuyaDevice, settings, null)
-        {
+            Initialize();
         }
 
         private IMqttClient CreateMqttClient(DeviceSettings settings)
@@ -72,7 +63,7 @@ namespace TuyaLink.Communication.Mqtt
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            MqttClient mqttClient = new MqttClient(settings.DataCenter.Url, settings.DataCenter.Port, true, GetCACertificate(), settings.ClientCertificate, MqttSslProtocols.TLSv1_2)
+            MqttClient mqttClient = new(settings.DataCenter.Url, settings.DataCenter.Port, true, GetCACertificate(), settings.ClientCertificate, MqttSslProtocols.TLSv1_2)
             {
                 ProtocolVersion = MqttProtocolVersion.Version_3_1_1,
             };
@@ -85,7 +76,7 @@ namespace TuyaLink.Communication.Mqtt
 
         private void MqttMessageUnsubscribed(object sender, MqttMsgUnsubscribedEventArgs e)
         {
-            Debug.WriteLine("Message has been unsubscripted");
+            Debug.WriteLine("Message has been unsubscribed");
         }
 
         private void MqttMessageSubscribed(object sender, MqttMsgSubscribedEventArgs e)
@@ -115,7 +106,11 @@ namespace TuyaLink.Communication.Mqtt
 
         private void Initialize()
         {
-            JsonUtils.Initialize();
+            _mqttClient.MqttMsgPublishReceived += MqttMsgPublishReceived;
+            _mqttClient.MqttMsgPublished += MqttMsgPublished;
+            _mqttClient.ConnectionClosed += ConnectionClosed;
+            _mqttClient.MqttMsgSubscribed += MqttMessageSubscribed;
+            _mqttClient.MqttMsgUnsubscribed += MqttMessageUnsubscribed;
             _batchReportTopicHandler = RegisterDeviceRequestTopicHandler(new BatchReportTopicHandler(this));
             _eventTriggerTopicHandler = RegisterDeviceRequestTopicHandler(new EventTriggerTopicHandler(this));
             _getDeviceModelTopicHandler = RegisterDeviceRequestTopicHandler(new GetDeviceModelTopicHandler(this));
@@ -126,8 +121,9 @@ namespace TuyaLink.Communication.Mqtt
             _deleteDesiredPropertiesTopicHandler = RegisterDeviceRequestTopicHandler(new DeleteDesiredPropertiesTopicHandler(this));
             RegisterCloudTopicHandler(new ActionExecuteTopicHandler(this));
             RegisterCloudTopicHandler(new PropertySetTopicHandler(this));
-            _reportFirewareProgressTopic = new ReportFirmwareProgressTopicHandler(this);
+            _reportFirmwareProgressTopic = new ReportFirmwareProgressTopicHandler(this);
 
+            JsonUtils.Initialize();
         }
 
         private DeviceRequestTopicHandler RegisterDeviceRequestTopicHandler(DeviceRequestTopicHandler handler)
@@ -163,6 +159,8 @@ namespace TuyaLink.Communication.Mqtt
 
         private void MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
+            Debug.WriteLine($"Message received on topic {e.Topic}");
+
             if (e.DupFlag)
             {
                 Debug.WriteLine("Duplicated message");
@@ -180,10 +178,8 @@ namespace TuyaLink.Communication.Mqtt
         }
 
 
-        public void Connect(DeviceInfo deviceInfo)
+        public void Connect()
         {
-            DeviceInfo = deviceInfo;
-            Initialize();
             try
             {
                 InternalConnect();
@@ -449,7 +445,7 @@ namespace TuyaLink.Communication.Mqtt
                 return;
             }
 
-            var deleteProperties = new DeleteDesiredPropertiesHashtable(properties.Count);
+            DeleteDesiredPropertiesHashtable deleteProperties = new(properties.Count);
 
 
             foreach (DictionaryEntry property in properties)
@@ -459,9 +455,9 @@ namespace TuyaLink.Communication.Mqtt
                     Version = ((DesiredProperty)property.Value).Version,
                 };
             }
-            var request = new DeleteDesiredPropertyRequest()
+            DeleteDesiredPropertyRequest request = new()
             {
-                Data = new()
+                Data = new DeleteDesiredPropertyData
                 {
                     Properties = deleteProperties,
                 }
@@ -492,7 +488,7 @@ namespace TuyaLink.Communication.Mqtt
                 Time = DateTime.UtcNow.ToUnixTimeSeconds(),
             };
 
-            PublishResponse(_reportFirewareProgressTopic, request);
+            PublishResponse(_reportFirmwareProgressTopic, request);
         }
         private static string GetMessageId()
         {

@@ -4,9 +4,9 @@ namespace TuyaLink.Communication.Mqtt.Topics
 {
     internal class BatchReportTopicHandler(MqttCommunicationProtocol communication) : DeviceRequestTopicHandler(typeof(FunctionResponse), communication)
     {
-        public const string BatchReportTopicTemplate = "tylink/{0}/thing/property/batch_report";
+        public const string BatchReportTopicTemplate = "tylink/{0}/thing/data/batch_report";
 
-        public const string BatchReportResponseTopicTemplate = "tylink/{0}/thing/property/batch_report_response";
+        public const string BatchReportResponseTopicTemplate = "tylink/{0}/thing/data/batch_report_response";
 
         protected override string SubscribableTopicTemplate => BatchReportResponseTopicTemplate;
 

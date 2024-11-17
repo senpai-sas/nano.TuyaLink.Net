@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Text;
 
 using nanoFramework.M2Mqtt;
 using nanoFramework.M2Mqtt.Messages;
@@ -18,7 +17,7 @@ namespace TuyaLink.Communication.Mqtt
 
     internal class FakeMqttClient : IMqttClient
     {
-        public bool IsConnected { get; }
+        public bool IsConnected { get; private set; }
 
         public event IMqttClient.MqttMsgPublishEventHandler MqttMsgPublishReceived;
         public event IMqttClient.MqttMsgPublishedEventHandler MqttMsgPublished;
@@ -39,16 +38,23 @@ namespace TuyaLink.Communication.Mqtt
             ConnectionClosed?.Invoke(this, EventArgs.Empty);
         }
 
+
+        public void OnMqttMsgPublishReceived(MqttMsgPublishEventArgs e)
+        {
+            MqttMsgPublishReceived?.Invoke(this, e);
+        }
+
         public MqttReasonCode Connect(string clientId, string username, string password, bool willRetain, MqttQoSLevel willQosLevel, bool willFlag, string willTopic, string willMessage, bool cleanSession, ushort keepAlivePeriod)
         {
             if (MqttConnectDelegate is not null)
             {
-                var reason = MqttConnectDelegate(clientId, username, password, willRetain, willQosLevel, willFlag, willTopic, willMessage, cleanSession, keepAlivePeriod);
+                MqttReasonCode reason = MqttConnectDelegate(clientId, username, password, willRetain, willQosLevel, willFlag, willTopic, willMessage, cleanSession, keepAlivePeriod);
                 if (reason != MqttReasonCode.Success)
                 {
                     ConnectionClosed?.Invoke(this, EventArgs.Empty);
                 }
             }
+            IsConnected = true;
 
             return MqttReasonCode.Success;
         }
@@ -56,6 +62,7 @@ namespace TuyaLink.Communication.Mqtt
         public void Disconnect()
         {
             ConnectionClosed?.Invoke(this, EventArgs.Empty);
+            IsConnected = false;
         }
 
         public void Init(string brokerHostName, int brokerPort, bool secure, byte[] caCert, byte[] clientCert, MqttSslProtocols sslProtocol)
@@ -70,8 +77,15 @@ namespace TuyaLink.Communication.Mqtt
                 return PublishDelegate(topic, message, contentType, userProperties, qosLevel, retain);
             }
 
+            LastPublishedTopic = topic;
+            LastPublishedMessage = message;
+
             return 0;
         }
+
+        public byte[] LastPublishedMessage { get; set; }
+
+        public string LastPublishedTopic { get; private set; }
 
         public ushort Publish(string topic, byte[] message, string contentType)
         {

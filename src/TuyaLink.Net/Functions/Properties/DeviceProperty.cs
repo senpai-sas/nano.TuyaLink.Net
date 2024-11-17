@@ -26,7 +26,7 @@ namespace TuyaLink.Properties
         /// <summary>
         /// Gets the model of the property.
         /// </summary>
-        public new PropertyModel? Model { get; }
+        public new PropertyModel? Model => (PropertyModel?)base.Model;
 
         /// <summary>
         /// Gets the data type of the property.
